@@ -1,2 +1,7 @@
 
 /** ADD YOUR AWESOME CODES HERE **/
+
+img {
+    width: 100px; /* ajusta este valor al tamaño deseado */
+    height: auto;
+}
