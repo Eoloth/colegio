@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($user && password_verify($contraseña, $user['contraseña'])) {
         $_SESSION['usuario'] = $usuario;
-        header("Location: admin_dashboard.php"); // Redirigir al dashboard de admin si el login es exitoso
+        header("Location: uploads/admin_dashboard.php"); // Redirigir al dashboard de admin si el login es exitoso
         exit();
     } else {
         echo "Usuario o contraseña incorrectos.";
