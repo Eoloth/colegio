@@ -43,81 +43,40 @@
 <body class="host_version"> 
 
 	<!-- Modal -->
-	<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header tit-up">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Customer Login</h4>
-			</div>
-			<div class="modal-body customer-box">
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs">
-					<li><a class="active" href="#Login" data-toggle="tab">Login</a></li>
-					<li><a href="#Registration" data-toggle="tab">Registration</a></li>
-				</ul>
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div class="tab-pane active" id="Login">
-						<form role="form" class="form-horizontal">
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" id="email1" placeholder="Name" type="text">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" id="exampleInputPassword1" placeholder="Email" type="email">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-10">
-									<button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-										Submit
-									</button>
-									<a class="for-pwd" href="javascript:;">Forgot your password?</a>
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="tab-pane" id="Registration">
-						<form role="form" class="form-horizontal">
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" placeholder="Name" type="text">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" id="email" placeholder="Email" type="email">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" id="mobile" placeholder="Mobile" type="email">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" id="password" placeholder="Password" type="password">
-								</div>
-							</div>
-							<div class="row">							
-								<div class="col-sm-10">
-									<button type="button" class="btn btn-light btn-radius btn-brd grd1">
-										Save &amp; Continue
-									</button>
-									<button type="button" class="btn btn-light btn-radius btn-brd grd1">
-										Cancel</button>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	  </div>
-	</div>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body customer-box">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="Login">
+                        <form role="form" class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input class="form-control" id="email1" placeholder="Usuario" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input class="form-control" id="exampleInputPassword1" placeholder="Email" type="email">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
+                                        Ingresar
+                                    </button>
+                                    <a class="for-pwd" href="javascript:;">Olvidaste la contraseña?</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- LOADER -->
 	<div id="preloader">
@@ -148,6 +107,8 @@
 						<li class="nav-item"><a class="nav-link" href="teachers.html">Eventos</a></li>
 						<li class="nav-item"><a class="nav-link" href="pricing.html">Galería de Imágenes</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+						<li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
+
 					</ul>
 				</div>
 			</div>
@@ -476,58 +437,57 @@
         </div><!-- end container -->
     </div><!-- end section -->
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Acerca de nosotros</h3>
-                        </div>
-                        <p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>   
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-4 col-xs-12">
+					<div class="widget clearfix">
+						<div class="widget-title">
+							<h3>Acerca de nosotros</h3>
+						</div>
+						<p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>   
 						<div class="footer-right">
 							<ul class="footer-links-soi">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-
+								<li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a></li>
 							</ul><!-- end links -->
 						</div>						
-                    </div><!-- end clearfix -->
-                </div><!-- end col -->
-
+					</div><!-- end clearfix -->
+				</div><!-- end col -->
+	
 				<div class="col-lg-4 col-md-4 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Information Link</h3>
-                        </div>
-                        <ul class="footer-links">
-                            <li><a href="#">Inicio</a></li>
-                            <li><a href="#">El colegio</a></li>
-                            <li><a href="#">Eventos</a></li>
+					<div class="widget clearfix">
+						<div class="widget-title">
+							<h3>Information Link</h3>
+						</div>
+						<ul class="footer-links">
+							<li><a href="#">Inicio</a></li>
+							<li><a href="#">El colegio</a></li>
+							<li><a href="#">Eventos</a></li>
 							<li><a href="#">Galería de Imágenes</a></li>
 							<li><a href="#">Contacto</a></li>
-                        </ul><!-- end links -->
-                    </div><!-- end clearfix -->
-                </div><!-- end col -->
-				
-                <div class="col-lg-4 col-md-4 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Contacto</h3>
-                        </div>
-
-                        <ul class="footer-links">
-                            <li><a href="mailto:#">Correo</a></li>
-                            <li><a href="#">Facebook</a></li>
-                            <li>Dirección</li>
-                            <li>Teléfono</li>
-                        </ul><!-- end links -->
-                    </div><!-- end clearfix -->
-                </div><!-- end col -->
-				
-            </div><!-- end row -->
-        </div><!-- end container -->
-    </footer><!-- end footer -->
-
+						</ul><!-- end links -->
+					</div><!-- end clearfix -->
+				</div><!-- end col -->
+	
+				<div class="col-lg-4 col-md-4 col-xs-12">
+					<div class="widget clearfix">
+						<div class="widget-title">
+							<h3>Contacto</h3>
+						</div>
+	
+						<ul class="footer-links">
+							<li><a href="mailto:#">Correo</a></li>
+							<li><a href="#">Facebook</a></li>
+							<li>Dirección</li>
+							<li>Teléfono</li>
+						</ul><!-- end links -->
+					</div><!-- end clearfix -->
+				</div><!-- end col -->
+	
+			</div><!-- end row -->
+		</div><!-- end container -->
+	</footer><!-- end footer -->
+	
     <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
 
     <!-- ALL JS FILES -->
