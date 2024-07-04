@@ -42,31 +42,35 @@
 </head>
 <body class="host_version"> 
 
-	<!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-body customer-box">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li><a class="active" href="#Login" data-toggle="tab">Login</a></li>
+                </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane active" id="Login">
-                        <form role="form" class="form-horizontal">
+                        <form role="form" class="form-horizontal" action="login.php" method="POST">
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <input class="form-control" id="email1" placeholder="Usuario" type="text">
+                                    <input class="form-control" id="usuario" name="usuario" placeholder="Usuario" type="text" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <input class="form-control" id="exampleInputPassword1" placeholder="Email" type="email">
+                                    <input class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña" type="password" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-                                        Ingresar
+                                        Submit
                                     </button>
-                                    <a class="for-pwd" href="javascript:;">Olvidaste la contraseña?</a>
+                                    <a class="for-pwd" href="javascript:;">Forgot your password?</a>
                                 </div>
                             </div>
                         </form>
@@ -76,6 +80,7 @@
         </div>
     </div>
 </div>
+
 
 
     <!-- LOADER -->
@@ -104,7 +109,7 @@
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
 						<li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-						<li class="nav-item"><a class="nav-link" href="teachers.html">Eventos</a></li>
+						<li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
 						<li class="nav-item"><a class="nav-link" href="pricing.html">Galería de Imágenes</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
 						<li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
