@@ -84,7 +84,7 @@ if (isset($_SESSION['mensaje'])) {
 <header class="top-navbar">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="home.html">
                 <img src="images/logo.png" alt="" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@ if (isset($_SESSION['mensaje'])) {
             </button>
             <div class="collapse navbar-collapse" id="navbars-host">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="home.html">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
                     <li class="nav-item"><a class="nav-link" href="pricing.html">Galería de Imágenes</a></li>
