@@ -1,12 +1,3 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.html");
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,24 +5,17 @@ if (!isset($_SESSION['usuario'])) {
     <title>Subir Imagen</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <style>
-        #drop-area {
-            border: 2px dashed #ccc;
-            border-radius: 20px;
-            width: 100%;
-            padding: 20px;
+        .dropzone {
+            border: 2px dashed #007bff;
+            padding: 50px;
             text-align: center;
+            margin-bottom: 20px;
         }
-        #drop-area.highlight {
-            border-color: purple;
-        }
-        .my-form {
-            margin-bottom: 10px;
-        }
-        #gallery {
-            margin-top: 10px;
+        .dropzone.dragover {
+            border-color: #ff0000;
         }
         #gallery img {
-            width: 150px;
+            width: 100px;
             margin: 10px;
         }
     </style>
@@ -39,70 +23,53 @@ if (!isset($_SESSION['usuario'])) {
 <body>
     <div class="container">
         <h1>Subir Imagen</h1>
-        <div id="drop-area">
-            <form class="my-form">
-                <p>Arrastra y suelta tus imágenes aquí o</p>
-                <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-                <label class="btn btn-primary" for="fileElem">Seleccionar archivos</label>
-            </form>
-            <progress id="progress-bar" max=100 value=0></progress>
-            <div id="gallery"></div>
+        <div class="dropzone" id="dropzone">
+            <p>Arrastra y suelta tus imágenes aquí o</p>
+            <input type="file" id="fileInput" multiple>
+            <button id="selectFiles" class="btn btn-primary">Seleccionar archivos</button>
         </div>
+        <div id="gallery"></div>
+        <form action="upload_image.php" method="POST" enctype="multipart/form-data">
+            <input type="file" id="hiddenFileInput" name="images[]" multiple style="display: none;">
+            <input type="submit" class="btn btn-success" value="Subir Imágenes">
+        </form>
     </div>
 
     <script>
-        let dropArea = document.getElementById('drop-area');
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const hiddenFileInput = document.getElementById('hiddenFileInput');
+        const selectFilesButton = document.getElementById('selectFiles');
+        const gallery = document.getElementById('gallery');
 
-        // Prevent default drag behaviors
-        ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false)
-        });
-
-        // Highlight drop area when item is dragged over it
-        ;['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => dropArea.classList.add('highlight'), false)
-        });
-
-        ;['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false)
-        });
-
-        // Handle dropped files
-        dropArea.addEventListener('drop', handleDrop, false);
-
-        function preventDefaults(e) {
+        dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
-            e.stopPropagation();
-        }
+            dropzone.classList.add('dragover');
+        });
 
-        function handleDrop(e) {
-            let dt = e.dataTransfer;
-            let files = dt.files;
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
 
-            handleFiles(files);
-        }
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        selectFilesButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            handleFiles(fileInput.files);
+        });
 
         function handleFiles(files) {
-            files = [...files];
-            files.forEach(uploadFile);
-            files.forEach(previewFile);
-        }
-
-        function uploadFile(file) {
-            let url = 'upload_image.php';
-            let formData = new FormData();
-
-            formData.append('file', file);
-
-            fetch(url, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(() => {
-                progressDone();
-            })
-            .catch(() => { alert('Upload failed'); });
+            [...files].forEach(previewFile);
+            const dt = new DataTransfer();
+            [...files].forEach(file => dt.items.add(file));
+            hiddenFileInput.files = dt.files;
         }
 
         function previewFile(file) {
@@ -111,13 +78,8 @@ if (!isset($_SESSION['usuario'])) {
             reader.onloadend = function() {
                 let img = document.createElement('img');
                 img.src = reader.result;
-                document.getElementById('gallery').appendChild(img);
+                gallery.appendChild(img);
             }
-        }
-
-        function progressDone() {
-            let progressBar = document.getElementById('progress-bar');
-            progressBar.value = 100;
         }
     </script>
 </body>

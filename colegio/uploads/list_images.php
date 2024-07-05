@@ -22,7 +22,6 @@ try {
     die("Error al conectar a la base de datos: " . $e->getMessage());
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,20 +45,17 @@ try {
                 <?php foreach ($imagenes as $imagen): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($imagen['id']); ?></td>
-                        <td><?php echo htmlspecialchars($imagen['nombre_imagen']); ?></td>
-                        <td><?php echo htmlspecialchars($imagen['ruta_imagen']); ?></td>
+                        <td><?php echo htmlspecialchars($imagen['nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($imagen['ruta']); ?></td>
                         <td>
                             <a href="edit_image.php?id=<?php echo $imagen['id']; ?>" class="btn btn-primary">Editar</a>
-                            <form action="delete_image.php" method="POST" style="display:inline;">
-                                <input type="hidden" name="id" value="<?php echo $imagen['id']; ?>">
-                                <button type="submit" class="btn btn-danger">Borrar</button>
-                            </form>
+                            <a href="delete_image.php?id=<?php echo $imagen['id']; ?>" class="btn btn-danger">Borrar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="upload_image_form.php" class="btn btn-success">Subir Nueva Imagen</a>
+        <a href="upload_image.php" class="btn btn-success">Subir Nueva Imagen</a>
     </div>
 </body>
 </html>
