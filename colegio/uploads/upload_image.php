@@ -22,8 +22,10 @@ try {
             if ($tmpFilePath != "") {
                 $newFilePath = "../uploads/" . $_FILES['images']['name'][$i];
                 if (move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $stmt = $conn->prepare("INSERT INTO galeria (nombre, ruta) VALUES (:nombre, :ruta)");
-                    $stmt->bindParam(':nombre', $_FILES['images']['name'][$i]);
+                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, tipo_archivo, tamaño_archivo, ruta, fecha_subida) VALUES (:nombre_archivo, :tipo_archivo, :tamaño_archivo, :ruta, NOW())");
+                    $stmt->bindParam(':nombre_archivo', $_FILES['images']['name'][$i]);
+                    $stmt->bindParam(':tipo_archivo', $_FILES['images']['type'][$i]);
+                    $stmt->bindParam(':tamaño_archivo', $_FILES['images']['size'][$i]);
                     $stmt->bindParam(':ruta', $newFilePath);
                     $stmt->execute();
                 }
