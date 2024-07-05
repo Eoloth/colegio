@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['mensaje'] = "Error al conectar a la base de datos: " . $e->getMessage();
     }
     
-    header("Location: ../home.html");
+    header("Location: ../home.php");
     exit();
 }
 ?>
