@@ -52,13 +52,16 @@ try {
                         <td><?php echo htmlspecialchars($evento['fecha_evento']); ?></td>
                         <td>
                             <a href="edit_event.php?id=<?php echo $evento['id']; ?>" class="btn btn-primary">Editar</a>
-                            <a href="delete_event.php?id=<?php echo $evento['id']; ?>" class="btn btn-danger">Borrar</a>
+                            <form action="delete_event.php" method="POST" style="display:inline;">
+                                <input type="hidden" name="id" value="<?php echo $evento['id']; ?>">
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="create_event.php" class="btn btn-success">Crear Nuevo Evento</a>
+        <a href="create_event_form.php" class="btn btn-success">Crear Nuevo Evento</a>
     </div>
 </body>
 </html>
