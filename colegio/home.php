@@ -1,93 +1,39 @@
-<?php
-session_start();
-
-// Manejo de la lógica de inicio de sesión
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuario = $_POST["usuario"];
-    $contraseña = $_POST["contraseña"];
-
-    $host = "localhost";
-    $dbname = "escuel36_main";
-    $username = "escuel36_admin";
-    $password = "NVJd8f2Ae6^M";
-
-    try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-        $stmt = $conn->prepare("SELECT * FROM admin WHERE usuario = :usuario");
-        $stmt->bindParam(':usuario', $usuario);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user && password_verify($contraseña, $user['contraseña'])) {
-            $_SESSION['usuario'] = $usuario;
-        } else {
-            $login_error = "Usuario o contraseña incorrectos.";
-        }
-    } catch (PDOException $e) {
-        die("Error al conectar a la base de datos: " . $e->getMessage());
-    }
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
-    <!-- Basic -->
+<head>
+    <!-- Metas y otros elementos head -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">   
-   
-    <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
- 
-    <!-- Site Metas -->
     <title>Escuela Niño Jesús</title>  
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-
-<!-- Open Graph Meta Tags -->
-<meta property="og:title" content="Escuela Niño Jesús">
-<meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús">
-<meta property="og:image" content="https://escuela-ninojesus.cl/images/logo.png">
-<meta property="og:url" content="https://escuela-ninojesus.cl/home.php">
-<meta property="og:type" content="website">
-
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Escuela Niño Jesús">
-<meta name="twitter:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús">
-<meta name="twitter:image" content="https://escuela-ninojesus.cl/images/logo.png">
-<meta name="twitter:url" content="https://escuela-ninojesus.cl/home.php">
-
-
-    <!-- Site Icons -->
+    <meta property="og:title" content="Escuela Niño Jesús" />
+    <meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús" />
+    <meta property="og:image" content="https://tu-dominio.cl/path/to/logo.png" />
+    <meta property="og:url" content="https://tu-dominio.cl/home.html" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Site CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- ALL VERSION CSS -->
     <link rel="stylesheet" href="css/versions.css">
-    <!-- Responsive CSS -->
     <link rel="stylesheet" href="css/responsive.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom.css">
-
-    <!-- Modernizer for Portfolio -->
     <script src="js/modernizer.js"></script>
-
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
+
 <body class="host_version"> 
+
+<!-- Mostrar mensaje de sesión -->
+<?php
+session_start();
+if (isset($_SESSION['mensaje'])) {
+    echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
+    unset($_SESSION['mensaje']);
+}
+?>
 
 <!-- Modal -->
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -97,29 +43,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane active" id="Login">
-
-					<form role="form" class="form-horizontal" action="" method="POST">
-						<div class="form-group">
-							<div class="col-sm-12">
-								<input class="form-control" id="usuario" name="usuario" placeholder="Usuario" type="text" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-12">
-								<input class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña" type="password" required>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-10">
-								<button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-									Entrar
-								</button>
-								<a class="for-pwd" href="javascript:;">¿Olvidaste tu contraseña?</a>
-							</div>
-						</div>
-					</form>
-
-						
+                        <form role="form" class="form-horizontal" action="uploads/login.php" method="POST">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input class="form-control" id="usuario" name="usuario" placeholder="Usuario" type="text" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña" type="password" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
+                                        Entrar
+                                    </button>
+                                    <a class="for-pwd" href="javascript:;">¿Olvidaste tu contraseña?</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -127,55 +70,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </div>
 
+<!-- LOADER -->
+<div id="preloader">
+    <div class="loader-container">
+        <div class="progress-br float shadow">
+            <div class="progress__item"></div>
+        </div>
+    </div>
+</div>
+<!-- END LOADER -->
 
+<!-- Start header -->
+<header class="top-navbar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbars-host">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pricing.html">Galería de Imágenes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
-    <!-- LOADER -->
-	<div id="preloader">
-		<div class="loader-container">
-			<div class="progress-br float shadow">
-				<div class="progress__item"></div>
-			</div>
-		</div>
-	</div>
-	<!-- END LOADER -->	
-	
-	<!-- Start header -->
-	<header class="top-navbar">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html">
-					<img src="images/logo.png" alt="" />
-				</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbars-host">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
-						<li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-						<li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
-						<li class="nav-item"><a class="nav-link" href="pricing.html">Galería de Imágenes</a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
-						<li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
-
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
-	<!-- End header -->
-
-	<?php if (isset($_SESSION['usuario'])): ?>
+<?php if (isset($_SESSION['usuario'])): ?>
     <!-- Contenido del panel de administrador -->
     <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']); ?>!</h2>
-    <a href="logout.php">Cerrar sesión</a>
+    <a href="uploads/logout.php">Cerrar sesión</a>
     <!-- Aquí puedes añadir el contenido de CRUD para eventos y galería de fotos -->
-	<?php else: ?>
-		<!-- Contenido normal de la página -->
-	<?php endif; ?>
-
+<?php else: ?>
 	
 	<div id="carouselExampleControls" class="carousel slide bs-slider box-slider" data-ride="carousel" data-pause="hover" data-interval="false" >
 		<!-- Indicators -->
@@ -497,6 +433,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div><!-- end row -->
         </div><!-- end container -->
     </div><!-- end section -->
+
+	<?php endif; ?>
 
 	<footer class="footer">
 		<div class="container">
