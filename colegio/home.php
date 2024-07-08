@@ -97,7 +97,7 @@ if (isset($_SESSION['mensaje'])) {
                     <li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pricing.html">Galería de Imágenes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="galeria.html">Galería de Imágenes</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                     <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
                 </ul>

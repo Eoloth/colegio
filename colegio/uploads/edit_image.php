@@ -11,39 +11,32 @@ $dbname = "escuel36_main";
 $username = "escuel36_admin";
 $password = "NVJd8f2Ae6^M";
 
-$id = $_GET['id'];
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre_archivo = $_POST["nombre_archivo"];
-    $ruta = $_POST["ruta"];
-
-    try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $stmt = $conn->prepare("UPDATE galeria SET nombre_archivo = :nombre_archivo, ruta = :ruta WHERE id = :id");
-        $stmt->bindParam(':nombre_archivo', $nombre_archivo);
-        $stmt->bindParam(':ruta', $ruta);
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $id = $_POST['id'];
+        $nombre = $_POST['nombre'];
+        $descripcion = $_POST['descripcion'];
+        
+        $stmt = $conn->prepare("UPDATE galeria SET nombre_archivo = :nombre, descripcion = :descripcion WHERE id = :id");
         $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
         $stmt->execute();
-
+        
         header("Location: lista_imagenes.php");
         exit();
-    } catch (PDOException $e) {
-        die("Error al conectar a la base de datos: " . $e->getMessage());
-    }
-} else {
-    try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    } else {
+        $id = $_GET['id'];
         $stmt = $conn->prepare("SELECT * FROM galeria WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $imagen = $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        die("Error al conectar a la base de datos: " . $e->getMessage());
     }
+} catch (PDOException $e) {
+    die("Error al conectar a la base de datos: " . $e->getMessage());
 }
 ?>
 
@@ -57,16 +50,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1>Editar Imagen</h1>
-        <form action="edit_image.php?id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data">
+        <form action="edit_image.php" method="POST">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($imagen['id']); ?>">
             <div class="form-group">
-                <label for="nombre_archivo">Nombre del Archivo</label>
-                <input type="text" id="nombre_archivo" name="nombre_archivo" class="form-control" value="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" required>
+                <label for="nombre">Nombre del Archivo</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" required>
             </div>
             <div class="form-group">
-                <label for="ruta">Ruta</label>
-                <input type="text" id="ruta" name="ruta" class="form-control" value="<?php echo htmlspecialchars($imagen['ruta']); ?>" required>
+                <label for="descripcion">Descripción</label>
+                <input type="text" class="form-control" id="descripcion" name="descripcion" value="<?php echo htmlspecialchars($imagen['descripcion']); ?>" required>
             </div>
-            <input type="submit" class="btn btn-success" value="Actualizar Imagen">
+            <button type="submit" class="btn btn-success">Actualizar Imagen</button>
         </form>
     </div>
 </body>

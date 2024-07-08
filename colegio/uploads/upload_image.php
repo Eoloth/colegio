@@ -22,9 +22,10 @@ try {
             if ($tmpFilePath != "") {
                 $newFilePath = "../uploads/" . $_FILES['images']['name'][$i];
                 if (move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, ruta_archivo, tipo_archivo, tamaño_archivo) VALUES (:nombre_archivo, :ruta_archivo, :tipo_archivo, :tamaño_archivo)");
-                    $stmt->bindParam(':nombre_archivo', $_FILES['images']['name'][$i]);
-                    $stmt->bindParam(':ruta_archivo', $newFilePath);
+                    $descripcion = $_POST['descripcion'][$i];
+                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, descripcion, tipo_archivo, tamaño_archivo, fecha_subida) VALUES (:nombre, :descripcion, :tipo_archivo, :tamaño_archivo, NOW())");
+                    $stmt->bindParam(':nombre', $_FILES['images']['name'][$i]);
+                    $stmt->bindParam(':descripcion', $descripcion);
                     $stmt->bindParam(':tipo_archivo', $_FILES['images']['type'][$i]);
                     $stmt->bindParam(':tamaño_archivo', $_FILES['images']['size'][$i]);
                     $stmt->execute();
@@ -72,6 +73,7 @@ try {
         <div id="gallery"></div>
         <form action="upload_image.php" method="POST" enctype="multipart/form-data">
             <input type="file" id="hiddenFileInput" name="images[]" multiple style="display: none;">
+            <input type="text" id="descripcion" name="descripcion[]" placeholder="Descripción de la imagen" required>
             <input type="submit" class="btn btn-success" value="Subir Imágenes">
         </form>
     </div>
