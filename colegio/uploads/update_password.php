@@ -1,34 +1,24 @@
 <?php
-$servername = "localhost";
-$username = "escuel36_admin";
-$password = "NVJd8f2Ae6^M";
-$dbname = "escuel36_main";
+include 'config.php';
 
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
+try {
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Verificar conexión
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+    $new_password = "ContraseñaSegura1";
+    $contraseña_hash = password_hash($new_password, PASSWORD_DEFAULT);
+    $usuario = "admin";
+
+    $stmt = $conn->prepare("UPDATE admin SET contraseña = :contraseña WHERE usuario = :usuario");
+    $stmt->bindParam(':contraseña', $contraseña_hash);
+    $stmt->bindParam(':usuario', $usuario);
+
+    if ($stmt->execute()) {
+        echo "Contraseña actualizada correctamente.";
+    } else {
+        echo "Error actualizando la contraseña.";
+    }
+} catch (PDOException $e) {
+    echo "Error al conectar a la base de datos: " . $e->getMessage();
 }
-
-// Nueva contraseña a actualizar
-$new_password = "ContraseñaSegura1";
-$contraseña_hash = password_hash($new_password, PASSWORD_DEFAULT);
-
-// Usuario a actualizar
-$usuario = "admin";
-
-// Preparar la consulta de actualización
-$stmt = $conn->prepare("UPDATE admin SET contraseña = ? WHERE usuario = ?");
-$stmt->bind_param("ss", $contraseña_hash, $usuario);
-
-if ($stmt->execute()) {
-    echo "Contraseña actualizada correctamente.";
-} else {
-    echo "Error actualizando la contraseña: " . $stmt->error;
-}
-
-$stmt->close();
-$conn->close();
 ?>
