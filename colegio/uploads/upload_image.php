@@ -6,25 +6,19 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-$host = "localhost";
-$dbname = "escuel36_main";
-$username = "escuel36_admin";
-$password = "NVJd8f2Ae6^M";
+require_once 'config.php';
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['images'])) {
         $total = count($_FILES['images']['name']);
-        for($i = 0; $i < $total; $i++) {
+        for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES['images']['tmp_name'][$i];
             if ($tmpFilePath != "") {
                 $newFilePath = "../uploads/" . $_FILES['images']['name'][$i];
                 if (move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $descripcion = $_POST['descripcion'][$i];
-                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, descripcion, tipo_archivo, tamaño_archivo, fecha_subida) VALUES (:nombre, :descripcion, :tipo_archivo, :tamaño_archivo, NOW())");
-                    $stmt->bindParam(':nombre', $_FILES['images']['name'][$i]);
+                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, descripcion, tipo_archivo, tamaño_archivo, fecha_subida) VALUES (:nombre_archivo, :descripcion, :tipo_archivo, :tamaño_archivo, NOW())");
+                    $stmt->bindParam(':nombre_archivo', $_FILES['images']['name'][$i]);
+                    $descripcion = ""; // Puedes agregar una descripción si es necesario
                     $stmt->bindParam(':descripcion', $descripcion);
                     $stmt->bindParam(':tipo_archivo', $_FILES['images']['type'][$i]);
                     $stmt->bindParam(':tamaño_archivo', $_FILES['images']['size'][$i]);
@@ -73,7 +67,6 @@ try {
         <div id="gallery"></div>
         <form action="upload_image.php" method="POST" enctype="multipart/form-data">
             <input type="file" id="hiddenFileInput" name="images[]" multiple style="display: none;">
-            <input type="text" id="descripcion" name="descripcion[]" placeholder="Descripción de la imagen" required>
             <input type="submit" class="btn btn-success" value="Subir Imágenes">
         </form>
     </div>
