@@ -96,7 +96,7 @@ if (isset($_SESSION['mensaje'])) {
                     <li class="nav-item active"><a class="nav-link" href="home.html">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pricing.html">Galería de Imágenes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="galeria.html">Galería de Imágenes</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                     <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
                 </ul>
@@ -113,17 +113,17 @@ if (isset($_SESSION['mensaje'])) {
     require_once 'uploads/config.php';
 
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY fecha_subida ASC");
+        $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
         $stmt->execute();
         $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($imagenes as $imagen) {
             echo '<div class="gallery-item">';
-            echo '<img src="' . htmlspecialchars($imagen['ruta']) . '" alt="' . htmlspecialchars($imagen['nombre_archivo']) . '">';
-            echo '<p>' . htmlspecialchars($imagen['descripcion']) . '</p>';
+            echo '<img src="uploads/' . htmlspecialchars($imagen['nombre_archivo']) . '" alt="' . htmlspecialchars($imagen['nombre_archivo']) . '">';
+            echo '<p>' . htmlspecialchars($imagen['nombre_archivo']) . '</p>';
             echo '</div>';
         }
     } catch (PDOException $e) {
@@ -131,7 +131,6 @@ if (isset($_SESSION['mensaje'])) {
     }
     ?>
 <?php else: ?>
-    <!-- Contenido normal de la página -->
     <div class="all-title-box">
         <div class="container text-center">
             <h1>Galería de Imágenes</h1>
@@ -155,10 +154,10 @@ if (isset($_SESSION['mensaje'])) {
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
                             <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        </ul><!-- end links -->
+                        </ul>
                     </div>
-                </div><!-- end clearfix -->
-            </div><!-- end col -->
+                </div>
+            </div>
 
             <div class="col-lg-4 col-md-4 col-xs-12">
                 <div class="widget clearfix">
@@ -171,9 +170,9 @@ if (isset($_SESSION['mensaje'])) {
                         <li><a href="#">Pricing</a></li>
                         <li><a href="#">About</a></li>
                         <li><a href="#">Contact</a></li>
-                    </ul><!-- end links -->
-                </div><!-- end clearfix -->
-            </div><!-- end col -->
+                    </ul>
+                </div>
+            </div>
 
             <div class="col-lg-4 col-md-4 col-xs-12">
                 <div class="widget clearfix">
@@ -186,13 +185,12 @@ if (isset($_SESSION['mensaje'])) {
                         <li><a href="#">www.yoursite.com</a></li>
                         <li>PO Box 16122 Collins Street West Victoria 8007 Australia</li>
                         <li>+61 3 8376 6284</li>
-                    </ul><!-- end links -->
-                </div><!-- end clearfix -->
-            </div><!-- end col -->
-
-        </div><!-- end row -->
-    </div><!-- end container -->
-</footer><!-- end footer -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
 

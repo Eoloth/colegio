@@ -6,16 +6,13 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-$host = "localhost";
-$dbname = "escuel36_main";
-$username = "escuel36_admin";
-$password = "NVJd8f2Ae6^M";
+require_once 'config.php';
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
+    $stmt = $conn->prepare("SELECT id, nombre_archivo, ruta FROM galeria ORDER BY id DESC");
     $stmt->execute();
     $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -37,7 +34,7 @@ try {
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Ruta</th>
+                    <th>Imagen</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -45,8 +42,8 @@ try {
                 <?php foreach ($imagenes as $imagen): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($imagen['id']); ?></td>
-                        <td><?php echo htmlspecialchars($imagen['nombre']); ?></td>
-                        <td><?php echo htmlspecialchars($imagen['ruta']); ?></td>
+                        <td><?php echo htmlspecialchars($imagen['nombre_archivo']); ?></td>
+                        <td><img src="<?php echo htmlspecialchars($imagen['ruta']); ?>" width="100"></td>
                         <td>
                             <a href="edit_image.php?id=<?php echo $imagen['id']; ?>" class="btn btn-primary">Editar</a>
                             <a href="delete_image.php?id=<?php echo $imagen['id']; ?>" class="btn btn-danger">Borrar</a>
@@ -55,7 +52,7 @@ try {
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="upload_image.php" class="btn btn-success">Subir Nueva Imagen</a>
+        <a href="upload_image_form.php" class="btn btn-success">Subir Nueva Imagen</a>
     </div>
 </body>
 </html>

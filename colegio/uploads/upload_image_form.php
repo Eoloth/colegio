@@ -1,3 +1,40 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../index.html");
+    exit();
+}
+
+require_once 'config.php';
+
+try {
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['images'])) {
+        $total = count($_FILES['images']['name']);
+        for ($i = 0; $i < $total; $i++) {
+            $tmpFilePath = $_FILES['images']['tmp_name'][$i];
+            if ($tmpFilePath != "") {
+                $nombre_archivo = $_FILES['images']['name'][$i];
+                $newFilePath = "../uploads/" . $nombre_archivo;
+                if (move_uploaded_file($tmpFilePath, $newFilePath)) {
+                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, ruta) VALUES (:nombre_archivo, :ruta)");
+                    $stmt->bindParam(':nombre_archivo', $nombre_archivo);
+                    $stmt->bindParam(':ruta', $newFilePath);
+                    $stmt->execute();
+                }
+            }
+        }
+        header("Location: list_images.php");
+        exit();
+    }
+} catch (PDOException $e) {
+    die("Error al conectar a la base de datos: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +66,7 @@
             <button id="selectFiles" class="btn btn-primary">Seleccionar archivos</button>
         </div>
         <div id="gallery"></div>
-        <form action="upload_image.php" method="POST" enctype="multipart/form-data">
+        <form action="upload_image_form.php" method="POST" enctype="multipart/form-data">
             <input type="file" id="hiddenFileInput" name="images[]" multiple style="display: none;">
             <input type="submit" class="btn btn-success" value="Subir Imágenes">
         </form>

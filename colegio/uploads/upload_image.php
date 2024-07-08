@@ -9,24 +9,24 @@ if (!isset($_SESSION['usuario'])) {
 require_once 'config.php';
 
 try {
+    // Conexión a la base de datos
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['images'])) {
         $total = count($_FILES['images']['name']);
         for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES['images']['tmp_name'][$i];
             if ($tmpFilePath != "") {
-                $newFilePath = "../uploads/" . $_FILES['images']['name'][$i];
-                if (move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, descripcion, tipo_archivo, tamaño_archivo, fecha_subida) VALUES (:nombre_archivo, :descripcion, :tipo_archivo, :tamaño_archivo, NOW())");
-                    $stmt->bindParam(':nombre_archivo', $_FILES['images']['name'][$i]);
-                    $descripcion = ""; // Puedes agregar una descripción si es necesario
-                    $stmt->bindParam(':descripcion', $descripcion);
-                    $stmt->bindParam(':tipo_archivo', $_FILES['images']['type'][$i]);
-                    $stmt->bindParam(':tamaño_archivo', $_FILES['images']['size'][$i]);
-                    $stmt->execute();
-                }
+                $nombre_archivo = $_FILES['images']['name'][$i];
+                $imagen = file_get_contents($tmpFilePath);
+                $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, imagen) VALUES (:nombre_archivo, :imagen)");
+                $stmt->bindParam(':nombre_archivo', $nombre_archivo);
+                $stmt->bindParam(':imagen', $imagen, PDO::PARAM_LOB);
+                $stmt->execute();
             }
         }
-        header("Location: lista_imagenes.php");
+        header("Location: list_images.php");
         exit();
     }
 } catch (PDOException $e) {
