@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <!-- Metas y otros elementos head -->
     <meta charset="utf-8">
@@ -22,8 +21,17 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/custom.css">
     <script src="js/modernizer.js"></script>
+    <style>
+        .gallery-item {
+            display: inline-block;
+            margin: 10px;
+        }
+        .gallery-item img {
+            max-width: 150px;
+            height: auto;
+        }
+    </style>
 </head>
-
 <body class="host_version"> 
 
 <!-- Mostrar mensaje de sesión -->
@@ -84,7 +92,7 @@ if (isset($_SESSION['mensaje'])) {
 <header class="top-navbar">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="home.php">
+            <a class="navbar-brand" href="index.html">
                 <img src="images/logo.png" alt="" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,10 +102,10 @@ if (isset($_SESSION['mensaje'])) {
             </button>
             <div class="collapse navbar-collapse" id="navbars-host">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="home.php">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                     <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
                 </ul>
@@ -108,12 +116,15 @@ if (isset($_SESSION['mensaje'])) {
 
 <div class="container">
     <h1>Galería de Imágenes</h1>
-    <?php
-    if (isset($_SESSION['usuario'])) {
-        echo '<h2>Bienvenido, ' . htmlspecialchars($_SESSION['usuario']) . '!</h2>';
-        echo '<a href="uploads/logout.php">Cerrar sesión</a>';
-    }
+    <?php if (isset($_SESSION['usuario'])): ?>
+        <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']); ?>!</h2>
+        <a href="uploads/logout.php">Cerrar sesión</a>
+        <br><br>
+        <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>
+        <a href="uploads/list_images.php" class="btn btn-info">Administrar Galería de Imágenes</a>
+    <?php endif; ?>
 
+    <?php
     require_once 'uploads/config.php';
 
     try {
@@ -137,7 +148,7 @@ if (isset($_SESSION['mensaje'])) {
             echo '<p>No hay imágenes para mostrar.</p>';
         }
     } catch (PDOException $e) {
-        die("Error al conectar a la base de datos: " . $e->getMessage());
+        // Error handling ocultado para evitar mostrar detalles de error a los usuarios.
     }
     ?>
 </div>
@@ -189,7 +200,6 @@ if (isset($_SESSION['mensaje'])) {
                     </ul><!-- end links -->
                 </div><!-- end clearfix -->
             </div><!-- end col -->
-
         </div><!-- end row -->
     </div><!-- end container -->
 </footer><!-- end footer -->
@@ -200,5 +210,14 @@ if (isset($_SESSION['mensaje'])) {
 <script src="js/all.js"></script>
 <!-- ALL PLUGINS -->
 <script src="js/custom.js"></script>
+<script src="js/timeline.min.js"></script>
+<script>
+    timeline(document.querySelectorAll('.timeline'), {
+        forceVerticalMode: 700,
+        mode: 'horizontal',
+        verticalStartPosition: 'left',
+        visibleItems: 4
+    });
+</script>
 </body>
 </html>
