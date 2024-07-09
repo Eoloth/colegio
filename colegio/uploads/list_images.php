@@ -46,6 +46,12 @@ try {
     <link rel="stylesheet" href="../css/versions.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/custom.css">
+    <style>
+        .thumbnail {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
 </head>
 <body class="host_version">
     <!-- Mostrar mensaje de sesión -->
@@ -114,7 +120,7 @@ try {
                 </button>
                 <div class="collapse navbar-collapse" id="navbars-host">
                     <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" href="../eventos.html">Eventos</a></li>
                         <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
@@ -133,6 +139,7 @@ try {
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Miniatura</th>
                     <th>Nombre del Archivo</th>
                     <th>Descripción</th>
                     <th>Acciones</th>
@@ -141,12 +148,13 @@ try {
             <tbody>
                 <?php if (empty($imagenes)): ?>
                     <tr>
-                        <td colspan="4" class="text-center">No hay imágenes para mostrar</td>
+                        <td colspan="5" class="text-center">No hay imágenes para mostrar</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($imagenes as $imagen): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($imagen['id']); ?></td>
+                            <td><img src="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" class="thumbnail" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>"></td>
                             <td><?php echo htmlspecialchars($imagen['nombre_archivo']); ?></td>
                             <td><?php echo htmlspecialchars($imagen['descripcion']); ?></td>
                             <td>
@@ -183,11 +191,11 @@ try {
                             <h3>Information Link</h3>
                         </div>
                         <ul class="footer-links">
-                        <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../eventos.html">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../eventos.html">Eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
                         </ul>
                     </div>
                 </div>
