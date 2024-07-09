@@ -26,30 +26,154 @@ $eventos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="host_version">
-    <header class="top-navbar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">
-                    <img src="images/logo.png" alt="" />
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbars-host">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="galeria.html">Galería de Imágenes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
-                        <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Galería de Imágenes</title>
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <style>
+            .gallery-item {
+                display: inline-block;
+                margin: 10px;
+            }
+            .gallery-item img {
+                max-width: 150px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <?php
+        session_start();
+        if (isset($_SESSION['mensaje'])) {
+            echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
+            unset($_SESSION['mensaje']);
+        }
+        ?>
+        
+        <header class="top-navbar">
+            <header class="top-navbar">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="index.html">
+                            <img src="images/logo.png" alt="" />
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbars-host">
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item active"><a class="nav-link" href="home.php">Inicio</a></li>
+                                <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
+                                <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="galeria.html">Galería de Imágenes</a></li>
+                                <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+                                <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+    
+        <div class="container">
+            <h1>Galería de Imágenes</h1>
+            <?php
+            if (isset($_SESSION['usuario'])) {
+                echo '<h2>Bienvenido, ' . htmlspecialchars($_SESSION['usuario']) . '!</h2>';
+                echo '<a href="uploads/logout.php">Cerrar sesión</a>';
+            }
+    
+            require_once 'uploads/config.php';
+    
+            try {
+                $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+                $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
+                $stmt->execute();
+                $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+                if ($imagenes) {
+                    echo '<div class="gallery">';
+                    foreach ($imagenes as $imagen) {
+                        echo '<div class="gallery-item">';
+                        echo '<img src="' . htmlspecialchars($imagen['ruta']) . '" alt="' . htmlspecialchars($imagen['nombre']) . '">';
+                        echo '<p>' . htmlspecialchars($imagen['nombre']) . '</p>';
+                        echo '</div>';
+                    }
+                    echo '</div>';
+                } else {
+                    echo '<p>No hay imágenes para mostrar.</p>';
+                }
+            } catch (PDOException $e) {
+                die("Error al conectar a la base de datos: " . $e->getMessage());
+            }
+            ?>
+        </div>
+    
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-xs-12">
+                        <div class="widget clearfix">
+                            <div class="widget-title">
+                                <h3>Acerca de nosotros</h3>
+                            </div>
+                            <p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>   
+                            <div class="footer-right">
+                                <ul class="footer-links-soi">
+                                    <li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                </ul><!-- end links -->
+                            </div>						
+                        </div><!-- end clearfix -->
+                    </div><!-- end col -->
+        
+                    <div class="col-lg-4 col-md-4 col-xs-12">
+                        <div class="widget clearfix">
+                            <div class="widget-title">
+                                <h3>Information Link</h3>
+                            </div>
+                            <ul class="footer-links">
+                                <li><a href="#">Inicio</a></li>
+                                <li><a href="#">La Escuela </a></li>
+                                <li><a href="#">Eventos</a></li>
+                                <li><a href="#">Galería de Imágenes</a></li>
+                                <li><a href="#">Contacto</a></li>
+                            </ul><!-- end links -->
+                        </div><!-- end clearfix -->
+                    </div><!-- end col -->
+        
+                    <div class="col-lg-4 col-md-4 col-xs-12">
+                        <div class="widget clearfix">
+                            <div class="widget-title">
+                                <h3>Contacto</h3>
+                            </div>
+        
+                            <ul class="footer-links">
+                                <li><a href="mailto:#">Correo</a></li>
+                                <li><a href="#">Facebook</a></li>
+                                <li>Dirección</li>
+                                <li>Teléfono</a></li>
+                            </ul><!-- end links -->
+                        </div><!-- end clearfix -->
+                    </div><!-- end col -->
+        
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </footer><!-- end footer -->
+    
+        <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+    
+        <!-- ALL JS FILES -->
+        <script src="js/all.js"></script>
+        <!-- ALL PLUGINS -->
+        <script src="js/custom.js"></script>
+    </body>
+    </html>
+    
     <div class="container">
         <h1>Eventos</h1>
         <div class="row">
