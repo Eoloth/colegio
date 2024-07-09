@@ -21,9 +21,12 @@ try {
     $stmt->bindParam(':id', $id);
     $stmt->execute();
 
-    header("Location: lista_imagenes.php");
+    $_SESSION['mensaje'] = "Imagen eliminada con éxito.";
+    header("Location: list_images.php");
     exit();
 } catch (PDOException $e) {
-    die("Error al conectar a la base de datos: " . $e->getMessage());
+    $_SESSION['mensaje'] = "Error al conectar a la base de datos.";
+    header("Location: list_images.php");
+    exit();
 }
 ?>

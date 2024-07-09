@@ -128,7 +128,7 @@ if (isset($_SESSION['mensaje'])) {
     require_once 'uploads/config.php';
 
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
@@ -139,7 +139,7 @@ if (isset($_SESSION['mensaje'])) {
             echo '<div class="gallery">';
             foreach ($imagenes as $imagen) {
                 echo '<div class="gallery-item">';
-                echo '<img src="' . htmlspecialchars($imagen['ruta']) . '" alt="' . htmlspecialchars($imagen['nombre']) . '">';
+                echo '<img src="data:image/jpeg;base64,' . base64_encode($imagen['imagen']) . '" alt="' . htmlspecialchars($imagen['nombre_archivo']) . '">';
                 echo '<p>' . htmlspecialchars($imagen['nombre']) . '</p>';
                 echo '</div>';
             }
@@ -200,6 +200,7 @@ if (isset($_SESSION['mensaje'])) {
                     </ul><!-- end links -->
                 </div><!-- end clearfix -->
             </div><!-- end col -->
+
         </div><!-- end row -->
     </div><!-- end container -->
 </footer><!-- end footer -->

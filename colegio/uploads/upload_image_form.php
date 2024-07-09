@@ -16,15 +16,15 @@ try {
         $total = count($_FILES['images']['name']);
         for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES['images']['tmp_name'][$i];
+            $nombre = $_POST['nombre'][$i]; // Recoger el nombre del título de la imagen
             if ($tmpFilePath != "") {
                 $nombre_archivo = $_FILES['images']['name'][$i];
-                $newFilePath = "../uploads/" . $nombre_archivo;
-                if (move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, ruta) VALUES (:nombre_archivo, :ruta)");
-                    $stmt->bindParam(':nombre_archivo', $nombre_archivo);
-                    $stmt->bindParam(':ruta', $newFilePath);
-                    $stmt->execute();
-                }
+                $imagen = file_get_contents($tmpFilePath);
+                $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, imagen, nombre) VALUES (:nombre_archivo, :imagen, :nombre)");
+                $stmt->bindParam(':nombre_archivo', $nombre_archivo);
+                $stmt->bindParam(':imagen', $imagen, PDO::PARAM_LOB);
+                $stmt->bindParam(':nombre', $nombre);
+                $stmt->execute();
             }
         }
         header("Location: list_images.php");
@@ -68,6 +68,7 @@ try {
         <div id="gallery"></div>
         <form action="upload_image_form.php" method="POST" enctype="multipart/form-data">
             <input type="file" id="hiddenFileInput" name="images[]" multiple style="display: none;">
+            <div id="titleInputs"></div>
             <input type="submit" class="btn btn-success" value="Subir Imágenes">
         </form>
     </div>
@@ -78,6 +79,7 @@ try {
         const hiddenFileInput = document.getElementById('hiddenFileInput');
         const selectFilesButton = document.getElementById('selectFiles');
         const gallery = document.getElementById('gallery');
+        const titleInputs = document.getElementById('titleInputs');
 
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -103,7 +105,10 @@ try {
         });
 
         function handleFiles(files) {
-            [...files].forEach(previewFile);
+            [...files].forEach((file, index) => {
+                previewFile(file);
+                addTitleInput(index, file.name);
+            });
             const dt = new DataTransfer();
             [...files].forEach(file => dt.items.add(file));
             hiddenFileInput.files = dt.files;
@@ -117,6 +122,15 @@ try {
                 img.src = reader.result;
                 gallery.appendChild(img);
             }
+        }
+
+        function addTitleInput(index, fileName) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'nombre[]';
+            input.classList.add('form-control');
+            input.placeholder = `Título para ${fileName}`;
+            titleInputs.appendChild(input);
         }
     </script>
 </body>
