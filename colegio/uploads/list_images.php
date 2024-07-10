@@ -49,7 +49,7 @@ try {
     <style>
         .thumbnail {
             max-width: 100px;
-            height: auto;
+            max-height: 100px;
         }
     </style>
 </head>
@@ -120,10 +120,10 @@ try {
                 </button>
                 <div class="collapse navbar-collapse" id="navbars-host">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../home.php">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" href="../eventos.html">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
                     </ul>
@@ -154,7 +154,9 @@ try {
                     <?php foreach ($imagenes as $imagen): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($imagen['id']); ?></td>
-                            <td><img src="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" class="thumbnail" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>"></td>
+                            <td>
+                                <img src="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" class="thumbnail">
+                            </td>
                             <td><?php echo htmlspecialchars($imagen['nombre_archivo']); ?></td>
                             <td><?php echo htmlspecialchars($imagen['descripcion']); ?></td>
                             <td>
@@ -191,10 +193,10 @@ try {
                             <h3>Information Link</h3>
                         </div>
                         <ul class="footer-links">
-                            <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../home.php">Inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
                             <li class="nav-item"><a class="nav-link" href="../eventos.html">Eventos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
                             <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
                         </ul>
                     </div>
