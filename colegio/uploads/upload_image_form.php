@@ -16,15 +16,29 @@ try {
         $total = count($_FILES['images']['name']);
         for ($i = 0; $i < $total; $i++) {
             $tmpFilePath = $_FILES['images']['tmp_name'][$i];
-            $nombre = $_POST['nombre'][$i]; // Recoger el nombre del título de la imagen
             if ($tmpFilePath != "") {
                 $nombre_archivo = $_FILES['images']['name'][$i];
                 $imagen = file_get_contents($tmpFilePath);
-                $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, imagen, nombre) VALUES (:nombre_archivo, :imagen, :nombre)");
+
+                // Guardar en la tabla galeria
+                $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, imagen) VALUES (:nombre_archivo, :imagen)");
                 $stmt->bindParam(':nombre_archivo', $nombre_archivo);
                 $stmt->bindParam(':imagen', $imagen, PDO::PARAM_LOB);
-                $stmt->bindParam(':nombre', $nombre);
                 $stmt->execute();
+                $galeria_id = $conn->lastInsertId();
+
+                // Guardar en la tabla eventos si hay datos de evento
+                if (!empty($_POST['evento_titulo']) && !empty($_POST['evento_descripcion']) && !empty($_POST['fecha_evento'])) {
+                    $evento_titulo = $_POST['evento_titulo'];
+                    $evento_descripcion = $_POST['evento_descripcion'];
+                    $fecha_evento = $_POST['fecha_evento'];
+                    $stmt = $conn->prepare("INSERT INTO eventos (id_galeria, titulo, descripcion, fecha_evento) VALUES (:id_galeria, :titulo, :descripcion, :fecha_evento)");
+                    $stmt->bindParam(':id_galeria', $galeria_id);
+                    $stmt->bindParam(':titulo', $evento_titulo);
+                    $stmt->bindParam(':descripcion', $evento_descripcion);
+                    $stmt->bindParam(':fecha_evento', $fecha_evento);
+                    $stmt->execute();
+                }
             }
         }
         header("Location: list_images.php");
@@ -68,7 +82,18 @@ try {
         <div id="gallery"></div>
         <form action="upload_image_form.php" method="POST" enctype="multipart/form-data">
             <input type="file" id="hiddenFileInput" name="images[]" multiple style="display: none;">
-            <div id="titleInputs"></div>
+            <div class="form-group">
+                <label for="evento_titulo">Título del Evento</label>
+                <input type="text" class="form-control" id="evento_titulo" name="evento_titulo">
+            </div>
+            <div class="form-group">
+                <label for="evento_descripcion">Descripción del Evento</label>
+                <textarea class="form-control" id="evento_descripcion" name="evento_descripcion"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="fecha_evento">Fecha del Evento</label>
+                <input type="date" class="form-control" id="fecha_evento" name="fecha_evento">
+            </div>
             <input type="submit" class="btn btn-success" value="Subir Imágenes">
         </form>
     </div>
@@ -79,7 +104,6 @@ try {
         const hiddenFileInput = document.getElementById('hiddenFileInput');
         const selectFilesButton = document.getElementById('selectFiles');
         const gallery = document.getElementById('gallery');
-        const titleInputs = document.getElementById('titleInputs');
 
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -105,10 +129,7 @@ try {
         });
 
         function handleFiles(files) {
-            [...files].forEach((file, index) => {
-                previewFile(file);
-                addTitleInput(index, file.name);
-            });
+            [...files].forEach(previewFile);
             const dt = new DataTransfer();
             [...files].forEach(file => dt.items.add(file));
             hiddenFileInput.files = dt.files;
@@ -122,15 +143,6 @@ try {
                 img.src = reader.result;
                 gallery.appendChild(img);
             }
-        }
-
-        function addTitleInput(index, fileName) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.name = 'nombre[]';
-            input.classList.add('form-control');
-            input.placeholder = `Título para ${fileName}`;
-            titleInputs.appendChild(input);
         }
     </script>
 </body>
