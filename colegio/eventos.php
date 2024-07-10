@@ -1,8 +1,5 @@
 <?php
-$host = "localhost";
-$dbname = "escuel36_main";
-$username = "escuel36_admin";
-$password = "NVJd8f2Ae6^M";
+require_once 'uploads/config.php';
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

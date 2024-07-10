@@ -103,9 +103,9 @@ if (isset($_SESSION['mensaje'])) {
                 </button>
                 <div class="collapse navbar-collapse" id="navbars-host">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="home.php">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="eventos.php">Eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
                         <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
@@ -477,11 +477,11 @@ if (isset($_SESSION['mensaje'])) {
                         <h3>Information Link</h3>
                     </div>
                     <ul class="footer-links">
-                        <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="eventos.php">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="eventos.php">Eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
                     </ul><!-- end links -->
                 </div><!-- end clearfix -->
