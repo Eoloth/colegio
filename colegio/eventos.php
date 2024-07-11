@@ -26,14 +26,14 @@ try {
     <meta name="author" content="">
     <meta property="og:title" content="Escuela Niño Jesús" />
     <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://escuela-niniojesus.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://escuela-niniojesus.cl/home.html" />
+    <meta property="og:image" content="https://escuela-nioniojesus.cl/path/to/logo.png" />
+    <meta property="og:url" content="https://escuela-nioniojesus.cl/home.php" />
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="images/site.webmanifest">
+    <link rel="manifest" href="site.webmanifest">
     <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
@@ -43,7 +43,8 @@ try {
     <link rel="stylesheet" href="css/versions.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/custom.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="css/lightbox.css"> <!-- Lightbox CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
     <script src="js/modernizer.js"></script>
     <style>
         .modal {
@@ -89,11 +90,11 @@ try {
     }
     ?>
 
-<header class="top-navbar">
+    <header class="top-navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="home.php">
-                    <img src="images/logo.png" alt="" />
+                    <img src="images/logo.png" alt="Escuela Niño Jesús" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="icon-bar"></span>
@@ -108,7 +109,7 @@ try {
                         <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <li class="nav-item"><a class="nav-link" href="home.php">Panel Principal</a></li>
+                            <li class="nav-item"><a class="nav-link" href="uploads/list_events.php">Administrar Eventos</a></li>
                             <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
                         <?php else: ?>
                             <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
@@ -131,10 +132,10 @@ try {
                 <?php foreach ($eventos as $evento): ?>
                     <div class="col-md-4">
                         <div class="card mb-4 evento-card" data-id="<?php echo $evento['id']; ?>">
-                            <?php if ($evento['imagen_ruta']): ?>
-                                <img src="<?php echo htmlspecialchars($evento['imagen_ruta']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
-                            <?php endif; ?>
                             <div class="card-body">
+                                <?php if ($evento['imagen_ruta']): ?>
+                                    <img src="<?php echo htmlspecialchars($evento['imagen_ruta']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
+                                <?php endif; ?>
                                 <h5 class="card-title"><?php echo htmlspecialchars($evento['titulo']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($evento['descripcion']); ?></p>
                                 <p class="card-text"><small class="text-muted">Fecha del evento: <?php echo htmlspecialchars($evento['fecha_evento']); ?></small></p>
