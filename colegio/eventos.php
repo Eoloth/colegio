@@ -1,18 +1,3 @@
-<?php
-require_once 'uploads/config.php';
-
-try {
-    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $conn->prepare("SELECT * FROM eventos ORDER BY fecha_evento DESC");
-    $stmt->execute();
-    $eventos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error al conectar a la base de datos: " . $e->getMessage());
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,28 +10,66 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <meta property="og:title" content="Escuela Niño Jesús" />
-    <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://tu-dominio.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://tu-dominio.cl/home.html" />
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="images/site.webmanifest">
-    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-
+    <meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús" />
+    <meta property="og:image" content="https://escuela-niniojesus.cl/path/to/logo.png" />
+    <meta property="og:url" content="https://escuela-niniojesus.cl/home.php" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/versions.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/custom.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
     <script src="js/modernizer.js"></script>
+    <style>
+        .evento-card {
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #event-details-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+    </style>
 </head>
-
-<body class="host_version">
+<body class="host_version"> 
+    <!-- Mostrar mensaje de sesión -->
     <?php
     session_start();
     if (isset($_SESSION['mensaje'])) {
@@ -55,11 +78,57 @@ try {
     }
     ?>
 
+    <!-- Modal -->
+    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body customer-box">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="Login">
+                            <form role="form" class="form-horizontal" action="uploads/login.php" method="POST">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="usuario" name="usuario" placeholder="Usuario" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña" type="password" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
+                                            Entrar
+                                        </button>
+                                        <a class="for-pwd" href="javascript:;">¿Olvidaste tu contraseña?</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOADER -->
+    <div id="preloader">
+        <div class="loader-container">
+            <div class="progress-br float shadow">
+                <div class="progress__item"></div>
+            </div>
+        </div>
+    </div>
+    <!-- END LOADER -->
+
+    <!-- Start header -->
     <header class="top-navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="home.php">
-                    <img src="images/logo.png" alt="Escuela Niño Jesús" />
+                    <img src="images/logo.png" alt="" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="icon-bar"></span>
@@ -74,7 +143,7 @@ try {
                         <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <li class="nav-item"><a class="nav-link" href="admin_dashboard.php">Panel Principal</a></li>
+                            <li class="nav-item"><a class="nav-link" href="home.php">Panel Principal</a></li>
                             <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
                         <?php else: ?>
                             <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
@@ -90,6 +159,7 @@ try {
         <?php if (isset($_SESSION['usuario'])): ?>
             <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>
         <?php endif; ?>
+
         <div class="row">
             <?php if (empty($eventos)): ?>
                 <p>No hay eventos para mostrar.</p>
@@ -110,12 +180,9 @@ try {
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-    </div>
-
-    <!-- Container for Event Details -->
-    <div id="event-details-container" style="display:none;">
-        <span id="close-event-details">X</span>
-        <div id="event-details"></div>
+        <div id="event-details-container">
+            <div id="event-details"></div>
+        </div>
     </div>
 
     <footer class="footer">
@@ -126,7 +193,7 @@ try {
                         <div class="widget-title">
                             <h3>Acerca de nosotros</h3>
                         </div>
-                        <p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>
+                        <p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>   
                         <div class="footer-right">
                             <ul class="footer-links-soi">
                                 <li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a></li>
@@ -143,7 +210,7 @@ try {
                         <ul class="footer-links">
                             <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                            <li class="nav-item active"><a class="nav-link" href="eventos.php">Eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
                             <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         </ul><!-- end links -->
@@ -190,7 +257,7 @@ try {
                 });
             });
 
-            $('#close-event-details').on('click', function() {
+            $('#event-details-container').on('click', '.close', function() {
                 $('#event-details-container').hide();
             });
 
