@@ -9,13 +9,18 @@ if (!isset($_SESSION['usuario'])) {
 require_once 'config.php';
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    // Intenta conectar a la base de datos usando las constantes definidas
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+
+    // Prepara y ejecuta la consulta
     $stmt = $conn->prepare("SELECT * FROM eventos ORDER BY id DESC");
     $stmt->execute();
     $eventos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
+    // Imprime el mensaje de error si la conexión falla
     die("Error al conectar a la base de datos: " . $e->getMessage());
 }
 ?>
@@ -29,16 +34,12 @@ try {
         .btn-home {
             margin-bottom: 20px;
         }
-        .btn-new-event {
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Lista de Eventos</h1>
         <a href="../home.php" class="btn btn-primary btn-home">Regresar al Home</a>
-        <a href="create_event.php" class="btn btn-success btn-new-event">Crear Nuevo Evento</a>
         <?php if ($eventos): ?>
             <table class="table table-bordered">
                 <thead>
