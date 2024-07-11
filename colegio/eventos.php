@@ -27,9 +27,17 @@ try {
     <meta property="og:title" content="Escuela Niño Jesús" />
     <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
     <meta property="og:image" content="https://escuela-niniojesus.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://escuela-niniojesus.cl/home.php" />
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <meta property="og:url" content="https://escuela-niniojesus.cl/home.html" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
+    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/versions.css">
@@ -81,11 +89,11 @@ try {
     }
     ?>
 
-    <header class="top-navbar">
+<header class="top-navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="home.php">
-                    <img src="images/logo.png" alt="Escuela Niño Jesús" />
+                    <img src="images/logo.png" alt="" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="icon-bar"></span>
@@ -96,11 +104,11 @@ try {
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="eventos.php">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <li class="nav-item"><a class="nav-link" href="uploads/list_events.php">Administrar Eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="home.php">Panel Principal</a></li>
                             <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
                         <?php else: ?>
                             <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
@@ -113,6 +121,9 @@ try {
 
     <div class="container">
         <h1>Eventos</h1>
+        <?php if (isset($_SESSION['usuario'])): ?>
+            <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>
+        <?php endif; ?>
         <div class="row">
             <?php if (empty($eventos)): ?>
                 <p>No hay eventos para mostrar.</p>
