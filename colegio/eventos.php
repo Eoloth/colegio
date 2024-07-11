@@ -1,18 +1,3 @@
-<?php
-require_once 'uploads/config.php';
-
-try {
-    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $conn->prepare("SELECT * FROM eventos ORDER BY fecha_evento DESC");
-    $stmt->execute();
-    $eventos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error al conectar a la base de datos: " . $e->getMessage());
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,14 +11,14 @@ try {
     <meta name="author" content="">
     <meta property="og:title" content="Escuela Niño Jesús" />
     <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://escuela-nioniojesus.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://escuela-nioniojesus.cl/home.php" />
+    <meta property="og:image" content="https://escuela-niniojesus.cl/path/to/logo.png" />
+    <meta property="og:url" content="https://escuela-niniojesus.cl/home.html" />
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
+    <link rel="manifest" href="images/site.webmanifest">
     <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
@@ -43,42 +28,8 @@ try {
     <link rel="stylesheet" href="css/versions.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/custom.css">
-    <link rel="stylesheet" href="css/lightbox.css"> <!-- Lightbox CSS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/modernizer.js"></script>
-    <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
 </head>
 
 <body class="host_version">
@@ -109,7 +60,7 @@ try {
                         <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <li class="nav-item"><a class="nav-link" href="uploads/list_events.php">Administrar Eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="home.php">Panel Principal</a></li>
                             <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
                         <?php else: ?>
                             <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
@@ -125,6 +76,7 @@ try {
         <?php if (isset($_SESSION['usuario'])): ?>
             <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>
         <?php endif; ?>
+
         <div class="row">
             <?php if (empty($eventos)): ?>
                 <p>No hay eventos para mostrar.</p>
@@ -133,9 +85,6 @@ try {
                     <div class="col-md-4">
                         <div class="card mb-4 evento-card" data-id="<?php echo $evento['id']; ?>">
                             <div class="card-body">
-                                <?php if ($evento['imagen_ruta']): ?>
-                                    <img src="<?php echo htmlspecialchars($evento['imagen_ruta']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
-                                <?php endif; ?>
                                 <h5 class="card-title"><?php echo htmlspecialchars($evento['titulo']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($evento['descripcion']); ?></p>
                                 <p class="card-text"><small class="text-muted">Fecha del evento: <?php echo htmlspecialchars($evento['fecha_evento']); ?></small></p>
@@ -147,12 +96,9 @@ try {
         </div>
     </div>
 
-    <!-- Modal for Event Details -->
-    <div id="eventModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modal-body"></div>
-        </div>
+    <div id="event-details-container" style="display:none;">
+        <div id="event-details"></div>
+        <button id="close-event-details" class="btn btn-secondary">Cerrar</button>
     </div>
 
     <footer class="footer">
@@ -221,20 +167,14 @@ try {
                     method: 'GET',
                     data: { id: eventId },
                     success: function(data) {
-                        $('#modal-body').html(data);
-                        $('#eventModal').show();
+                        $('#event-details').html(data);
+                        $('#event-details-container').show();
                     }
                 });
             });
 
-            $('.close').on('click', function() {
-                $('#eventModal').hide();
-            });
-
-            $(window).on('click', function(event) {
-                if (event.target == document.getElementById('eventModal')) {
-                    $('#eventModal').hide();
-                }
+            $('#close-event-details').on('click', function() {
+                $('#event-details-container').hide();
             });
         });
     </script>
