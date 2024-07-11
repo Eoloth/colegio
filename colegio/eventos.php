@@ -26,8 +26,8 @@ try {
     <meta name="author" content="">
     <meta property="og:title" content="Escuela Niño Jesús" />
     <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://tu-dominio.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://tu-dominio.cl/home.html" />
+    <meta property="og:image" content="https://escuela-nioniojesus.cl/path/to/logo.png" />
+    <meta property="og:url" content="https://escuela-nioniojesus.cl/home.html" />
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
@@ -43,7 +43,41 @@ try {
     <link rel="stylesheet" href="css/versions.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/custom.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/modernizer.js"></script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="host_version">
@@ -58,7 +92,7 @@ try {
     <header class="top-navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="home.php">
                     <img src="images/logo.png" alt="Escuela Niño Jesús" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +107,12 @@ try {
                         <li class="nav-item active"><a class="nav-link" href="eventos.php">Eventos</a></li>
                         <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
-                        <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
+                        <?php if (isset($_SESSION['usuario'])): ?>
+                            <li class="nav-item"><a class="nav-link" href="admin_dashboard.php">Panel Principal</a></li>
+                            <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
+                        <?php else: ?>
+                            <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -88,7 +127,7 @@ try {
             <?php else: ?>
                 <?php foreach ($eventos as $evento): ?>
                     <div class="col-md-4">
-                        <div class="card mb-4">
+                        <div class="card mb-4 evento-card" data-id="<?php echo $evento['id']; ?>">
                             <?php if ($evento['imagen_ruta']): ?>
                                 <img src="<?php echo htmlspecialchars($evento['imagen_ruta']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
                             <?php endif; ?>
@@ -101,6 +140,14 @@ try {
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Modal for Event Details -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body"></div>
         </div>
     </div>
 
@@ -161,5 +208,31 @@ try {
     <script src="js/all.js"></script>
     <!-- ALL PLUGINS -->
     <script src="js/custom.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.evento-card').on('click', function() {
+                var eventId = $(this).data('id');
+                $.ajax({
+                    url: 'uploads/get_event_details.php',
+                    method: 'GET',
+                    data: { id: eventId },
+                    success: function(data) {
+                        $('#modal-body').html(data);
+                        $('#eventModal').show();
+                    }
+                });
+            });
+
+            $('.close').on('click', function() {
+                $('#eventModal').hide();
+            });
+
+            $(window).on('click', function(event) {
+                if (event.target == document.getElementById('eventModal')) {
+                    $('#eventModal').hide();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

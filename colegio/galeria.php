@@ -1,14 +1,6 @@
 <?php
 require_once 'uploads/config.php';
 
-session_start();
-
-if (!isset($_SESSION['usuario'])) {
-    $_SESSION['mensaje'] = "Inicie sesión para acceder a esta página.";
-    header("Location: home.php");
-    exit();
-}
-
 try {
     $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -33,11 +25,19 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <meta property="og:title" content="Escuela Niño Jesús" />
-    <meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://tu-dominio.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://tu-dominio.cl/home.html" />
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
+    <meta property="og:image" content="https://escuela-nioniojesus.cl/path/to/logo.png" />
+    <meta property="og:url" content="https://escuela-nioniojesus.cl/home.html" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="images/site.webmanifest">
+    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/versions.css">
@@ -45,12 +45,14 @@ try {
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/lightbox.css"> <!-- Lightbox CSS -->
     <script src="js/modernizer.js"></script>
-    <style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
+
+
         .gallery-item {
             display: inline-block;
             margin: 10px;
-            position: relative;
             transition: transform 0.3s ease-in-out;
+            position: relative;
         }
         .gallery-item img {
             max-width: 150px;
@@ -60,7 +62,10 @@ try {
         .gallery-item:hover img {
             transform: scale(2);
         }
-        .gallery-item .image-title {
+        .gallery-item:hover .image-title {
+            display: block;
+        }
+        .image-title {
             display: none;
             position: absolute;
             top: 10px;
@@ -69,14 +74,12 @@ try {
             color: #fff;
             padding: 5px;
         }
-        .gallery-item:hover .image-title {
-            display: block;
-        }
     </style>
 </head>
 <body class="host_version"> 
     <!-- Mostrar mensaje de sesión -->
     <?php
+    session_start();
     if (isset($_SESSION['mensaje'])) {
         echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
         unset($_SESSION['mensaje']);

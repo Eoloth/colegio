@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta property="og:title" content="Escuela Niño Jesús" />
-    <meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús" />
+    <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
     <meta property="og:image" content="https://tu-dominio.cl/path/to/logo.png" />
     <meta property="og:url" content="https://tu-dominio.cl/home.html" />
 
@@ -29,8 +29,11 @@
     <link rel="stylesheet" href="css/versions.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/lightbox.css"> <!-- Lightbox CSS -->
     <script src="js/modernizer.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
 </head>
+
 
 
 <body class="host_version"> 
