@@ -76,6 +76,19 @@
         echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
         unset($_SESSION['mensaje']);
     }
+
+    require_once 'uploads/config.php';
+
+    try {
+        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $conn->prepare("SELECT * FROM eventos ORDER BY id DESC");
+        $stmt->execute();
+        $eventos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        die("Error al conectar a la base de datos: " . $e->getMessage());
+    }
     ?>
 
     <!-- Modal -->
