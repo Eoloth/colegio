@@ -51,19 +51,39 @@ try {
             transition: transform 0.3s ease-in-out;
         }
         .gallery-item:hover img {
-            transform: scale(2);
-        }
-        .gallery-item:hover .image-title {
-            display: block;
+            transform: scale(1.5);
         }
         .image-title {
             display: none;
             position: absolute;
-            top: 10px;
-            left: 10px;
             background: rgba(0, 0, 0, 0.5);
             color: #fff;
             padding: 5px;
+            z-index: 10;
+        }
+        .lightbox-navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .lightbox-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            position: absolute;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
         }
     </style>
 </head>
@@ -160,18 +180,15 @@ try {
 
         <?php
         try {
-            $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
             $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
             $stmt->execute();
             $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if ($imagenes) {
                 echo '<div class="gallery">';
-                foreach ($imagenes as $imagen) {
+                foreach ($imagenes as $index => $imagen) {
                     echo '<div class="gallery-item">';
-                    echo '<a href="data:image/jpeg;base64,' . base64_encode($imagen['imagen']) . '" data-lightbox="gallery" data-title="' . htmlspecialchars($imagen['nombre_archivo']) . '">';
+                    echo '<a href="data:image/jpeg;base64,' . base64_encode($imagen['imagen']) . '" data-lightbox="gallery" data-title="' . htmlspecialchars($imagen['nombre_archivo']) . '" data-index="' . $index . '">';
                     echo '<img src="data:image/jpeg;base64,' . base64_encode($imagen['imagen']) . '" alt="' . htmlspecialchars($imagen['nombre_archivo']) . '">';
                     echo '<div class="image-title">' . htmlspecialchars($imagen['nombre_archivo']) . '</div>';
                     echo '</a>';
@@ -245,5 +262,70 @@ try {
     <!-- ALL PLUGINS -->
     <script src="js/custom.js"></script>
     <script src="js/lightbox.js"></script> <!-- Lightbox JS -->
+    <script>
+        $(document).ready(function() {
+            $('.gallery-item').hover(function(event) {
+                var title = $(this).find('.image-title');
+                title.css({
+                    top: event.pageY + 15,
+                    left: event.pageX + 15
+                }).show();
+            }, function() {
+                $(this).find('.image-title').hide();
+            });
+
+            $('.gallery-item').mousemove(function(event) {
+                var title = $(this).find('.image-title');
+                title.css({
+                    top: event.pageY + 15,
+                    left: event.pageX + 15
+                });
+            });
+
+            var lightboxIndex = 0;
+            var images = <?php echo json_encode($imagenes); ?>;
+
+            $(document).on('click', '[data-lightbox="gallery"]', function(event) {
+                event.preventDefault();
+                lightboxIndex = $(this).data('index');
+                openLightbox(lightboxIndex);
+            });
+
+            function openLightbox(index) {
+                var image = images[index];
+                var lightbox = '<div class="lightbox-overlay">';
+                lightbox += '<img src="data:image/jpeg;base64,' + image.imagen + '" alt="' + image.nombre_archivo + '">';
+                lightbox += '<button class="lightbox-close"><img src="images/close.png" alt="Close"></button>';
+                lightbox += '<div class="lightbox-navigation">';
+                lightbox += '<button class="lightbox-button lightbox-prev"><img src="images/prev.png" alt="Previous"></button>';
+                lightbox += '<button class="lightbox-button lightbox-next"><img src="images/next.png" alt="Next"></button>';
+                lightbox += '</div>';
+                lightbox += '</div>';
+                $('body').append(lightbox);
+                $('.lightbox-overlay').fadeIn();
+            }
+
+            $(document).on('click', '.lightbox-close', function() {
+                $('.lightbox-overlay').fadeOut(function() {
+                    $(this).remove();
+                });
+            });
+
+            $(document).on('click', '.lightbox-prev', function() {
+                lightboxIndex = (lightboxIndex > 0) ? lightboxIndex - 1 : images.length - 1;
+                updateLightboxImage(lightboxIndex);
+            });
+
+            $(document).on('click', '.lightbox-next', function() {
+                lightboxIndex = (lightboxIndex < images.length - 1) ? lightboxIndex + 1 : 0;
+                updateLightboxImage(lightboxIndex);
+            });
+
+            function updateLightboxImage(index) {
+                var image = images[index];
+                $('.lightbox-overlay img').attr('src', 'data:image/jpeg;base64,' + image.imagen).attr('alt', image.nombre_archivo);
+            }
+        });
+    </script>
 </body>
 </html>
