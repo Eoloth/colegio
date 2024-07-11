@@ -105,36 +105,40 @@ if (isset($_SESSION['mensaje'])) {
 
 <!-- Start header -->
 <header class="top-navbar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">
-                    <img src="images/logo.png" alt="" />
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbars-host">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active"><a class="nav-link" href="home.php">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.php">
+                <img src="images/logo.png" alt="" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbars-host">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a class="nav-link" href="home.php">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
+                    <?php if (isset($_SESSION['usuario'])): ?>
+                        <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
+                    <?php else: ?>
                         <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
-                    </ul>
-                </div>
+                    <?php endif; ?>
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
+
 
 <div class="container">
     <?php if (isset($_SESSION['usuario'])): ?>
         <!-- Contenido del panel de administrador -->
         <div class="admin-panel">
             <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']); ?>!</h2>
-            <a href="uploads/logout.php">Cerrar sesión</a>
             <br><br>
             <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>
             <a href="uploads/list_images.php" class="btn btn-info">Administrar Galería de Imágenes</a>
@@ -144,6 +148,7 @@ if (isset($_SESSION['mensaje'])) {
         <!-- Contenido normal de la página -->
     <?php endif; ?>
 </div>
+
 
 <!-- Resto del contenido de tu página -->
 
