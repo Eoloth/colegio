@@ -1,6 +1,14 @@
 <?php
 require_once 'uploads/config.php';
 
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    $_SESSION['mensaje'] = "Inicie sesión para acceder a esta página.";
+    header("Location: home.php");
+    exit();
+}
+
 try {
     $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -41,8 +49,8 @@ try {
         .gallery-item {
             display: inline-block;
             margin: 10px;
-            transition: transform 0.3s ease-in-out;
             position: relative;
+            transition: transform 0.3s ease-in-out;
         }
         .gallery-item img {
             max-width: 150px;
@@ -52,10 +60,7 @@ try {
         .gallery-item:hover img {
             transform: scale(2);
         }
-        .gallery-item:hover .image-title {
-            display: block;
-        }
-        .image-title {
+        .gallery-item .image-title {
             display: none;
             position: absolute;
             top: 10px;
@@ -64,12 +69,14 @@ try {
             color: #fff;
             padding: 5px;
         }
+        .gallery-item:hover .image-title {
+            display: block;
+        }
     </style>
 </head>
 <body class="host_version"> 
     <!-- Mostrar mensaje de sesión -->
     <?php
-    session_start();
     if (isset($_SESSION['mensaje'])) {
         echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
         unset($_SESSION['mensaje']);
@@ -125,7 +132,7 @@ try {
     <header class="top-navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="home.php">
                     <img src="images/logo.png" alt="" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,10 +144,15 @@ try {
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
                         <li class="nav-item active"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
-                        <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
+                        <?php if (isset($_SESSION['usuario'])): ?>
+                            <li class="nav-item"><a class="nav-link" href="home.php">Panel Principal</a></li>
+                            <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
+                        <?php else: ?>
+                            <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -158,8 +170,6 @@ try {
         <?php endif; ?>
 
         <?php
-        require_once 'uploads/config.php';
-
         try {
             $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -172,9 +182,9 @@ try {
                 echo '<div class="gallery">';
                 foreach ($imagenes as $imagen) {
                     echo '<div class="gallery-item">';
-                    echo '<a href="' . htmlspecialchars($imagen['ruta']) . '" data-lightbox="gallery" data-title="' . htmlspecialchars($imagen['nombre']) . '">';
-                    echo '<img src="' . htmlspecialchars($imagen['ruta']) . '" alt="' . htmlspecialchars($imagen['nombre']) . '">';
-                    echo '<div class="image-title">' . htmlspecialchars($imagen['nombre']) . '</div>';
+                    echo '<a href="' . htmlspecialchars($imagen['ruta']) . '" data-lightbox="gallery" data-title="' . htmlspecialchars($imagen['nombre_archivo']) . '">';
+                    echo '<img src="' . htmlspecialchars($imagen['ruta']) . '" alt="' . htmlspecialchars($imagen['nombre_archivo']) . '">';
+                    echo '<div class="image-title">' . htmlspecialchars($imagen['nombre_archivo']) . '</div>';
                     echo '</a>';
                     echo '</div>';
                 }
@@ -213,8 +223,8 @@ try {
                         <ul class="footer-links">
                             <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
                             <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                            <li class="nav-item"><a class="nav-link" href="eventos.html">Eventos</a></li>
-                            <li class="nav-item active"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
                         </ul><!-- end links -->
                     </div><!-- end clearfix -->
