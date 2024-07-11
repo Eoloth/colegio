@@ -1,18 +1,3 @@
-<?php
-require_once 'uploads/config.php';
-
-try {
-    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
-    $stmt->execute();
-    $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error al conectar a la base de datos: " . $e->getMessage());
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,29 +10,20 @@ try {
     <meta name="description" content="">
     <meta name="author" content="">
     <meta property="og:title" content="Escuela Niño Jesús" />
-    <meta property="og:description" content="Eventos Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://escuela-nioniojesus.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://escuela-nioniojesus.cl/home.html" />
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="images/site.webmanifest">
-    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-
+    <meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús" />
+    <meta property="og:image" content="https://escuela-niniojesus.cl/path/to/logo.png" />
+    <meta property="og:url" content="https://escuela-niniojesus.cl/home.php" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/versions.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/lightbox.css"> <!-- Lightbox CSS -->
-    <script src="js/modernizer.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
-
-
+    <script src="js/modernizer.js"></script>
+    <style>
         .gallery-item {
             display: inline-block;
             margin: 10px;
@@ -165,10 +141,6 @@ try {
     <div class="container">
         <h1>Galería de Imágenes</h1>
         <?php if (isset($_SESSION['usuario'])): ?>
-            <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']); ?>!</h2>
-            <a href="uploads/logout.php">Cerrar sesión</a>
-            <br><br>
-            <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>
             <a href="uploads/list_images.php" class="btn btn-info">Administrar Galería de Imágenes</a>
         <?php endif; ?>
 
