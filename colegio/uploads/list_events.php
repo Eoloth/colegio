@@ -29,12 +29,16 @@ try {
         .btn-home {
             margin-bottom: 20px;
         }
+        .btn-new-event {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Lista de Eventos</h1>
         <a href="../home.php" class="btn btn-primary btn-home">Regresar al Home</a>
+        <a href="create_event.php" class="btn btn-success btn-new-event">Crear Nuevo Evento</a>
         <?php if ($eventos): ?>
             <table class="table table-bordered">
                 <thead>
