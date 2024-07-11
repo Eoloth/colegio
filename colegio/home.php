@@ -1,57 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+session_start();
+?>
 
-<head>
-    <!-- Metas y otros elementos head -->
-    <!-- Metas y otros elementos head -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">   
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Escuela Niño Jesús</title>  
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta property="og:title" content="Escuela Niño Jesús" />
-    <meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://escuela-niniojesus.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://escuela-niniojesus.cl/home.php" />
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/versions.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/custom.css">
-    <link rel="stylesheet" href="css/lightbox.css"> <!-- Lightbox CSS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
-    <script src="js/modernizer.js"></script>
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="images/site.webmanifest">
-    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/versions.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/custom.css">
-    <link rel="stylesheet" href="css/lightbox.css"> <!-- Lightbox CSS -->
-    <script src="js/modernizer.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
-</head>
-
-
-
-<body class="host_version"> 
+<?php include 'header.php'; ?>
+<?php include 'navbar.php'; ?>
 
 <!-- Mostrar mensaje de sesión -->
 <?php
-session_start();
 if (isset($_SESSION['mensaje'])) {
     echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
     unset($_SESSION['mensaje']);
@@ -103,37 +58,6 @@ if (isset($_SESSION['mensaje'])) {
 </div>
 <!-- END LOADER -->
 
-<!-- Start header -->
-<header class="top-navbar">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="home.php">
-                <img src="images/logo.png" alt="" />
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbars-host">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="home.php">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                    <li class="nav-item"><a class="nav-link" href="eventos.php">Eventos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
-                    <?php if (isset($_SESSION['usuario'])): ?>
-                        <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
-                    <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-
-
 <div class="container">
     <?php if (isset($_SESSION['usuario'])): ?>
         <!-- Contenido del panel de administrador -->
@@ -148,7 +72,6 @@ if (isset($_SESSION['mensaje'])) {
         <!-- Contenido normal de la página -->
     <?php endif; ?>
 </div>
-
 
 <!-- Resto del contenido de tu página -->
 
@@ -209,7 +132,7 @@ if (isset($_SESSION['mensaje'])) {
                                     <p class="lead" data-animation="animated fadeInLeft">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit excepturi aliquid expedita inventore molestias aspernatur cum alias vitae magnam harum, repellendus doloribus aliquam ratione? Amet quidem at sequi corrupti libero!</p>
                                         <a href="#" class="hover-btn-new"><span>Contacto</span></a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="#" class="hover-btn-new"><span>Más Information</span></a>
+                                        <a href="#" class="hover-btn-new"><span>Más Información</span></a>
                                 </div>
                             </div>
                         </div><!-- end row -->            
@@ -378,167 +301,4 @@ if (isset($_SESSION['mensaje'])) {
     </div><!-- end container -->
 </div><!-- end section -->
 
-<div id="plan" class="section lb">
-
-<div id="testimonials" class="parallax section db parallax-off" style="background-image:url('images/parallax_04.jpg');">
-    <div class="container">
-        <div class="section-title text-center">
-            <h3>Profesores</h3>
-            <p>Lorem ipsum dolor sit aet, consectetur adipisicing lit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-        </div><!-- end title -->
-
-        <div class="row">
-            <div class="col-md-12 col-sm-12">
-                <div class="testi-carousel owl-carousel owl-theme">
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_01.png" alt="" class="img-fluid">
-                            <h4>James Fernando
-                            </br>
-                                Licenciado en educación </h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Testimonio </h3>
-                            <p class="lead">Experiencia o palabras que quiera decir</p>
-                        </div>
-                        <!-- end testi-meta -->
-                    </div>
-                    <!-- end testimonial -->
-
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_02.png" alt="" class="img-fluid">
-                            <h4>Jacques Philips </h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Awesome Services!</h3>
-                            <p class="lead">Explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you completed.</p>
-                        </div>
-                        <!-- end testi-meta -->
-                    </div>
-                    <!-- end testimonial -->
-
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_03.png" alt="" class="img-fluid ">
-                            <h4>Venanda Mercy </h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Great & Talented Team!</h3>
-                            <p class="lead">The master-builder of human happines no one rejects, dislikes avoids pleasure itself, because it is very pursue pleasure. </p>
-                        </div>
-                        <!-- end testi-meta -->
-                    </div>
-                    <!-- end testimonial -->
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_01.png" alt="" class="img-fluid">
-                            <h4>James Fernando </h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Wonderful Support!</h3>
-                            <p class="lead">They have got my project on time with the competition with a sed highly skilled, and experienced & professional team.</p>
-                        </div>
-                        <!-- end testi-meta -->
-                    </div>
-                    <!-- end testimonial -->
-
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_02.png" alt="" class="img-fluid">
-                            <h4>Jacques Philips </h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Awesome Services!</h3>
-                            <p class="lead">Explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you completed.</p>
-                        </div>
-                        <!-- end testi-meta -->
-                    </div>
-                    <!-- end testimonial -->
-
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_03.png" alt="" class="img-fluid">
-                            <h4>Venanda Mercy </h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Great & Talented Team!</h3>
-                            <p class="lead">The master-builder of human happines no one rejects, dislikes avoids pleasure itself, because it is very pursue pleasure. </p>
-                        </div>
-                        <!-- end testi-meta -->
-                    </div><!-- end testimonial -->
-                </div><!-- end carousel -->
-            </div><!-- end col -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</div><!-- end section -->
-
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4 col-xs-12">
-                <div class="widget clearfix">
-                    <div class="widget-title">
-                        <h3>Acerca de nosotros</h3>
-                    </div>
-                    <p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>   
-                    <div class="footer-right">
-                        <ul class="footer-links-soi">
-                            <li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                        </ul><!-- end links -->
-                    </div>						
-                </div><!-- end clearfix -->
-            </div><!-- end col -->
-
-            <div class="col-lg-4 col-md-4 col-xs-12">
-                <div class="widget clearfix">
-                    <div class="widget-title">
-                        <h3>Information Link</h3>
-                    </div>
-                    <ul class="footer-links">
-                    <li class="nav-item"><a class="nav-link" href="home.php">Inicio</a></li>
-                            <li class="nav-item"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
-                            <li class="nav-item active"><a class="nav-link" href="eventos.php">Eventos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Contacto</a></li>
-                        <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
-                    </ul><!-- end links -->
-                </div><!-- end clearfix -->
-            </div><!-- end col -->
-
-            <div class="col-lg-4 col-md-4 col-xs-12">
-                <div class="widget clearfix">
-                    <div class="widget-title">
-                        <h3>Contacto</h3>
-                    </div>
-
-                    <ul class="footer-links">
-                        <li><a href="mailto:#">Correo</a></li>
-                        <li><a href="#">Facebook</a></li>
-                        <li>Dirección</li>
-                        <li>Teléfono</li>
-                    </ul><!-- end links -->
-                </div><!-- end clearfix -->
-            </div><!-- end col -->
-
-        </div><!-- end row -->
-    </div><!-- end container -->
-</footer><!-- end footer -->
-
-<a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
-
-<!-- ALL JS FILES -->
-<script src="js/all.js"></script>
-<!-- ALL PLUGINS -->
-<script src="js/custom.js"></script>
-<script src="js/timeline.min.js"></script>
-<script>
-    timeline(document.querySelectorAll('.timeline'), {
-        forceVerticalMode: 700,
-        mode: 'horizontal',
-        verticalStartPosition: 'left',
-        visibleItems: 4
-    });
-</script>
-</body>
-</html>
+<?php include 'footer.php'; ?>
