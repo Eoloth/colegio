@@ -2,11 +2,6 @@
 session_start();
 require_once 'config.php';
 
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.html");
-    exit();
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $password = $_POST['password'];
@@ -24,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             $_SESSION['mensaje'] = "Usuario creado correctamente.";
+            header("Location: ../home.php");
+            exit();
         } else {
             $_SESSION['mensaje'] = "Error al crear el usuario.";
         }
     } catch (PDOException $e) {
         $_SESSION['mensaje'] = "Error al conectar a la base de datos: " . $e->getMessage();
     }
-    header("Location: create_user.php");
-    exit();
 }
 ?>
 
@@ -39,35 +34,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Administrador</title>
+    <title>Crear Usuario Administrador</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Crear Administrador</h1>
+        <h1>Crear Usuario Administrador</h1>
         <?php
         if (isset($_SESSION['mensaje'])) {
-            echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
+            echo '<div class="alert alert-info">' . $_SESSION['mensaje'] . '</div>';
             unset($_SESSION['mensaje']);
         }
         ?>
-        <form action="create_user.php" method="POST">
+        <form action="create_user.php" method="post">
             <div class="form-group">
-                <label for="usuario">Usuario:</label>
+                <label for="usuario">Usuario</label>
                 <input type="text" class="form-control" id="usuario" name="usuario" required>
             </div>
             <div class="form-group">
-                <label for="password">Contraseña:</label>
+                <label for="password">Contraseña</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <label for="correo_recuperacion">Correo de Recuperación:</label>
+                <label for="correo_recuperacion">Correo de Recuperación</label>
                 <input type="email" class="form-control" id="correo_recuperacion" name="correo_recuperacion" required>
             </div>
-            <button type="submit" class="btn btn-primary">Crear Administrador</button>
+            <button type="submit" class="btn btn-primary">Crear Usuario</button>
         </form>
-        <br>
-        <a href="../home.php" class="btn btn-secondary">Regresar al Home</a>
     </div>
 </body>
 </html>

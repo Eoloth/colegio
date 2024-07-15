@@ -1,56 +1,68 @@
 <?php
-session_start();
-require_once 'uploads/config.php';
+require_once 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['token'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    if ($new_password !== $confirm_password) {
+        echo 'Las contraseñas no coinciden.';
+        exit();
+    }
+
+    $contraseña_hash = password_hash($new_password, PASSWORD_DEFAULT);
 
     try {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $conn->prepare("SELECT * FROM password_resets WHERE token = :token AND expira > NOW()");
+        $stmt = $conn->prepare("SELECT * FROM admin WHERE token = :token AND token_expira > NOW()");
         $stmt->bindParam(':token', $token);
         $stmt->execute();
 
-        $reset = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($reset) {
-            $stmt = $conn->prepare("UPDATE usuarios SET password = :password WHERE email = :email");
-            $stmt->bindParam(':password', $password);
-            $stmt->bindParam(':email', $reset['email']);
+        if ($stmt->rowCount() > 0) {
+            $stmt = $conn->prepare("UPDATE admin SET contraseña = :password, token = NULL, token_expira = NULL WHERE token = :token");
+            $stmt->bindParam(':password', $contraseña_hash);
+            $stmt->bindParam(':token', $token);
             $stmt->execute();
-
-            $stmt = $conn->prepare("DELETE FROM password_resets WHERE email = :email");
-            $stmt->bindParam(':email', $reset['email']);
-            $stmt->execute();
-
-            echo '<div class="alert alert-success" role="alert">Su contraseña ha sido restablecida exitosamente.</div>';
+            echo 'Contraseña actualizada correctamente.';
         } else {
-            echo '<div class="alert alert-danger" role="alert">El token es inválido o ha expirado.</div>';
+            echo 'El enlace para restablecer la contraseña ha caducado o no es válido.';
         }
     } catch (PDOException $e) {
-        die("Error al conectar a la base de datos: " . $e->getMessage());
+        echo 'Error: ' . $e->getMessage();
     }
-} else {
+} elseif (isset($_GET['token'])) {
     $token = $_GET['token'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restablecer Contraseña</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Restablecer Contraseña</h1>
+        <form action="reset_password.php" method="post">
+            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
+            <div class="form-group">
+                <label for="new_password">Nueva Contraseña</label>
+                <input type="password" class="form-control" id="new_password" name="new_password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirmar Nueva Contraseña</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Restablecer Contraseña</button>
+        </form>
+    </div>
+</body>
+</html>
+<?php
+} else {
+    echo 'Token no proporcionado.';
 }
 ?>
-
-<?php include 'header.php'; ?>
-<?php include 'navbar.php'; ?>
-
-<div class="container">
-    <h2>Restablecer Contraseña</h2>
-    <form action="reset_password.php" method="post">
-        <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-        <div class="form-group">
-            <label for="password">Nueva Contraseña:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Restablecer</button>
-    </form>
-</div>
-
-<?php include 'footer.php'; ?>
