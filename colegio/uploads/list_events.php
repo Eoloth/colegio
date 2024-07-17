@@ -42,7 +42,6 @@ try {
 <body class="host_version"> 
 
 <?php include '../header.php'; ?>
-<?php include '../navbar.php'; ?>
 
 <div class="container">
     <h1>Lista de Eventos</h1>

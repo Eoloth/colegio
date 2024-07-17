@@ -1,8 +1,8 @@
 <?php
 session_start();
-include 'config.php';
+require_once 'config.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $contraseña = $_POST['contraseña'];
 
@@ -13,18 +13,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("SELECT * FROM admin WHERE usuario = :usuario");
         $stmt->bindParam(':usuario', $usuario);
         $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($contraseña, $user['contraseña'])) {
-            $_SESSION['usuario'] = $usuario;
-            $_SESSION['mensaje'] = "Bienvenido, $usuario!";
-            header("Location: ../home.php");
-            exit();
+        if ($stmt->rowCount() > 0) {
+            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (password_verify($contraseña, $admin['contraseña'])) {
+                $_SESSION['usuario'] = $admin['usuario'];
+                $_SESSION['rol'] = 'admin'; // Añade el rol a la sesión
+                header("Location: ../home.php");
+                exit();
+            } else {
+                $_SESSION['mensaje'] = 'Contraseña incorrecta';
+            }
         } else {
-            $_SESSION['mensaje'] = "Usuario o contraseña incorrectos.";
+            $_SESSION['mensaje'] = 'Usuario no encontrado';
         }
     } catch (PDOException $e) {
-        $_SESSION['mensaje'] = "Error al conectar a la base de datos: " . $e->getMessage();
+        $_SESSION['mensaje'] = 'Error de conexión: ' . $e->getMessage();
     }
 
     header("Location: ../home.php");
