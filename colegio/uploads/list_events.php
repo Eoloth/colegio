@@ -24,6 +24,23 @@ try {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Eventos</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/versions.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/custom.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadir jQuery desde CDN -->
+    <script src="../js/modernizer.js"></script>
+</head>
+<body class="host_version"> 
+
 <?php include '../header.php'; ?>
 <?php include '../navbar.php'; ?>
 
@@ -64,3 +81,8 @@ try {
 </div>
 
 <?php include '../footer.php'; ?>
+
+<script src="../js/all.js"></script>
+<script src="../js/custom.js"></script>
+</body>
+</html>
