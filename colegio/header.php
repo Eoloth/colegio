@@ -24,6 +24,10 @@ session_start();
     <link rel="stylesheet" href="../css/custom.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/modernizer.js"></script>
+    <script src="../js/bootstrap.min.js"></script> <!-- Asegúrate de incluir Bootstrap JS -->
+    <script src="../js/bsTouchSlider.js"></script> <!-- Asegúrate de incluir el script bsTouchSlider -->
+    <script src="../js/all.js"></script> <!-- Incluye all.js después de jQuery y Bootstrap -->
+    <script src="../js/custom.js"></script> <!-- Incluye custom.js al final -->
 </head>
 <body class="host_version">
     <!-- Modal -->
@@ -70,5 +74,3 @@ session_start();
         </div>
     </div>
     <!-- End Loader -->
-
-
