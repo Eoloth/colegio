@@ -2,7 +2,7 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">   
@@ -15,19 +15,19 @@ session_start();
     <meta property="og:description" content="Bienvenidos a la Escuela de Lenguaje Niño Jesús" />
     <meta property="og:image" content="https://escuela-niniojesus.cl/path/to/logo.png" />
     <meta property="og:url" content="https://escuela-niniojesus.cl/home.php" />
-    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../css/versions.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link rel="stylesheet" href="../css/custom.css">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/versions.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/custom.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/modernizer.js"></script>
-    <script src="../js/bootstrap.min.js"></script> <!-- Asegúrate de incluir Bootstrap JS -->
-    <script src="../js/bsTouchSlider.js"></script> <!-- Asegúrate de incluir el script bsTouchSlider -->
-    <script src="../js/all.js"></script> <!-- Incluye all.js después de jQuery y Bootstrap -->
-    <script src="../js/custom.js"></script> <!-- Incluye custom.js al final -->
+    <script src="js/modernizer.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bsTouchSlider.js"></script>
+    <script src="js/all.js"></script>
+    <script src="js/custom.js"></script>
 </head>
 <body class="host_version">
     <!-- Modal -->
@@ -51,9 +51,7 @@ session_start();
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-                                            Entrar
-                                        </button>
+                                        <button type="submit" class="btn btn-light btn-radius btn-brd grd1">Entrar</button>
                                         <a class="for-pwd" href="javascript:;">¿Olvidaste tu contraseña?</a>
                                     </div>
                                 </div>

@@ -13,41 +13,6 @@ if (isset($_SESSION['mensaje'])) {
 }
 ?>
 
-<!-- Modal -->
-<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-body customer-box">
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane active" id="Login">
-                        <form role="form" class="form-horizontal" action="uploads/login.php" method="POST">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input class="form-control" id="usuario-login" name="usuario" placeholder="Usuario" type="text" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input class="form-control" id="contraseña-login" name="contraseña" placeholder="Contraseña" type="password" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-                                        Entrar
-                                    </button>
-                                    <a class="for-pwd" href="javascript:;">¿Olvidaste tu contraseña?</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- LOADER -->
 <div id="preloader">
     <div class="loader-container">
@@ -75,7 +40,7 @@ if (isset($_SESSION['mensaje'])) {
 
 <!-- Resto del contenido de tu página -->
 
-<div id="carouselExampleControls" class="carousel slide bs-slider box-slider" data-ride="carousel" data-pause="hover" data-interval="false" >
+<div id="carouselExampleControls" class="carousel slide bs-slider box-slider" data-ride="carousel" data-pause="hover" data-interval="false">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
@@ -92,9 +57,9 @@ if (isset($_SESSION['mensaje'])) {
                                 <div class="big-tagline">
                                     <h2><strong>Escuela de Lenguaje</strong> Niño Jesús</h2>
                                     <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet aliquam, dicta facilis, tenetur explicabo perspiciatis quia laborum praesentium qui consequatur provident fuga aut. Ab earum aut expedita, delectus voluptatum omnis! </p>
-                                        <a href="#" class="hover-btn-new"><span>Contacto</span></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="#" class="hover-btn-new"><span>Más Información</span></a>
+                                    <a href="#" class="hover-btn-new"><span>Contacto</span></a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="#" class="hover-btn-new"><span>Más Información</span></a>
                                 </div>
                             </div>
                         </div><!-- end row -->            
@@ -111,9 +76,9 @@ if (isset($_SESSION['mensaje'])) {
                                 <div class="big-tagline">
                                     <h2 data-animation="animated zoomInRight">Texto a reemplazar <strong>educación</strong></h2>
                                     <p class="lead" data-animation="animated fadeInLeft">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ducimus accusamus consequatur cum perferendis error totam id. Numquam sint officiis debitis ad nostrum iure vitae, consectetur deleniti eaque similique inventore? </p>
-                                        <a href="#" class="hover-btn-new"><span>Contacto</span></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="#" class="hover-btn-new"><span>Más Información</span></a>
+                                    <a href="#" class="hover-btn-new"><span>Contacto</span></a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="#" class="hover-btn-new"><span>Más Información</span></a>
                                 </div>
                             </div>
                         </div><!-- end row -->            
@@ -130,9 +95,9 @@ if (isset($_SESSION['mensaje'])) {
                                 <div class="big-tagline">
                                     <h2 data-animation="animated zoomInRight"><strong>Eventos</strong> y graduaciones</h2>
                                     <p class="lead" data-animation="animated fadeInLeft">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit excepturi aliquid expedita inventore molestias aspernatur cum alias vitae magnam harum, repellendus doloribus aliquam ratione? Amet quidem at sequi corrupti libero!</p>
-                                        <a href="#" class="hover-btn-new"><span>Contacto</span></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="#" class="hover-btn-new"><span>Más Información</span></a>
+                                    <a href="#" class="hover-btn-new"><span>Contacto</span></a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="#" class="hover-btn-new"><span>Más Información</span></a>
                                 </div>
                             </div>
                         </div><!-- end row -->            
@@ -218,57 +183,49 @@ if (isset($_SESSION['mensaje'])) {
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-01">
                             <h2>2018</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-02">
                             <h2>2015</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-03">
                             <h2>2014</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-04">
                             <h2>2012</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-01">
                             <h2>2010</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-02">
                             <h2>2007</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-03">
                             <h2>2004</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-04">
                             <h2>2002</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem
-                                ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                 </div>
