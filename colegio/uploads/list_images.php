@@ -21,13 +21,11 @@ try {
 ?>
 
 <?php include '../header.php'; ?>
+<?php include '../navbar.php'; ?>
 
 <div class="container">
     <h1>Lista de Imágenes</h1>
     <a href="../home.php" class="btn btn-primary btn-home">Regresar al Home</a>
-    <?php if (isset($_SESSION['usuario'])): ?>
-        <a href="upload_image_form.php" class="btn btn-success">Subir Imagen</a>
-    <?php endif; ?>
     <?php if ($imagenes): ?>
         <table class="table table-bordered">
             <thead>
@@ -48,7 +46,7 @@ try {
                         <td><?php echo htmlspecialchars($imagen['descripcion']); ?></td>
                         <td>
                             <a href="edit_image.php?id=<?php echo $imagen['id']; ?>" class="btn btn-primary">Editar</a>
-                            <a href="delete_image.php?id=<?php echo $imagen['id']; ?>" class="btn btn-danger">Borrar</a>
+                            <a href="delete_image.php?id=<?php echo $imagen['id']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta imagen?');">Borrar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

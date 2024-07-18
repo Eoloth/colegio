@@ -24,12 +24,12 @@ if (isset($_SESSION['mensaje'])) {
                         <form role="form" class="form-horizontal" action="uploads/login.php" method="POST">
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <input class="form-control" id="usuario" name="usuario" placeholder="Usuario" type="text" required>
+                                    <input class="form-control" id="usuario-login" name="usuario" placeholder="Usuario" type="text" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <input class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña" type="password" required>
+                                    <input class="form-control" id="contraseña-login" name="contraseña" placeholder="Contraseña" type="password" required>
                                 </div>
                             </div>
                             <div class="row">

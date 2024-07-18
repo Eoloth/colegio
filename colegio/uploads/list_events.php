@@ -21,13 +21,11 @@ try {
 ?>
 
 <?php include '../header.php'; ?>
+<?php include '../navbar.php'; ?>
 
 <div class="container">
     <h1>Lista de Eventos</h1>
     <a href="../home.php" class="btn btn-primary btn-home">Regresar al Home</a>
-    <?php if (isset($_SESSION['usuario'])): ?>
-        <a href="create_event_form.php" class="btn btn-success">Crear Evento</a>
-    <?php endif; ?>
     <?php if ($eventos): ?>
         <table class="table table-bordered">
             <thead>
@@ -50,7 +48,7 @@ try {
                         <td><?php echo htmlspecialchars($evento['fecha_publicacion']); ?></td>
                         <td>
                             <a href="edit_event.php?id=<?php echo $evento['id']; ?>" class="btn btn-primary">Editar</a>
-                            <a href="delete_event.php?id=<?php echo $evento['id']; ?>" class="btn btn-danger">Borrar</a>
+                            <a href="delete_event.php?id=<?php echo $evento['id']; ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este evento?');">Borrar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
