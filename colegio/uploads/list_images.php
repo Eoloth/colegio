@@ -1,25 +1,3 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../home.php");
-    exit();
-}
-
-require_once 'config.php';
-
-try {
-    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
-    $stmt->execute();
-    $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error al conectar a la base de datos: " . $e->getMessage());
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,10 +10,6 @@ try {
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/custom.css">
     <link rel="stylesheet" href="../css/lightbox.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" media="all">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet" media="all">
-    <link href="../css/bootstrap-touch-slider.css" rel="stylesheet" media="all">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/modernizer.js"></script>
     <script src="../js/lightbox.js"></script>
@@ -85,14 +59,6 @@ try {
 <?php include '../footer.php'; ?>
 
 <!-- Incluir dependencias de Bootstrap JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
-<script src="../js/bootstrap-touch-slider.js"></script>
-
-<!-- Inicializar el slider -->
-<script type="text/javascript">
-    $('#bootstrap-touch-slider').bsTouchSlider();
-</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
