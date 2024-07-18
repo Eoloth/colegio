@@ -31,11 +31,13 @@ try {
     <link rel="stylesheet" href="../css/versions.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <link rel="stylesheet" href="../css/custom.css">
+    <link rel="stylesheet" href="../css/lightbox.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../js/modernizer.js"></script>
+    <script src="../js/lightbox.js"></script>
 </head>
 <body class="host_version">
-<!-- No se incluye el navbar.php aquí -->
+<?php include '../navbar.php'; ?>
 
 <div class="container">
     <h1>Lista de Imágenes</h1>
@@ -56,7 +58,11 @@ try {
                 <?php foreach ($imagenes as $imagen): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($imagen['id']); ?></td>
-                        <td><img src="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" class="thumbnail"></td>
+                        <td>
+                            <a href="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" data-lightbox="galeria" data-title="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>">
+                                <img src="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" class="thumbnail" style="width: 100px; height: 100px;">
+                            </a>
+                        </td>
                         <td><?php echo htmlspecialchars($imagen['nombre_archivo']); ?></td>
                         <td><?php echo htmlspecialchars($imagen['descripcion']); ?></td>
                         <td>
@@ -75,7 +81,6 @@ try {
 <?php include '../footer.php'; ?>
 
 <!-- Incluir dependencias de Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
