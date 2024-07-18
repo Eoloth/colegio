@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.html");
+    header("Location: ../home.php");
     exit();
 }
 
@@ -26,6 +26,7 @@ try {
 <div class="container">
     <h1>Lista de Imágenes</h1>
     <a href="../home.php" class="btn btn-primary btn-home">Regresar al Home</a>
+    <a href="upload_image_form.php" class="btn btn-success">Subir Imagen</a>
     <?php if ($imagenes): ?>
         <table class="table table-bordered">
             <thead>

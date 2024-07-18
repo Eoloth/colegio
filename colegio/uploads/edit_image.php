@@ -2,9 +2,10 @@
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
-    header("Location: ../index.html");
+    header("Location: ../home.php");
     exit();
 }
+
 
 $host = "localhost";
 $dbname = "escuel36_main";
