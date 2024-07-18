@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'uploads/config.php';
 
 try {
@@ -18,57 +19,11 @@ try {
 
 <!-- Mostrar mensaje de sesión -->
 <?php
-session_start();
 if (isset($_SESSION['mensaje'])) {
     echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
     unset($_SESSION['mensaje']);
 }
 ?>
-
-<!-- Modal -->
-<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-body customer-box">
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div class="tab-pane active" id="Login">
-                        <form role="form" class="form-horizontal" action="uploads/login.php" method="POST">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input class="form-control" id="usuario" name="usuario" placeholder="Usuario" type="text" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <input class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña" type="password" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-                                        Entrar
-                                    </button>
-                                    <a class="for-pwd" href="javascript:;">¿Olvidaste tu contraseña?</a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- LOADER -->
-<div id="preloader">
-    <div class="loader-container">
-        <div class="progress-br float shadow">
-            <div class="progress__item"></div>
-        </div>
-    </div>
-</div>
-<!-- END LOADER -->
 
 <div class="container">
     <h1>Eventos</h1>

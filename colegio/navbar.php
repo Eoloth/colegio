@@ -1,10 +1,11 @@
+<!-- Start header -->
 <header class="top-navbar">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="home.php">
-                <img src="images/logo.png" alt="Escuela Niño Jesús" />
+                <img src="images/logo.png" alt="" />
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-host" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -19,7 +20,7 @@
                     <?php if (isset($_SESSION['usuario'])): ?>
                         <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
                     <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#login">Entrar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
                     <?php endif; ?>
                 </ul>
             </div>
