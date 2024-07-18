@@ -35,7 +35,7 @@ try {
     <script src="../js/modernizer.js"></script>
 </head>
 <body class="host_version">
-<?php include '../navbar.php'; ?>
+<!-- No se incluye el navbar.php aquí -->
 
 <div class="container">
     <h1>Lista de Eventos</h1>
