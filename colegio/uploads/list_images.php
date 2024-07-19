@@ -16,12 +16,6 @@ try {
     $stmt->execute();
     $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Verificación para asegurar que se están obteniendo los datos
-    if (!$imagenes) {
-        echo "No se encontraron imágenes en la base de datos.";
-    } else {
-        echo "Se encontraron " . count($imagenes) . " imágenes en la base de datos.";
-    }
 } catch (PDOException $e) {
     die("Error al conectar a la base de datos: " . $e->getMessage());
 }
@@ -43,7 +37,6 @@ try {
     <script src="../js/lightbox.js"></script>
 </head>
 <body class="host_version">
-<?php include '../navbar.php'; ?>
 
 <div class="container">
     <h1>Lista de Imágenes</h1>
