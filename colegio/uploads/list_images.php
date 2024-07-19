@@ -1,3 +1,32 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../home.php");
+    exit();
+}
+
+require_once 'config.php';
+
+try {
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
+    $stmt->execute();
+    $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Verificación para asegurar que se están obteniendo los datos
+    if (!$imagenes) {
+        echo "No se encontraron imágenes en la base de datos.";
+    } else {
+        echo "Se encontraron " . count($imagenes) . " imágenes en la base de datos.";
+    }
+} catch (PDOException $e) {
+    die("Error al conectar a la base de datos: " . $e->getMessage());
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
