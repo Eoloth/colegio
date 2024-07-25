@@ -37,6 +37,10 @@ session_start();
 
 <div class="container">
     <h1>Galería de Imágenes</h1>
+    <?php if (isset($_SESSION['usuario'])): ?>
+        <a href="uploads/list_images.php" class="btn btn-info">Administrar Galería de Imágenes</a>
+    <?php endif; ?>
+    
     <div class="row">
         <?php
         // Conectar a la base de datos y obtener las imágenes
