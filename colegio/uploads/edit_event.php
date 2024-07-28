@@ -6,7 +6,6 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-
 require_once 'config.php';
 
 try {
@@ -21,6 +20,32 @@ try {
         $stmt->bindParam(':fecha_evento', $_POST['fecha_evento']);
         $stmt->execute();
 
+        // Manejo de la imagen
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == UPLOAD_ERR_OK) {
+            $imagen = $_FILES['imagen']['name'];
+            $target = '../uploads/' . basename($imagen);
+
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $target)) {
+                // Obtener la imagen anterior para eliminarla del servidor
+                $stmt = $conn->prepare("SELECT imagen FROM eventos WHERE id = :id");
+                $stmt->bindParam(':id', $_POST['id']);
+                $stmt->execute();
+                $evento = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($evento && file_exists('../uploads/' . $evento['imagen'])) {
+                    unlink('../uploads/' . $evento['imagen']);
+                }
+
+                // Actualizar la imagen en la base de datos
+                $stmt = $conn->prepare("UPDATE eventos SET imagen = :imagen WHERE id = :id");
+                $stmt->bindParam(':id', $_POST['id']);
+                $stmt->bindParam(':imagen', $imagen);
+                $stmt->execute();
+            } else {
+                throw new Exception("Error al subir la nueva imagen.");
+            }
+        }
+
         $_SESSION['mensaje'] = "Evento actualizado exitosamente.";
         header("Location: list_events.php");
         exit();
@@ -32,6 +57,8 @@ try {
     }
 } catch (PDOException $e) {
     die("Error al conectar a la base de datos: " . $e->getMessage());
+} catch (Exception $e) {
+    die("Error: " . $e->getMessage());
 }
 ?>
 
@@ -45,7 +72,7 @@ try {
 <body>
     <div class="container">
         <h1>Editar Evento</h1>
-        <form action="edit_event.php" method="post">
+        <form action="edit_event.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($evento['id']); ?>">
             <div class="form-group">
                 <label for="titulo">Título:</label>
@@ -58,6 +85,11 @@ try {
             <div class="form-group">
                 <label for="fecha_evento">Fecha del Evento:</label>
                 <input type="date" class="form-control" id="fecha_evento" name="fecha_evento" value="<?php echo htmlspecialchars($evento['fecha_evento']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="imagen">Imagen del Evento:</label>
+                <input type="file" class="form-control" id="imagen" name="imagen">
+                <p>Imagen actual: <?php echo htmlspecialchars($evento['imagen']); ?></p>
             </div>
             <button type="submit" class="btn btn-primary">Actualizar Evento</button>
             <a href="list_events.php" class="btn btn-secondary">Cancelar</a>
