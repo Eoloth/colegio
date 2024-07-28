@@ -16,20 +16,21 @@ if (isset($_GET['filename'])) {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Eliminar la imagen del servidor
+        // Verificar si el archivo existe
         if (file_exists($filepath)) {
+            // Eliminar la imagen del servidor
             if (unlink($filepath)) {
                 echo 'success';
             } else {
-                echo 'error';
+                echo 'error: unable to delete file';
             }
         } else {
-            echo 'file not found';
+            echo 'error: file not found';
         }
     } catch (PDOException $e) {
         echo 'database error: ' . $e->getMessage();
     }
 } else {
-    echo 'filename not set';
+    echo 'error: filename not set';
 }
 ?>

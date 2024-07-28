@@ -6,14 +6,10 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-
-$host = "localhost";
-$dbname = "escuel36_main";
-$username = "escuel36_admin";
-$password = "NVJd8f2Ae6^M";
+require_once 'config.php';
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -38,7 +34,7 @@ try {
         $imagen = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 } catch (PDOException $e) {
-    $_SESSION['mensaje'] = "Error al conectar a la base de datos.";
+    $_SESSION['mensaje'] = "Error al conectar a la base de datos: " . $e->getMessage();
     header("Location: list_images.php");
     exit();
 }
@@ -63,76 +59,6 @@ try {
         unset($_SESSION['mensaje']);
     }
     ?>
-
-    <!-- Modal -->
-    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body customer-box">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="Login">
-                            <form role="form" class="form-horizontal" action="login.php" method="POST">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <input class="form-control" id="usuario" name="usuario" placeholder="Usuario" type="text" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <input class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña" type="password" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-                                            Entrar
-                                        </button>
-                                        <a class="for-pwd" href="javascript:;">¿Olvidaste tu contraseña?</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LOADER -->
-    <div id="preloader">
-        <div class="loader-container">
-            <div class="progress-br float shadow">
-                <div class="progress__item"></div>
-            </div>
-        </div>
-    </div>
-    <!-- END LOADER -->
-
-    <!-- Start header -->
-    <header class="top-navbar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">
-                    <img src="../images/logo.png" alt="" />
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbars-host">
-                    <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../eventos.php">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
-                        <li class="nav-item"><a class="nav-link" href="" data-toggle="modal" data-target="#login">Entrar</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
 
     <div class="container">
         <h1>Editar Imagen</h1>
@@ -170,14 +96,14 @@ try {
                 <div class="col-lg-4 col-md-4 col-xs-12">
                     <div class="widget clearfix">
                         <div class="widget-title">
-                            <h3>Information Link</h3>
+                            <h3>Información</h3>
                         </div>
                         <ul class="footer-links">
-                        <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../eventos.php">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../eventos.php">Eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
                         </ul>
                     </div>
                 </div>
