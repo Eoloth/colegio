@@ -58,8 +58,8 @@ try {
                     <tr>
                         <td><?php echo htmlspecialchars($imagen['id']); ?></td>
                         <td>
-                            <a href="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" data-lightbox="galeria" data-title="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>">
-                                <img src="data:image/jpeg;base64,<?php echo base64_encode($imagen['imagen']); ?>" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" class="thumbnail" style="width: 100px; height: 100px;">
+                            <a href="../uploads/<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" data-lightbox="galeria" data-title="<?php echo htmlspecialchars($imagen['descripcion']); ?>">
+                                <img src="../uploads/<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" class="thumbnail" style="width: 100px; height: 100px;">
                             </a>
                         </td>
                         <td><?php echo htmlspecialchars($imagen['nombre_archivo']); ?></td>
@@ -81,5 +81,6 @@ try {
 
 <!-- Incluir dependencias de Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
 </body>
 </html>

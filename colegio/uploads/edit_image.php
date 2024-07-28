@@ -11,18 +11,25 @@ require_once 'config.php';
 try {
     $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
         $descripcion = $_POST['descripcion'];
-        
-        $stmt = $conn->prepare("UPDATE galeria SET nombre_archivo = :nombre, descripcion = :descripcion WHERE id = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':nombre', $nombre);
+
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == UPLOAD_ERR_OK) {
+            $nombre_archivo = $_FILES['imagen']['name'];
+            $imagen = file_get_contents($_FILES['imagen']['tmp_name']);
+            $stmt = $conn->prepare("UPDATE galeria SET nombre_archivo = :nombre_archivo, descripcion = :descripcion, imagen = :imagen WHERE id = :id");
+            $stmt->bindParam(':nombre_archivo', $nombre_archivo);
+            $stmt->bindParam(':imagen', $imagen, PDO::PARAM_LOB);
+        } else {
+            $stmt = $conn->prepare("UPDATE galeria SET descripcion = :descripcion WHERE id = :id");
+        }
+
         $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
-        
+
         $_SESSION['mensaje'] = "Imagen actualizada con éxito.";
         header("Location: list_images.php");
         exit();
@@ -46,100 +53,24 @@ try {
     <meta charset="UTF-8">
     <title>Editar Imagen</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../css/versions.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link rel="stylesheet" href="../css/custom.css">
 </head>
-<body class="host_version">
-    <!-- Mostrar mensaje de sesión -->
-    <?php
-    if (isset($_SESSION['mensaje'])) {
-        echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
-        unset($_SESSION['mensaje']);
-    }
-    ?>
-
-    <div class="container">
-        <h1>Editar Imagen</h1>
-        <form action="edit_image.php" method="POST">
-            <input type="hidden" name="id" value="<?php echo htmlspecialchars($imagen['id']); ?>">
-            <div class="form-group">
-                <label for="nombre">Nombre del Archivo</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="descripcion">Descripción</label>
-                <input type="text" class="form-control" id="descripcion" name="descripcion" value="<?php echo htmlspecialchars($imagen['descripcion']); ?>" required>
-            </div>
-            <button type="submit" class="btn btn-success">Actualizar Imagen</button>
-        </form>
-    </div>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Acerca de nosotros</h3>
-                        </div>
-                        <p> Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>
-                        <div class="footer-right">
-                            <ul class="footer-links-soi">
-                                <li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Información</h3>
-                        </div>
-                        <ul class="footer-links">
-                            <li class="nav-item active"><a class="nav-link" href="../home.php">Inicio</a></li>
-                            <li class="nav-item"><a class="nav-link" href="../about.html">Acerca de nosotros</a></li>
-                            <li class="nav-item"><a class="nav-link" href="../eventos.php">Eventos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="../galeria.php">Galería de Imágenes</a></li>
-                            <li class="nav-item"><a class="nav-link" href="../contact.html">Contacto</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-xs-12">
-                    <div class="widget clearfix">
-                        <div class="widget-title">
-                            <h3>Contacto</h3>
-                        </div>
-
-                        <ul class="footer-links">
-                            <li><a href="mailto:#">Correo</a></li>
-                            <li><a href="#">Facebook</a></li>
-                            <li>Dirección</li>
-                            <li>Teléfono</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+<body>
+<div class="container">
+    <h1>Editar Imagen</h1>
+    <form action="edit_image.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($imagen['id']); ?>">
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion" value="<?php echo htmlspecialchars($imagen['descripcion']); ?>" required>
         </div>
-    </footer>
-
-    <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
-
-    <!-- ALL JS FILES -->
-    <script src="../js/all.js"></script>
-    <!-- ALL PLUGINS -->
-    <script src="../js/custom.js"></script>
-    <script src="../js/timeline.min.js"></script>
-    <script>
-        timeline(document.querySelectorAll('.timeline'), {
-            forceVerticalMode: 700,
-            mode: 'horizontal',
-            verticalStartPosition: 'left',
-            visibleItems: 4
-        });
-    </script>
+        <div class="form-group">
+            <label for="imagen">Imagen (opcional):</label>
+            <input type="file" class="form-control" id="imagen" name="imagen">
+            <p>Imagen actual: <?php echo htmlspecialchars($imagen['nombre_archivo']); ?></p>
+        </div>
+        <button type="submit" class="btn btn-success">Actualizar Imagen</button>
+        <a href="list_images.php" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
 </body>
 </html>

@@ -8,41 +8,47 @@ if (!isset($_SESSION['usuario'])) {
 
 require_once 'config.php';
 
-if (isset($_GET['filename']) && isset($_GET['id'])) {
-    $filename = basename($_GET['filename']);
-    $id = intval($_GET['id']);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['imagenes'])) {
+    $nombres = $_POST['nombres'];
+    $descripciones = $_POST['descripciones'];
+    
+    $total = count($_FILES['imagenes']['name']);
 
     try {
         $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $conn->prepare("SELECT imagen FROM eventos WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $evento = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($evento) {
-            $imagenes = json_decode($evento['imagen'], true);
-            if ($imagenes && is_array($imagenes)) {
-                $imagenes = array_diff($imagenes, [$filename]);
-                $imagenes_json = json_encode($imagenes);
-
-                $stmt = $conn->prepare("UPDATE eventos SET imagen = :imagen WHERE id = :id");
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                $stmt->bindParam(':imagen', $imagenes_json);
-                $stmt->execute();
-
-                echo 'success';
-            } else {
-                echo 'error: imagenes not array';
+        for ($i = 0; $i < $total; $i++) {
+            $tmpFilePath = $_FILES['imagenes']['tmp_name'][$i];
+            if ($tmpFilePath != "") {
+                $nombre_archivo = basename($_FILES['imagenes']['name'][$i]);
+                $target_file = "../uploads/" . $nombre_archivo;
+                
+                if (move_uploaded_file($tmpFilePath, $target_file)) {
+                    $descripcion = $descripciones[$i];
+                    $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, descripcion) VALUES (:nombre_archivo, :descripcion)");
+                    $stmt->bindParam(':nombre_archivo', $nombre_archivo);
+                    $stmt->bindParam(':descripcion', $descripcion);
+                    $stmt->execute();
+                } else {
+                    $_SESSION['mensaje'] = "Error al subir la imagen: $nombre_archivo";
+                    header("Location: upload_image_form.php");
+                    exit();
+                }
             }
-        } else {
-            echo 'error: evento not found';
         }
+
+        $_SESSION['mensaje'] = "Las imágenes se han subido correctamente.";
+        header("Location: list_images.php");
+        exit();
     } catch (PDOException $e) {
-        echo 'database error: ' . $e->getMessage();
+        $_SESSION['mensaje'] = "Error al conectar a la base de datos.";
+        header("Location: upload_image_form.php");
+        exit();
     }
 } else {
-    echo 'error: filename or id not set';
+    $_SESSION['mensaje'] = "No se seleccionaron imágenes.";
+    header("Location: upload_image_form.php");
+    exit();
 }
 ?>

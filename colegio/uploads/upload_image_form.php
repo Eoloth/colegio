@@ -1,45 +1,50 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../home.php");
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subir Imagen</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../css/versions.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link rel="stylesheet" href="../css/custom.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/modernizer.js"></script>
+    <style>
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .image-preview div {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-<body class="host_version">
-<?php include '../navbar.php'; ?>
-
-<div class="container mt-4">
-    <h1 class="mb-4">Subir Imagen</h1>
-    <a href="list_images.php" class="btn btn-primary mb-4">Regresar a la Lista de Imágenes</a>
+<body>
+<div class="container">
+    <h1>Subir Imagen</h1>
     <form action="upload_image.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="imagen">Seleccionar imágenes</label>
-            <input type="file" name="images[]" multiple class="form-control-file" required>
+            <label for="imagenes">Seleccionar Imágenes:</label>
+            <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple required>
         </div>
+        <div id="image-preview" class="image-preview"></div>
         <button type="submit" class="btn btn-success">Subir Imágenes</button>
+        <a href="list_images.php" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 
-<?php include '../footer.php'; ?>
-
-<!-- Incluir dependencias de Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('imagenes').addEventListener('change', function(e) {
+        let preview = document.getElementById('image-preview');
+        preview.innerHTML = '';
+        Array.from(e.target.files).forEach(file => {
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                let div = document.createElement('div');
+                div.innerHTML = `<img src="${event.target.result}" style="width: 100px; height: 100px;">
+                                 <input type="text" class="form-control" name="nombres[]" placeholder="Nombre de la imagen" value="${file.name}" required>
+                                 <input type="text" class="form-control" name="descripciones[]" placeholder="Descripción" required>`;
+                preview.appendChild(div);
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
 </body>
 </html>
