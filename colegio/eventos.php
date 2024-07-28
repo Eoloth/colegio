@@ -38,8 +38,13 @@ if (isset($_SESSION['mensaje'])) {
             <?php foreach ($eventos as $evento): ?>
                 <div class="col-md-4">
                     <div class="card mb-4 evento-card" data-id="<?php echo $evento['id']; ?>">
-                        <?php if ($evento['imagen_ruta']): ?>
-                            <img src="<?php echo htmlspecialchars($evento['imagen_ruta']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
+                        <?php if (!empty($evento['imagen'])): ?>
+                            <?php 
+                                $imagenes = json_decode($evento['imagen'], true);
+                                if (is_array($imagenes) && !empty($imagenes)): 
+                            ?>
+                                <img src="uploads/<?php echo htmlspecialchars($imagenes[0]); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
+                            <?php endif; ?>
                         <?php endif; ?>
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($evento['titulo']); ?></h5>
@@ -51,8 +56,8 @@ if (isset($_SESSION['mensaje'])) {
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-    <div id="event-details-container">
-        <div id="event-details"></div>
+    <div id="event-details-container" style="display:none;">
+        <div id="event-details" class="card"></div>
     </div>
 </div>
 

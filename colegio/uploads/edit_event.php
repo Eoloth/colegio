@@ -9,7 +9,7 @@ if (!isset($_SESSION['usuario'])) {
 require_once 'config.php';
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -20,26 +20,34 @@ try {
         $stmt->bindParam(':fecha_evento', $_POST['fecha_evento']);
         $stmt->execute();
 
-        // Manejo de la imagen
+        // Manejo de las imágenes
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == UPLOAD_ERR_OK) {
             $imagen = $_FILES['imagen']['name'];
             $target = '../uploads/' . basename($imagen);
 
             if (move_uploaded_file($_FILES['imagen']['tmp_name'], $target)) {
-                // Obtener la imagen anterior para eliminarla del servidor
+                // Obtener las imágenes anteriores para eliminarlas del servidor
                 $stmt = $conn->prepare("SELECT imagen FROM eventos WHERE id = :id");
                 $stmt->bindParam(':id', $_POST['id']);
                 $stmt->execute();
                 $evento = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($evento && file_exists('../uploads/' . $evento['imagen'])) {
-                    unlink('../uploads/' . $evento['imagen']);
+                $imagenes = json_decode($evento['imagen'], true);
+                if ($imagenes && is_array($imagenes)) {
+                    foreach ($imagenes as $img) {
+                        if (file_exists('../uploads/' . $img)) {
+                            unlink('../uploads/' . $img);
+                        }
+                    }
                 }
 
-                // Actualizar la imagen en la base de datos
+                // Actualizar las imágenes en la base de datos
+                $imagenes[] = $imagen; // Añadir la nueva imagen al array
+                $imagenes_json = json_encode($imagenes);
+
                 $stmt = $conn->prepare("UPDATE eventos SET imagen = :imagen WHERE id = :id");
                 $stmt->bindParam(':id', $_POST['id']);
-                $stmt->bindParam(':imagen', $imagen);
+                $stmt->bindParam(':imagen', $imagenes_json);
                 $stmt->execute();
             } else {
                 throw new Exception("Error al subir la nueva imagen.");
@@ -54,6 +62,7 @@ try {
         $stmt->bindParam(':id', $_GET['id']);
         $stmt->execute();
         $evento = $stmt->fetch(PDO::FETCH_ASSOC);
+        $imagenes = json_decode($evento['imagen'], true);
     }
 } catch (PDOException $e) {
     die("Error al conectar a la base de datos: " . $e->getMessage());
@@ -68,6 +77,26 @@ try {
     <meta charset="UTF-8">
     <title>Editar Evento</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style>
+        .image-preview {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .image-preview img {
+            width: 150px;
+        }
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -89,11 +118,52 @@ try {
             <div class="form-group">
                 <label for="imagen">Imagen del Evento:</label>
                 <input type="file" class="form-control" id="imagen" name="imagen">
-                <p>Imagen actual: <?php echo htmlspecialchars($evento['imagen']); ?></p>
+                <div id="current-images">
+                    <p>Imágenes actuales:</p>
+                    <?php if ($imagenes && is_array($imagenes)): ?>
+                        <?php foreach ($imagenes as $img): ?>
+                            <div class="image-preview">
+                                <img src="../uploads/<?php echo htmlspecialchars($img); ?>" alt="Imagen del evento">
+                                <button class="remove-image" data-filename="<?php echo htmlspecialchars($img); ?>">X</button>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Actualizar Evento</button>
             <a href="list_events.php" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.remove-image').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const filename = button.getAttribute('data-filename');
+                    fetch(`delete_image.php?filename=${filename}&id=<?php echo htmlspecialchars($evento['id']); ?>`)
+                        .then(response => response.text())
+                        .then(result => {
+                            if (result === 'success') {
+                                button.parentElement.remove();
+                                updateImageDatabase(filename);
+                            } else {
+                                alert('Error al eliminar la imagen: ' + result);
+                            }
+                        });
+                });
+            });
+        });
+
+        function updateImageDatabase(filename) {
+            fetch(`upload_image.php?filename=${filename}&id=<?php echo htmlspecialchars($evento['id']); ?>`)
+                .then(response => response.text())
+                .then(result => {
+                    if (result !== 'success') {
+                        alert('Error al actualizar la base de datos: ' + result);
+                    }
+                });
+        }
+    </script>
 </body>
 </html>

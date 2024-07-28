@@ -10,7 +10,7 @@ require_once 'config.php';
 
 if (isset($_GET['id'])) {
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Obtener la imagen del evento
@@ -39,3 +39,4 @@ if (isset($_GET['id'])) {
     header("Location: list_events.php");
     exit();
 }
+?>

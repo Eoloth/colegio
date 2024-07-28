@@ -5,7 +5,6 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: ../home.php");
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -31,16 +30,30 @@ if (!isset($_SESSION['usuario'])) {
         #gallery {
             margin-top: 10px;
         }
-        #gallery img {
+        .image-preview {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .image-preview img {
             width: 150px;
-            margin: 10px;
+        }
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Crear Evento</h1>
-        <form action="create_event.php" method="POST">
+        <form action="create_event.php" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="titulo">Título:</label>
                 <input type="text" id="titulo" name="titulo" class="form-control" required>
@@ -54,12 +67,9 @@ if (!isset($_SESSION['usuario'])) {
                 <input type="date" id="fecha_evento" name="fecha_evento" class="form-control" required>
             </div>
             <div id="drop-area">
-                <form class="my-form">
-                    <p>Arrastra y suelta tus imágenes aquí o</p>
-                    <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-                    <label class="btn btn-primary" for="fileElem">Seleccionar archivos</label>
-                </form>
-                <progress id="progress-bar" max=100 value=0></progress>
+                <p>Arrastra y suelta tus imágenes aquí o</p>
+                <input type="file" id="fileElem" name="imagenes[]" multiple accept="image/*" onchange="handleFiles(this.files)">
+                <label class="btn btn-primary" for="fileElem">Seleccionar archivos</label>
                 <div id="gallery"></div>
             </div>
             <button type="submit" class="btn btn-success">Crear</button>
@@ -68,6 +78,7 @@ if (!isset($_SESSION['usuario'])) {
 
     <script>
         let dropArea = document.getElementById('drop-area');
+        let gallery = document.getElementById('gallery');
 
         // Prevent default drag behaviors
         ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -100,40 +111,30 @@ if (!isset($_SESSION['usuario'])) {
 
         function handleFiles(files) {
             files = [...files];
-            files.forEach(uploadFile);
             files.forEach(previewFile);
-        }
-
-        function uploadFile(file) {
-            let url = 'upload_image.php';
-            let formData = new FormData();
-
-            formData.append('file', file);
-
-            fetch(url, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(() => {
-                progressDone();
-            })
-            .catch(() => { alert('Upload failed'); });
         }
 
         function previewFile(file) {
             let reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onloadend = function() {
+                let div = document.createElement('div');
+                div.classList.add('image-preview');
+
                 let img = document.createElement('img');
                 img.src = reader.result;
-                document.getElementById('gallery').appendChild(img);
-            }
-        }
 
-        function progressDone() {
-            let progressBar = document.getElementById('progress-bar');
-            progressBar.value = 100;
+                let button = document.createElement('button');
+                button.textContent = 'X';
+                button.classList.add('remove-image');
+                button.onclick = function() {
+                    div.remove();
+                };
+
+                div.appendChild(img);
+                div.appendChild(button);
+                gallery.appendChild(div);
+            }
         }
     </script>
 </body>

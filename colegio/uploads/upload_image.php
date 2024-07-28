@@ -6,34 +6,43 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
-
 require_once 'config.php';
 
-try {
-    // Conexión a la base de datos
-    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['images'])) {
-        $total = count($_FILES['images']['name']);
-        for ($i = 0; $i < $total; $i++) {
-            $tmpFilePath = $_FILES['images']['tmp_name'][$i];
-            if ($tmpFilePath != "") {
-                $nombre_archivo = $_FILES['images']['name'][$i];
-                $imagen = file_get_contents($tmpFilePath);
-                $stmt = $conn->prepare("INSERT INTO galeria (nombre_archivo, imagen) VALUES (:nombre_archivo, :imagen)");
-                $stmt->bindParam(':nombre_archivo', $nombre_archivo);
-                $stmt->bindParam(':imagen', $imagen, PDO::PARAM_LOB);
+if (isset($_GET['filename']) && isset($_GET['id'])) {
+    $filename = basename($_GET['filename']);
+    $id = intval($_GET['id']);
+
+    try {
+        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $stmt = $conn->prepare("SELECT imagen FROM eventos WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $evento = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($evento) {
+            $imagenes = json_decode($evento['imagen'], true);
+            if ($imagenes && is_array($imagenes)) {
+                $imagenes = array_diff($imagenes, [$filename]);
+                $imagenes_json = json_encode($imagenes);
+
+                $stmt = $conn->prepare("UPDATE eventos SET imagen = :imagen WHERE id = :id");
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->bindParam(':imagen', $imagenes_json);
                 $stmt->execute();
+
+                echo 'success';
+            } else {
+                echo 'error: imagenes not array';
             }
+        } else {
+            echo 'error: evento not found';
         }
-        $_SESSION['mensaje'] = "Imágenes subidas con éxito.";
-        header("Location: list_images.php");
-        exit();
+    } catch (PDOException $e) {
+        echo 'database error: ' . $e->getMessage();
     }
-} catch (PDOException $e) {
-    $_SESSION['mensaje'] = "Error al conectar a la base de datos.";
-    header("Location: list_images.php");
-    exit();
+} else {
+    echo 'error: filename or id not set';
 }
 ?>
