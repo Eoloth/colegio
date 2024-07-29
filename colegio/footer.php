@@ -63,5 +63,37 @@
         visibleItems: 4
     });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Mostrar botones de edición al hacer clic en el contenido editable
+    document.querySelectorAll('.editable-content').forEach(function (element) {
+        element.addEventListener('click', function () {
+            var parent = element.closest('.editable-container');
+            parent.querySelector('.edit-actions').style.display = 'block';
+        });
+    });
+
+    // Cancelar edición
+    document.querySelectorAll('.cancel-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var parent = button.closest('.editable-container');
+            parent.querySelector('.edit-actions').style.display = 'none';
+        });
+    });
+
+    // Guardar cambios (ejemplo simple, debe ajustarse para enviar al servidor)
+    document.querySelectorAll('.save-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var parent = button.closest('.editable-container');
+            var content = parent.querySelector('.editable-content').textContent;
+            var key = parent.querySelector('.editable-content').getAttribute('data-key');
+
+            // Aquí puedes hacer una llamada AJAX para enviar los cambios al servidor
+            console.log('Guardar', key, content);
+            parent.querySelector('.edit-actions').style.display = 'none';
+        });
+    });
+});
+</script>
 </body>
 </html>
