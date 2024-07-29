@@ -81,16 +81,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Guardar cambios (ejemplo simple, debe ajustarse para enviar al servidor)
+    // Guardar cambios
     document.querySelectorAll('.save-btn').forEach(function (button) {
         button.addEventListener('click', function () {
             var parent = button.closest('.editable-container');
             var content = parent.querySelector('.editable-content').textContent;
             var key = parent.querySelector('.editable-content').getAttribute('data-key');
 
-            // Aquí puedes hacer una llamada AJAX para enviar los cambios al servidor
-            console.log('Guardar', key, content);
-            parent.querySelector('.edit-actions').style.display = 'none';
+            // Llamada AJAX para enviar los cambios al servidor
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'uploads/admin_home.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log('Respuesta del servidor:', xhr.responseText);
+                    // Ocultar los botones de acción después de guardar
+                    parent.querySelector('.edit-actions').style.display = 'none';
+                }
+            };
+            xhr.send('section=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
         });
     });
 });
