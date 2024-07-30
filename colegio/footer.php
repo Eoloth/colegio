@@ -6,12 +6,12 @@
                     <div class="widget-title">
                         <h3>Acerca de nosotros</h3>
                     </div>
-                    <p>Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>   
+                    <p>Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis dis montes.</p>
                     <div class="footer-right">
                         <ul class="footer-links-soi">
                             <li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a></li>
                         </ul>
-                    </div>						
+                    </div>                      
                 </div>
             </div>
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Llamada AJAX para enviar los cambios al servidor
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'uploads/admin_home.php', true);
+            xhr.open('POST', 'uploads/save_content.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
@@ -99,7 +99,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     parent.querySelector('.edit-actions').style.display = 'none';
                 }
             };
-            xhr.send('section=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
+            xhr.send('key=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
+        });
+    });
+
+    // Manejo de clic en íconos de edición de imágenes
+    document.querySelectorAll('.edit-icon').forEach(function (icon) {
+        icon.addEventListener('click', function (e) {
+            e.preventDefault(); // Evitar redirección
+            // Abrir modal de edición o redirigir a la página de carga de imagen
+            window.location.href = icon.getAttribute('href');
         });
     });
 });
