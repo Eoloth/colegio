@@ -1,35 +1,37 @@
 <?php
+include 'config.php';
 session_start();
-require 'config.php';
-
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php");
-    exit();
-}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $section = $_POST['seccion'];
+    $seccion = $_POST['seccion'];
     $content = $_POST['content'];
 
-    try {
-        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Iniciando conexión a la base de datos...<br>";
 
-        $stmt = $conn->prepare("UPDATE home SET texto = :content WHERE seccion = :section");
-        $stmt->bindParam(':content', $content);
-        $stmt->bindParam(':section', $section);
-        $stmt->execute();
+    $query = "UPDATE home SET texto = ? WHERE seccion = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $content, $seccion);
+    $stmt->execute();
 
-        $stmt = $conn->prepare("SELECT * FROM home WHERE seccion = :section");
-        $stmt->bindParam(':section', $section);
-        $stmt->execute();
-        $updatedData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        echo 'Datos actualizados: ';
-        print_r($updatedData);
-    } catch (PDOException $e) {
-        echo 'Error al conectar a la base de datos: ' . $e->getMessage();
+    if ($stmt->affected_rows > 0) {
+        echo "Datos guardados correctamente.<br>";
+    } else {
+        echo "Error al guardar los datos o no hubo cambios.<br>";
     }
-    exit();
+
+    $stmt->close();
+    
+    // Rescatar los datos insertados para mostrar confirmación
+    $query = "SELECT texto FROM home WHERE seccion = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $seccion);
+    $stmt->execute();
+    $stmt->bind_result($updated_text);
+    $stmt->fetch();
+    
+    echo "Contenido recibido: " . htmlspecialchars($updated_text);
+    $stmt->close();
 }
 
+$conn->close();
+?>

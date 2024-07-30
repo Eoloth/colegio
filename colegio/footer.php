@@ -80,26 +80,28 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.querySelectorAll('.save-btn').forEach(function (button) {
-        button.addEventListener('click', function () {
-            var parent = button.closest('.editable-container');
-            var content = parent.querySelector('.editable-content').textContent;
-            var key = parent.querySelector('.editable-content').getAttribute('data-key');
+    button.addEventListener('click', function () {
+        var parent = button.closest('.editable-container');
+        var content = parent.querySelector('.editable-content').textContent;
+        var key = parent.querySelector('.editable-content').getAttribute('data-key');
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'uploads/save_content.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    console.log('Respuesta del servidor:', xhr.responseText);
-                    parent.querySelector('.edit-actions').style.display = 'none';
-                }
-            };
-            console.log('Datos antes de enviar:');
-            console.log('key:', key);
-            console.log('content:', content);
-            xhr.send('seccion=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
-        });
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'uploads/save_content.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log('Respuesta del servidor:', xhr.responseText);
+                alert(xhr.responseText); // Muestra el texto actualizado
+                parent.querySelector('.edit-actions').style.display = 'none';
+            }
+        };
+        console.log('Datos antes de enviar:');
+        console.log('key:', key);
+        console.log('content:', content);
+        xhr.send('seccion=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
     });
+});
+
 
     document.querySelectorAll('.edit-icon').forEach(function (icon) {
         icon.addEventListener('click', function (e) {
