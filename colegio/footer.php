@@ -52,7 +52,7 @@
 
 <!-- ALL JS FILES -->
 <script src="js/all.js"></script>
-<!-- ALL PLUGINS -->
+<!-- CUSTOM JS FILES -->
 <script src="js/custom.js"></script>
 <script src="js/timeline.min.js"></script>
 <script>
@@ -108,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
 </script>
 </body>
 </html>
