@@ -1,5 +1,24 @@
 <?php
 session_start();
+require 'config.php'; // Incluye las credenciales de la base de datos
+
+try {
+    $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Obtener datos de la base de datos para diferentes secciones
+    $stmt = $conn->prepare("SELECT * FROM home WHERE seccion = :section");
+    $sections = ['quienes_somos', 'bienvenidos_text', 'bienvenidos_text_2', 'logros_text', 'logros_text_2'];
+    $data = [];
+    foreach ($sections as $section) {
+        $stmt->bindParam(':section', $section);
+        $stmt->execute();
+        $data[$section] = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+} catch (PDOException $e) {
+    die("Error al conectar a la base de datos: " . $e->getMessage());
+}
 ?>
 
 <?php include 'header.php'; ?>
@@ -137,7 +156,7 @@ if (isset($_SESSION['mensaje'])) {
                 <h3>Quienes somos</h3>
                 <div class="editable-container">
                     <p class="lead editable-content" data-key="quienes_somos" contenteditable="true">
-                        Lorem Ipsum dolroin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem!
+                        <?php echo htmlspecialchars($data['quienes_somos']['texto']); ?>
                     </p>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>
@@ -154,7 +173,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h2> Bienvenidos a la Escuela de Lenguaje Niño Jesús</h2>
                     <div class="editable-container">
                         <p class="editable-content" data-key="bienvenidos_text" contenteditable="true">
-                            Quisque eget nisl id nulla sagittis auctor quis id. Aliquam quis vehicula enim, non aliquam risus. Sed a tellus quis mi rhoncus dignissim.
+                            <?php echo htmlspecialchars($data['bienvenidos_text']['texto']); ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -164,7 +183,7 @@ if (isset($_SESSION['mensaje'])) {
 
                     <div class="editable-container">
                         <p class="editable-content" data-key="bienvenidos_text_2" contenteditable="true">
-                            Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis montes, nascetur ridiculus mus. Sed vitae rutrum neque.
+                            <?php echo htmlspecialchars($data['bienvenidos_text_2']['texto']); ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -202,7 +221,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h2>Logros</h2>
                     <div class="editable-container">
                         <p class="editable-content" data-key="logros_text" contenteditable="true">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <?php echo htmlspecialchars($data['logros_text']['texto']); ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -212,7 +231,7 @@ if (isset($_SESSION['mensaje'])) {
 
                     <div class="editable-container">
                         <p class="editable-content" data-key="logros_text_2" contenteditable="true">
-                            Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum.
+                            <?php echo htmlspecialchars($data['logros_text_2']['texto']); ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
