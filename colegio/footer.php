@@ -65,7 +65,6 @@
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Mostrar botones de edición al hacer clic en el contenido editable
     document.querySelectorAll('.editable-content').forEach(function (element) {
         element.addEventListener('click', function () {
             var parent = element.closest('.editable-container');
@@ -73,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Cancelar edición
     document.querySelectorAll('.cancel-btn').forEach(function (button) {
         button.addEventListener('click', function () {
             var parent = button.closest('.editable-container');
@@ -81,33 +79,31 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Guardar cambios
     document.querySelectorAll('.save-btn').forEach(function (button) {
         button.addEventListener('click', function () {
             var parent = button.closest('.editable-container');
             var content = parent.querySelector('.editable-content').textContent;
             var key = parent.querySelector('.editable-content').getAttribute('data-key');
 
-            // Llamada AJAX para enviar los cambios al servidor
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'uploads/save_content.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     console.log('Respuesta del servidor:', xhr.responseText);
-                    // Ocultar los botones de acción después de guardar
                     parent.querySelector('.edit-actions').style.display = 'none';
                 }
             };
-            xhr.send('key=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
+            console.log('Datos antes de enviar:');
+            console.log('key:', key);
+            console.log('content:', content);
+            xhr.send('seccion=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
         });
     });
 
-    // Manejo de clic en íconos de edición de imágenes
     document.querySelectorAll('.edit-icon').forEach(function (icon) {
         icon.addEventListener('click', function (e) {
-            e.preventDefault(); // Evitar redirección
-            // Abrir modal de edición o redirigir a la página de carga de imagen
+            e.preventDefault();
             window.location.href = icon.getAttribute('href');
         });
     });

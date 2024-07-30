@@ -136,7 +136,7 @@ if (isset($_SESSION['mensaje'])) {
             <div class="col-md-8 offset-md-2">
                 <h3>Quienes somos</h3>
                 <div class="editable-container">
-                    <p class="lead editable-content" data-key="quienes_somos_text" contenteditable="true">
+                    <p class="lead editable-content" data-key="quienes_somos" contenteditable="true">
                         Lorem Ipsum dolroin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem!
                     </p>
                     <div class="edit-actions" style="display: none;">
