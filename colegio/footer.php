@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log('Respuesta del servidor:', xhr.responseText);
-                alert(xhr.responseText); // Muestra el texto actualizado
                 parent.querySelector('.edit-actions').style.display = 'none';
             }
         };
