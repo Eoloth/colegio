@@ -101,10 +101,14 @@
     });
 
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.edit-image-btn').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var section = button.getAttribute('data-section');
-                showUploadModal(section);
+        document.querySelectorAll('.edit-image-icon').forEach(function (icon) {
+            icon.addEventListener('click', function (e) {
+                e.preventDefault();
+                var section = icon.getAttribute('data-section');
+                // Establecer el valor de la sección en el formulario del modal
+                document.getElementById('modalSection').value = section;
+                // Mostrar el modal
+                $('#uploadImageModal').modal('show');
             });
         });
 
