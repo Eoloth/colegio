@@ -1,6 +1,6 @@
 /******************************************
     Version: 1.0
-/****************************************** */
+/******************************************/
 
 (function($) {
     "use strict";
@@ -136,66 +136,72 @@
         });
     });
 
-  /* ==============================================
- Editable Content Management
- =============================================== */
- document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.editable-content').forEach(function (element) {
-        element.addEventListener('click', function () {
-            var parent = element.closest('.editable-container');
-            parent.querySelector('.edit-actions').style.display = 'block';
+    /* ==============================================
+     Editable Content Management
+     =============================================== */
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.editable-content').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var parent = element.closest('.editable-container');
+                parent.querySelector('.edit-actions').style.display = 'block';
+            });
         });
-    });
 
-    document.querySelectorAll('.cancel-btn').forEach(function (button) {
-        button.addEventListener('click', function () {
-            var parent = button.closest('.editable-container');
-            parent.querySelector('.edit-actions').style.display = 'none';
+        document.querySelectorAll('.cancel-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var parent = button.closest('.editable-container');
+                parent.querySelector('.edit-actions').style.display = 'none';
+            });
         });
-    });
 
-    document.querySelectorAll('.save-btn').forEach(function (button) {
-        button.addEventListener('click', function () {
-            var parent = button.closest('.editable-container');
-            var content = parent.querySelector('.editable-content').textContent;
-            var key = parent.querySelector('.editable-content').getAttribute('data-key');
+        document.querySelectorAll('.save-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var parent = button.closest('.editable-container');
+                var content = parent.querySelector('.editable-content').textContent.trim();
+                var key = parent.querySelector('.editable-content').getAttribute('data-key').trim();
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'uploads/save_content.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    console.log('Respuesta del servidor:', xhr.responseText);
-                    try {
-                        // Intenta analizar como JSON
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            console.log('Contenido guardado correctamente:', response.data);
-                        } else {
-                            console.error('Error al guardar:', response.message);
-                        }
-                    } catch (e) {
-                        // Si falla, muestra el texto plano
-                        console.error('Error al analizar la respuesta como JSON:', e);
-                        console.log('Respuesta recibida (texto plano):', xhr.responseText);
-                    }
-                    parent.querySelector('.edit-actions').style.display = 'none';
+                if (!content || !key) {
+                    console.error('Key o content vacíos, no se puede guardar.');
+                    return;
                 }
-            };
-            console.log('Datos antes de enviar:');
-            console.log('key:', key);
-            console.log('content:', content);
-            console.log('Iniciando conexión a la base de datos...');
-            xhr.send('seccion=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'uploads/save_content.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            try {
+                                var response = JSON.parse(xhr.responseText);
+                                if (response.status === 'success') {
+                                    console.log('Contenido guardado correctamente:', response.data);
+                                } else {
+                                    console.error('Error al guardar:', response.message);
+                                }
+                            } catch (e) {
+                                console.error('Error al analizar la respuesta como JSON:', e);
+                                console.log('Respuesta recibida (texto plano):', xhr.responseText);
+                            }
+                        } else {
+                            console.error('Error en la solicitud: ' + xhr.status);
+                        }
+                        parent.querySelector('.edit-actions').style.display = 'none';
+                    }
+                };
+                console.log('Datos antes de enviar:');
+                console.log('key:', key);
+                console.log('content:', content);
+                console.log('Iniciando conexión a la base de datos...');
+                xhr.send('seccion=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
+            });
+        });
+
+        document.querySelectorAll('.edit-icon').forEach(function (icon) {
+            icon.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.location.href = icon.getAttribute('href');
+            });
         });
     });
 
-    document.querySelectorAll('.edit-icon').forEach(function (icon) {
-        icon.addEventListener('click', function (e) {
-            e.preventDefault();
-            window.location.href = icon.getAttribute('href');
-        });
-    });
-});
-
-})(jQuery); 
+})(jQuery);

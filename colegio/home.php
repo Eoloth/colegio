@@ -1,5 +1,23 @@
 <?php
 session_start();
+require_once 'uploads/config.php';
+
+// Conexión a la base de datos
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Obtener todo el contenido de la tabla 'home'
+$sql = "SELECT * FROM home";
+$result = $conn->query($sql);
+$secciones = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $secciones[$row['identifier']] = $row['texto'];
+    }
+}
+$conn->close();
 ?>
 
 <?php include 'header.php'; ?>
@@ -45,7 +63,7 @@ if (isset($_SESSION['mensaje'])) {
                                     <h2><strong>Escuela de Lenguaje</strong> Niño Jesús</h2>
                                     <div class="editable-container">
                                         <p class="lead editable-content" data-key="carrusel_escuela" contenteditable="true">
-                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet aliquam, dicta facilis, tenetur explicabo perspiciatis quia laborum praesentium qui consequatur provident fuga aut. Ab earum aut expedita, delectus voluptatum omnis!
+                                            <?php echo isset($secciones['carrusel_escuela']) ? $secciones['carrusel_escuela'] : 'Texto predeterminado para carrusel escuela'; ?>
                                         </p>
                                         <div class="edit-actions" style="display: none;">
                                             <button class="save-btn">Guardar</button>
@@ -72,7 +90,7 @@ if (isset($_SESSION['mensaje'])) {
                                     <h2 data-animation="animated zoomInRight">Texto a reemplazar <strong>educación</strong></h2>
                                     <div class="editable-container">
                                         <p class="lead editable-content" data-key="carrusel_educacion" contenteditable="true">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt ducimus accusamus consequatur cum perferendis error totam id. Numquam sint officiis debitis ad nostrum iure vitae, consectetur deleniti eaque similique inventore?
+                                            <?php echo isset($secciones['carrusel_educacion']) ? $secciones['carrusel_educacion'] : 'Texto predeterminado para carrusel educación'; ?>
                                         </p>
                                         <div class="edit-actions" style="display: none;">
                                             <button class="save-btn">Guardar</button>
@@ -99,7 +117,7 @@ if (isset($_SESSION['mensaje'])) {
                                     <h2 data-animation="animated zoomInRight"><strong>Eventos</strong> y graduaciones</h2>
                                     <div class="editable-container">
                                         <p class="lead editable-content" data-key="carrusel_eventos" contenteditable="true">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit excepturi aliquid expedita inventore molestias aspernatur cum alias vitae magnam harum, repellendus doloribus aliquam ratione? Amet quidem at sequi corrupti libero!
+                                            <?php echo isset($secciones['carrusel_eventos']) ? $secciones['carrusel_eventos'] : 'Texto predeterminado para carrusel eventos'; ?>
                                         </p>
                                         <div class="edit-actions" style="display: none;">
                                             <button class="save-btn">Guardar</button>
@@ -137,7 +155,7 @@ if (isset($_SESSION['mensaje'])) {
                 <h3>Quienes somos</h3>
                 <div class="editable-container">
                     <p class="lead editable-content" data-key="quienes_somos" contenteditable="true">
-                        Lorem Ipsum dolroin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem!
+                        <?php echo isset($secciones['quienes_somos']) ? $secciones['quienes_somos'] : 'Texto predeterminado para quienes somos'; ?>
                     </p>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>
@@ -154,7 +172,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h2> Bienvenidos a la Escuela de Lenguaje Niño Jesús</h2>
                     <div class="editable-container">
                         <p class="editable-content" data-key="bienvenida" contenteditable="true">
-                            Quisque eget nisl id nulla sagittis auctor quis id. Aliquam quis vehicula enim, non aliquam risus. Sed a tellus quis mi rhoncus dignissim.
+                            <?php echo isset($secciones['bienvenida']) ? $secciones['bienvenida'] : 'Texto predeterminado para bienvenida'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -164,7 +182,7 @@ if (isset($_SESSION['mensaje'])) {
 
                     <div class="editable-container">
                         <p class="editable-content" data-key="bienvenida_2" contenteditable="true">
-                            Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum. Sed fermentum est vitae rhoncus molestie. Cum sociis natoque penatibus et magnis montes, nascetur ridiculus mus. Sed vitae rutrum neque.
+                            <?php echo isset($secciones['bienvenida_2']) ? $secciones['bienvenida_2'] : 'Texto predeterminado para bienvenida 2'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -202,7 +220,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h2>Logros</h2>
                     <div class="editable-container">
                         <p class="editable-content" data-key="logros" contenteditable="true">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <?php echo isset($secciones['logros']) ? $secciones['logros'] : 'Texto predeterminado para logros'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -212,7 +230,7 @@ if (isset($_SESSION['mensaje'])) {
 
                     <div class="editable-container">
                         <p class="editable-content" data-key="logros_2" contenteditable="true">
-                            Integer rutrum ligula eu dignissim laoreet. Pellentesque venenatis nibh sed tellus faucibus bibendum.
+                            <?php echo isset($secciones['logros_2']) ? $secciones['logros_2'] : 'Texto predeterminado para logros 2'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -232,7 +250,7 @@ if (isset($_SESSION['mensaje'])) {
                 <h3>Nuestra historia</h3>
                 <div class="editable-container">
                     <p class="lead editable-content" data-key="nuestra_historia" contenteditable="true">
-                        Lorem Ipsum dolroin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem!
+                        <?php echo isset($secciones['nuestra_historia']) ? $secciones['nuestra_historia'] : 'Texto predeterminado para nuestra historia'; ?>
                     </p>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>
@@ -249,7 +267,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2018</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2018" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2018']) ? $secciones['nuestra_historia_2018'] : 'Texto predeterminado para nuestra historia 2018'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -263,7 +281,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2015</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2015" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2015']) ? $secciones['nuestra_historia_2015'] : 'Texto predeterminado para nuestra historia 2015'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -277,7 +295,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2014</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2014" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2014']) ? $secciones['nuestra_historia_2014'] : 'Texto predeterminado para nuestra historia 2014'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -291,7 +309,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2012</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2012" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2012']) ? $secciones['nuestra_historia_2012'] : 'Texto predeterminado para nuestra historia 2012'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -305,7 +323,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2010</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2010" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2010']) ? $secciones['nuestra_historia_2010'] : 'Texto predeterminado para nuestra historia 2010'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -319,7 +337,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2007</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2007" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2007']) ? $secciones['nuestra_historia_2007'] : 'Texto predeterminado para nuestra historia 2007'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -333,7 +351,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2004</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2004" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2004']) ? $secciones['nuestra_historia_2004'] : 'Texto predeterminado para nuestra historia 2004'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -347,7 +365,7 @@ if (isset($_SESSION['mensaje'])) {
                             <h2>2002</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2002" contenteditable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dignissim neque condimentum lacus dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <?php echo isset($secciones['nuestra_historia_2002']) ? $secciones['nuestra_historia_2002'] : 'Texto predeterminado para nuestra historia 2002'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -368,7 +386,7 @@ if (isset($_SESSION['mensaje'])) {
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="editable-container">
                     <span data-scroll class="global-radius icon_wrap effect-1 alignleft"><i class="flaticon-study"></i></span>
-                    <p class="stat_count editable-content" data-key="estadisticas_estudiantes" contenteditable="true">100</p>
+                    <p class="stat_count editable-content" data-key="estadisticas_estudiantes" contenteditable="true"><?php echo isset($secciones['estadisticas_estudiantes']) ? $secciones['estadisticas_estudiantes'] : '0'; ?></p>
                     <h3>Estudiantes</h3>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>
@@ -380,7 +398,7 @@ if (isset($_SESSION['mensaje'])) {
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="editable-container">
                     <span data-scroll class="global-radius icon_wrap effect-1 alignleft"><i class="flaticon-online"></i></span>
-                    <p class="stat_count editable-content" data-key="estadisticas_cursos" contenteditable="true">20</p>
+                    <p class="stat_count editable-content" data-key="estadisticas_cursos" contenteditable="true"><?php echo isset($secciones['estadisticas_cursos']) ? $secciones['estadisticas_cursos'] : '0'; ?></p>
                     <h3>Cursos</h3>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>
@@ -392,7 +410,7 @@ if (isset($_SESSION['mensaje'])) {
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="editable-container">
                     <span data-scroll class="global-radius icon_wrap effect-1 alignleft"><i class="flaticon-years"></i></span>
-                    <p class="stat_count editable-content" data-key="estadisticas_anos_funcionando" contenteditable="true">5</p>
+                    <p class="stat_count editable-content" data-key="estadisticas_anos_funcionando" contenteditable="true"><?php echo isset($secciones['estadisticas_anos_funcionando']) ? $secciones['estadisticas_anos_funcionando'] : '0'; ?></p>
                     <h3>Años funcionando</h3>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>

@@ -3,41 +3,54 @@ include 'config.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $seccion = $_POST['seccion'];
-    $content = $_POST['content'];
+    $seccion = $_POST['seccion'] ?? '';
+    $content = $_POST['content'] ?? '';
 
-    // Mostrar mensaje solo en consola del servidor para depuración
-    error_log("Iniciando conexión a la base de datos...");
-
-    // Preparar la consulta para actualizar el contenido
-    $query = "UPDATE home SET texto = ? WHERE seccion = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ss", $content, $seccion);
-    $stmt->execute();
-
-    $response = array();
-    if ($stmt->affected_rows > 0) {
-        $response['status'] = 'success';
-        $response['message'] = 'Datos guardados correctamente.';
-    } else {
-        $response['status'] = 'error';
-        $response['message'] = 'Error al guardar los datos o no hubo cambios.';
+    // Comprobar que los datos no estén vacíos
+    if (empty($seccion) || empty($content)) {
+        echo json_encode(['status' => 'error', 'message' => 'Datos incompletos']);
+        exit;
     }
 
-    // Rescatar los datos actualizados para mostrar confirmación
-    $query = "SELECT texto FROM home WHERE seccion = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $seccion);
-    $stmt->execute();
-    $stmt->bind_result($updated_text);
-    $stmt->fetch();
+    // Preparar la conexión
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-    $response['data'] = htmlspecialchars($updated_text);
+    // Comprobar la conexión
+    if ($conn->connect_error) {
+        echo json_encode(['status' => 'error', 'message' => 'Error de conexión: ' . $conn->connect_error]);
+        exit;
+    }
+
+    // Preparar y ejecutar la consulta
+    $stmt = $conn->prepare("UPDATE home SET texto = ? WHERE seccion = ?");
+    if (!$stmt) {
+        echo json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta: ' . $conn->error]);
+        $conn->close();
+        exit;
+    }
+
+    $stmt->bind_param("ss", $content, $seccion);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(['status' => 'success', 'message' => 'Datos guardados correctamente']);
+        } else {
+            // Determinar si fue un error o simplemente no hubo cambios
+            $stmt = $conn->prepare("SELECT texto FROM home WHERE seccion = ?");
+            $stmt->bind_param("s", $seccion);
+            $stmt->execute();
+            $stmt->store_result();
+            if ($stmt->num_rows == 0) {
+                echo json_encode(['status' => 'error', 'message' => 'Sección no encontrada']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'No se realizaron cambios']);
+            }
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Error al ejecutar la consulta: ' . $stmt->error]);
+    }
+
     $stmt->close();
     $conn->close();
-
-    // Devolver respuesta en formato JSON
-    header('Content-Type: application/json');
-    echo json_encode($response);
 }
 ?>
