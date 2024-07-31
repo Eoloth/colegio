@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'header.php';
+require_once 'navbar.php';
 require_once 'uploads/config.php';
 
 // Conexión a la base de datos
@@ -7,6 +9,9 @@ $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
+
+// Establecer la conexión en utf8mb4
+$conn->set_charset("utf8mb4");
 
 // Obtener todo el contenido de la tabla 'about'
 $sql = "SELECT * FROM about";
@@ -21,42 +26,6 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Metas y otros elementos head -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">   
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Escuela Niño Jesús</title>  
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta property="og:title" content="Escuela Niño Jesús" />
-    <meta property="og:description" content="Acerca de la Escuela de Lenguaje Niño Jesús" />
-    <meta property="og:image" content="https://tu-dominio.cl/path/to/logo.png" />
-    <meta property="og:url" content="https://tu-dominio.cl/about.php" />
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="images/site.webmanifest">
-    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/versions.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/custom.css">
-    <script src="js/modernizer.js"></script>
-</head>
-<body class="host_version"> 
-
-<?php include 'navbar.php'; ?>
-
 <!-- Mostrar mensaje de sesión -->
 <?php
 if (isset($_SESSION['mensaje'])) {
@@ -65,9 +34,20 @@ if (isset($_SESSION['mensaje'])) {
 }
 ?>
 
+<!-- Contenido de la página -->
 <div class="all-title-box">
     <div class="container text-center">
-        <h1>About<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
+        <h1 class="editable-container"><strong>About</strong>
+        </h1>
+        <div class="editable-container">
+            <p class="lead editable-content" data-key="about_intro" contenteditable="true">
+                <?php echo isset($secciones['about_intro']) ? $secciones['about_intro'] : 'Texto predeterminado para la introducción'; ?>
+            </p>
+            <div class="edit-actions" style="display: none;">
+                <button class="save-btn">Guardar</button>
+                <button class="cancel-btn">Cancelar</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -75,10 +55,10 @@ if (isset($_SESSION['mensaje'])) {
     <div class="container">
         <div class="section-title row text-center">
             <div class="col-md-8 offset-md-2">
-                <h3>About</h3>
+                <h3 class="editable-container"><strong>About</strong></h3>
                 <div class="editable-container">
-                    <p class="lead editable-content" data-key="about_intro" contenteditable="true">
-                        <?php echo isset($secciones['about_intro']) ? $secciones['about_intro'] : 'Texto predeterminado para la introducción'; ?>
+                    <p class="lead editable-content" data-key="about_awards" contenteditable="true">
+                        <?php echo isset($secciones['about_awards']) ? $secciones['about_awards'] : 'Texto predeterminado para la descripción de los premios'; ?>
                     </p>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>
@@ -91,7 +71,7 @@ if (isset($_SESSION['mensaje'])) {
         <div class="row align-items-center">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                 <div class="message-box">
-                    <h4>2018 BEST SmartEDU education school</h4>
+                    <h4 class="editable-container"><strong>2018 BEST SmartEDU education school</strong></h4>
                     <h2 class="editable-container"><strong>Awards Winner Support Center</strong></h2>
                     <div class="editable-container">
                         <p class="editable-content" data-key="about_awards" contenteditable="true">
@@ -109,7 +89,7 @@ if (isset($_SESSION['mensaje'])) {
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                 <div class="post-media wow fadeIn">
                     <div class="editable-image-container">
-                        <img src="<?php echo isset($secciones['about_awards_imagen']) ? 'uploads/' . $secciones['about_awards_imagen'] : 'images/default_image.jpg'; ?>" alt="" class="img-fluid img-rounded">
+                        <img src="<?php echo isset($secciones['about_awards_imagen']) ? 'uploads/' . $secciones['about_awards_imagen'] : 'images/about_01.jpg'; ?>" alt="" class="img-fluid img-rounded">
                         <?php if (isset($_SESSION['usuario'])): ?>
                             <a href="#" class="edit-image-icon" data-section="about_awards_imagen">
                                 <i class="fas fa-edit"></i>
@@ -118,13 +98,15 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                 </div><!-- end media -->
             </div><!-- end col -->
+        </div><!-- end row -->
 
+        <div class="row align-items-center">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                 <div class="post-media wow fadeIn">
                     <div class="editable-image-container">
-                        <img src="<?php echo isset($secciones['about_history_imagen']) ? 'uploads/' . $secciones['about_history_imagen'] : 'images/default_image.jpg'; ?>" alt="" class="img-fluid img-rounded">
+                        <img src="<?php echo isset($secciones['about_standard_imagen']) ? 'uploads/' . $secciones['about_standard_imagen'] : 'images/about_02.jpg'; ?>" alt="" class="img-fluid img-rounded">
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <a href="#" class="edit-image-icon" data-section="about_history_imagen">
+                            <a href="#" class="edit-image-icon" data-section="about_standard_imagen">
                                 <i class="fas fa-edit"></i>
                             </a>
                         <?php endif; ?>
@@ -136,8 +118,8 @@ if (isset($_SESSION['mensaje'])) {
                 <div class="message-box">
                     <h2 class="editable-container"><strong>The standard Lorem Ipsum passage, used since the 1500s</strong></h2>
                     <div class="editable-container">
-                        <p class="editable-content" data-key="about_history" contenteditable="true">
-                            <?php echo isset($secciones['about_history']) ? $secciones['about_history'] : 'Texto predeterminado para la historia'; ?>
+                        <p class="editable-content" data-key="about_standard" contenteditable="true">
+                            <?php echo isset($secciones['about_standard']) ? $secciones['about_standard'] : 'Texto predeterminado para la historia'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -153,7 +135,7 @@ if (isset($_SESSION['mensaje'])) {
 
 <div class="hmv-box">
     <div class="container">
-        <div class="row text-center">
+        <div class="row">
             <div class="col-lg-4 col-md-6 col-12">
                 <div class="inner-hmv">
                     <div class="icon-box-hmv"><i class="flaticon-achievement"></i></div>
@@ -191,8 +173,8 @@ if (isset($_SESSION['mensaje'])) {
                     <div class="icon-box-hmv"><i class="flaticon-history"></i></div>
                     <h3 class="editable-container"><strong>History</strong></h3>
                     <div class="editable-container">
-                        <p class="editable-content" data-key="about_history_details" contenteditable="true">
-                            <?php echo isset($secciones['about_history_details']) ? $secciones['about_history_details'] : 'Texto predeterminado para los detalles de la historia'; ?>
+                        <p class="editable-content" data-key="about_history" contenteditable="true">
+                            <?php echo isset($secciones['about_history']) ? $secciones['about_history'] : 'Texto predeterminado para la historia'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -205,87 +187,34 @@ if (isset($_SESSION['mensaje'])) {
     </div>
 </div>
 
-<div id="testimonials" class="parallax section db parallax-off" style="background-image:url('images/parallax_04.jpg');">
+<div class="parallax section dbcolor">
     <div class="container">
-        <div class="section-title text-center">
-            <h3>Testimonials</h3>
-            <div class="editable-container">
-                <p class="lead editable-content" data-key="about_testimonials_intro" contenteditable="true">
-                    <?php echo isset($secciones['about_testimonials_intro']) ? $secciones['about_testimonials_intro'] : 'Texto predeterminado para la introducción de testimonios'; ?>
-                </p>
-                <div class="edit-actions" style="display: none;">
-                    <button class="save-btn">Guardar</button>
-                    <button class="cancel-btn">Cancelar</button>
-                </div>
+        <div class="row logos">
+            <div class="col-md-2 col-sm-2 col-xs-6 wow fadeInUp">
+                <a href="#"><img src="images/logo_01.png" alt="" class="img-repsonsive"></a>
             </div>
-        </div><!-- end title -->
-
-        <div class="row">
-            <div class="col-md-12 col-sm-12">
-                <div class="testi-carousel owl-carousel owl-theme">
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_01.png" alt="" class="img-fluid">
-                            <h4>James Fernando</h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Wonderful Support!</h3>
-                            <div class="editable-container">
-                                <p class="editable-content" data-key="about_testimonial_1" contenteditable="true">
-                                    <?php echo isset($secciones['about_testimonial_1']) ? $secciones['about_testimonial_1'] : 'They have got my project on time with the competition with a sed highly skilled, and experienced & professional team.'; ?>
-                                </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
-                                </div>
-                            </div>
-                        </div><!-- end desc -->
-                    </div><!-- end testimonial -->
-
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_02.png" alt="" class="img-fluid">
-                            <h4>Jacques Philips</h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Awesome Services!</h3>
-                            <div class="editable-container">
-                                <p class="editable-content" data-key="about_testimonial_2" contenteditable="true">
-                                    <?php echo isset($secciones['about_testimonial_2']) ? $secciones['about_testimonial_2'] : 'Explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you completed.'; ?>
-                                </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
-                                </div>
-                            </div>
-                        </div><!-- end desc -->
-                    </div><!-- end testimonial -->
-
-                    <div class="testimonial clearfix">
-                        <div class="testi-meta">
-                            <img src="images/testi_03.png" alt="" class="img-fluid">
-                            <h4>Venanda Mercy</h4>
-                        </div>
-                        <div class="desc">
-                            <h3><i class="fa fa-quote-left"></i> Great & Talented Team!</h3>
-                            <div class="editable-container">
-                                <p class="editable-content" data-key="about_testimonial_3" contenteditable="true">
-                                    <?php echo isset($secciones['about_testimonial_3']) ? $secciones['about_testimonial_3'] : 'The master-builder of human happiness no one rejects, dislikes avoids pleasure itself, because it is very pursue pleasure.'; ?>
-                                </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
-                                </div>
-                            </div>
-                        </div><!-- end desc -->
-                    </div><!-- end testimonial -->
-                </div><!-- end carousel -->
-            </div><!-- end col -->
+            <div class="col-md-2 col-sm-2 col-xs-6 wow fadeInUp">
+                <a href="#"><img src="images/logo_02.png" alt="" class="img-repsonsive"></a>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-6 wow fadeInUp">
+                <a href="#"><img src="images/logo_03.png" alt="" class="img-repsonsive"></a>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-6 wow fadeInUp">
+                <a href="#"><img src="images/logo_04.png" alt="" class="img-repsonsive"></a>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-6 wow fadeInUp">
+                <a href="#"><img src="images/logo_05.png" alt="" class="img-repsonsive"></a>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-6 wow fadeInUp">
+                <a href="#"><img src="images/logo_06.png" alt="" class="img-repsonsive"></a>
+            </div>
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end section -->
 
 <?php include 'footer.php'; ?>
+
+<a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
 
 <!-- Modal para subir imágenes -->
 <div id="uploadImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
@@ -314,7 +243,9 @@ if (isset($_SESSION['mensaje'])) {
     </div>
 </div>
 
+<!-- ALL JS FILES -->
 <script src="js/all.js"></script>
+<!-- ALL PLUGINS -->
 <script src="js/custom.js"></script>
 
 </body>

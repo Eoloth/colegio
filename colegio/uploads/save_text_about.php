@@ -19,6 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // Establecer el charset a UTF-8
+    if (!$conn->set_charset("utf8")) {
+        $_SESSION['mensaje'] = "Error al cargar el conjunto de caracteres utf8: " . $conn->error;
+        header("Location: ../about.php?edit=true");
+        exit();
+    }
+
     $stmt = $conn->prepare("UPDATE about SET texto = ? WHERE identifier = ?");
     $stmt->bind_param('ss', $texto, $identifier);
     
@@ -36,4 +43,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 header("Location: ../about.php?edit=true");
 exit();
-?>
