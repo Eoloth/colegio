@@ -46,7 +46,7 @@
                     </div>
                     <ul class="footer-links">
                         <li><a href="home.php">Inicio</a></li>
-                        <li><a href="about.html">Acerca de nosotros</a></li>
+                        <li><a href="about.php">Acerca de nosotros</a></li>
                         <li><a href="eventos.php">Eventos</a></li>
                         <li><a href="galeria.php">Galería de Imágenes</a></li>
                         <li><a href="contact.html">Contacto</a></li>

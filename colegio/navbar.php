@@ -16,10 +16,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="collapse navbar-collapse" id="navbars-host">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item <?php echo ($current_page == 'home.php') ? 'active' : ''; ?>"><a class="nav-link" href="home.php">Inicio</a></li>
-                    <li class="nav-item <?php echo ($current_page == 'about.html') ? 'active' : ''; ?>"><a class="nav-link" href="about.html">Acerca de nosotros</a></li>
+                    <li class="nav-item <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>"><a class="nav-link" href="about.php">Acerca de nosotros</a></li>
                     <li class="nav-item <?php echo ($current_page == 'eventos.php') ? 'active' : ''; ?>"><a class="nav-link" href="eventos.php">Eventos</a></li>
                     <li class="nav-item <?php echo ($current_page == 'galeria.php') ? 'active' : ''; ?>"><a class="nav-link" href="galeria.php">Galería de Imágenes</a></li>
-                    <li class="nav-item <?php echo ($current_page == 'contact.html') ? 'active' : ''; ?>"><a class="nav-link" href="contact.html">Contacto</a></li>
                     <?php if (isset($_SESSION['usuario'])): ?>
                         <li class="nav-item"><a class="nav-link" href="uploads/logout.php">Cerrar Sesión</a></li>
                     <?php else: ?>

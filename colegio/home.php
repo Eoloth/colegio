@@ -455,19 +455,6 @@ if (isset($_SESSION['mensaje'])) {
         </div>
     </div>
 </div>
-            </div>
-            <div class="modal-body">
-                <form id="uploadImageForm" action="uploads/upload_image_home.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="section" id="modalSection" value="">
-                    <div class="form-group">
-                        <label for="imageFile">Seleccionar imagen</label>
-                        <input type="file" class="form-control-file" id="imageFile" name="imageFile" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Subir</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <?php include 'footer.php'; ?>
