@@ -1,3 +1,28 @@
+<!-- Modal para subir imágenes -->
+<div id="uploadImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadImageModalLabel">Subir Imagen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadImageForm" action="" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="section" id="modalSection" value="">
+                    <div class="form-group">
+                        <label for="imageFile">Seleccionar imagen</label>
+                        <input type="file" class="form-control-file" id="imageFile" name="imageFile" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Subir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <footer class="footer">
     <div class="container">
         <div class="row">
@@ -25,21 +50,6 @@
                         <li><a href="eventos.php">Eventos</a></li>
                         <li><a href="galeria.php">Galería de Imágenes</a></li>
                         <li><a href="contact.html">Contacto</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-4 col-xs-12">
-                <div class="widget clearfix">
-                    <div class="widget-title">
-                        <h3>Contacto</h3>
-                    </div>
-
-                    <ul class="footer-links">
-                        <li><a href="mailto:#">Correo</a></li>
-                        <li><a href="#">Facebook</a></li>
-                        <li>Dirección</li>
-                        <li>Teléfono</li>
                     </ul>
                 </div>
             </div>

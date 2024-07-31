@@ -196,9 +196,11 @@ if (isset($_SESSION['mensaje'])) {
                 <div class="post-media wow fadeIn">
                     <img src="images/about_02.jpg" alt="" class="img-fluid img-rounded">
                     <?php if (isset($_SESSION['usuario'])): ?>
-                        <a href="uploads/upload_image_home.php?section=quienes_somos_imagen" class="edit-icon">
-                            <i class="fas fa-edit"></i>
-                        </a>
+                        <div class="editable-image-container">
+                            <a href="#" class="edit-image-icon" data-section="quienes_somos_imagen">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
                     <?php endif; ?>
                 </div><!-- end media -->
             </div><!-- end col -->
@@ -208,9 +210,11 @@ if (isset($_SESSION['mensaje'])) {
                 <div class="post-media wow fadeIn">
                     <img src="images/about_03.jpg" alt="" class="img-fluid img-rounded">
                     <?php if (isset($_SESSION['usuario'])): ?>
-                        <a href="uploads/upload_image_home.php?section=quienes_somos_imagen_2" class="edit-icon">
-                            <i class="fas fa-edit"></i>
-                        </a>
+                        <div class="editable-image-container">
+                            <a href="#" class="edit-image-icon" data-section="quienes_somos_imagen_2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
                     <?php endif; ?>
                 </div><!-- end media -->
             </div><!-- end col -->
@@ -421,5 +425,29 @@ if (isset($_SESSION['mensaje'])) {
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end section -->
+
+<!-- Modal para subir imágenes -->
+<div id="uploadImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadImageModalLabel">Subir Imagen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadImageForm" action="uploads/upload_image_home.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="section" id="modalSection" value="">
+                    <div class="form-group">
+                        <label for="imageFile">Seleccionar imagen</label>
+                        <input type="file" class="form-control-file" id="imageFile" name="imageFile" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Subir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php include 'footer.php'; ?>
