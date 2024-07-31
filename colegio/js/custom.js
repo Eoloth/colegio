@@ -159,7 +159,9 @@
             var editIcon = container.querySelector('.edit-image-icon');
             editIcon.addEventListener('click', function (e) {
                 e.preventDefault();
-                window.location.href = editIcon.getAttribute('href');
+                var section = editIcon.getAttribute('data-section');
+                document.getElementById('modalSection').value = section;
+                $('#uploadImageModal').modal('show');
             });
         });
     });

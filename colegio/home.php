@@ -15,6 +15,7 @@ $secciones = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $secciones[$row['identifier']] = $row['texto'];
+        $secciones[$row['identifier'] . '_imagen'] = $row['imagen'];
     }
 }
 $conn->close();
@@ -194,30 +195,32 @@ if (isset($_SESSION['mensaje'])) {
             
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                 <div class="post-media wow fadeIn">
-                    <img src="images/about_02.jpg" alt="" class="img-fluid img-rounded">
-                    <?php if (isset($_SESSION['usuario'])): ?>
-                        <div class="editable-image-container">
-                            <a href="#" class="edit-image-icon" data-section="quienes_somos_imagen">
+                    <div class="editable-image-container">
+                        <img src="<?php echo isset($secciones['bienvenida_imagen']) ? 'uploads/' . $secciones['bienvenida_imagen'] : 'images/about_02.jpg'; ?>" alt="" class="img-fluid img-rounded">
+                        <?php if (isset($_SESSION['usuario'])): ?>
+                            <a href="#" class="edit-image-icon" data-section="bienvenida_imagen">
                                 <i class="fas fa-edit"></i>
                             </a>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                 </div><!-- end media -->
             </div><!-- end col -->
-        </div>
-        <div class="row align-items-center">
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                <div class="post-media wow fadeIn">
-                    <img src="images/about_03.jpg" alt="" class="img-fluid img-rounded">
-                    <?php if (isset($_SESSION['usuario'])): ?>
+
+            <div class="row align-items-center">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <div class="post-media wow fadeIn">
                         <div class="editable-image-container">
-                            <a href="#" class="edit-image-icon" data-section="quienes_somos_imagen_2">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            <img src="<?php echo isset($secciones['logros_imagen']) ? 'uploads/' . $secciones['logros_imagen'] : 'images/about_03.jpg'; ?>" alt="" class="img-fluid img-rounded">
+                            <?php if (isset($_SESSION['usuario'])): ?>
+                                <a href="#" class="edit-image-icon" data-section="logros_imagen">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            <?php endif; ?>
                         </div>
-                    <?php endif; ?>
-                </div><!-- end media -->
-            </div><!-- end col -->
+                    </div><!-- end media -->
+                </div><!-- end col -->
+            </div>
+
             
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                 <div class="message-box">
@@ -435,6 +438,23 @@ if (isset($_SESSION['mensaje'])) {
                 <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadImageForm" action="uploads/upload_image_home.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="section" id="modalSection" value="">
+                    <div class="form-group">
+                        <label for="imageFile">Seleccionar imagen</label>
+                        <input type="file" class="form-control-file" id="imageFile" name="imageFile" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Subir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
             <div class="modal-body">
                 <form id="uploadImageForm" action="uploads/upload_image_home.php" method="post" enctype="multipart/form-data">
