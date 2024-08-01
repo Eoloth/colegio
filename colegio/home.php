@@ -71,9 +71,6 @@ if (isset($_SESSION['mensaje'])) {
                                             <button class="cancel-btn">Cancelar</button>
                                         </div>
                                     </div>
-                                    <a href="#" class="hover-btn-new"><span>Contacto</span></a>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="#" class="hover-btn-new"><span>Más Información</span></a>
                                 </div>
                             </div>
                         </div><!-- end row -->            
@@ -98,9 +95,6 @@ if (isset($_SESSION['mensaje'])) {
                                             <button class="cancel-btn">Cancelar</button>
                                         </div>
                                     </div>
-                                    <a href="#" class="hover-btn-new"><span>Contacto</span></a>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="#" class="hover-btn-new"><span>Más Información</span></a>
                                 </div>
                             </div>
                         </div><!-- end row -->            
@@ -125,9 +119,6 @@ if (isset($_SESSION['mensaje'])) {
                                             <button class="cancel-btn">Cancelar</button>
                                         </div>
                                     </div>
-                                    <a href="#" class="hover-btn-new"><span>Contacto</span></a>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a href="#" class="hover-btn-new"><span>Más Información</span></a>
                                 </div>
                             </div>
                         </div><!-- end row -->            
@@ -169,11 +160,10 @@ if (isset($_SESSION['mensaje'])) {
         <div class="row align-items-center">
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                 <div class="message-box">
-                    <h4>2018</h4>
                     <h2> Bienvenidos a la Escuela de Lenguaje Niño Jesús</h2>
                     <div class="editable-container">
                         <p class="editable-content" data-key="bienvenida" contenteditable="true">
-                            <?php echo isset($secciones['bienvenida']) ? $secciones['bienvenida'] : 'Texto predeterminado para bienvenida'; ?>
+                            <?php echo isset($secciones['bienvenida']) ? $secciones['bienvenida'] : '2018 - Texto predeterminado para bienvenida'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -193,33 +183,6 @@ if (isset($_SESSION['mensaje'])) {
                 </div><!-- end messagebox -->
             </div><!-- end col -->
             
-            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                <div class="post-media wow fadeIn">
-                    <div class="editable-image-container">
-                        <img src="<?php echo isset($secciones['bienvenida_imagen']) ? 'uploads/' . $secciones['bienvenida_imagen'] : 'images/about_02.jpg'; ?>" alt="" class="img-fluid img-rounded">
-                        <?php if (isset($_SESSION['usuario'])): ?>
-                            <a href="#" class="edit-image-icon" data-section="bienvenida_imagen">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                </div><!-- end media -->
-            </div><!-- end col -->
-
-            <div class="row align-items-center">
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                    <div class="post-media wow fadeIn">
-                        <div class="editable-image-container">
-                            <img src="<?php echo isset($secciones['logros_imagen']) ? 'uploads/' . $secciones['logros_imagen'] : 'images/about_03.jpg'; ?>" alt="" class="img-fluid img-rounded">
-                            <?php if (isset($_SESSION['usuario'])): ?>
-                                <a href="#" class="edit-image-icon" data-section="logros_imagen">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            <?php endif; ?>
-                        </div>
-                    </div><!-- end media -->
-                </div><!-- end col -->
-            </div>
 
             
             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
@@ -271,10 +234,9 @@ if (isset($_SESSION['mensaje'])) {
                 <div class="timeline__items">
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-01">
-                            <h2>2018</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2018" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2018']) ? $secciones['nuestra_historia_2018'] : 'Texto predeterminado para nuestra historia 2018'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2018']) ? $secciones['nuestra_historia_2018'] : '2018 - Texto predeterminado para nuestra historia 2018'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -285,10 +247,9 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-02">
-                            <h2>2015</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2015" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2015']) ? $secciones['nuestra_historia_2015'] : 'Texto predeterminado para nuestra historia 2015'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2015']) ? $secciones['nuestra_historia_2015'] : '2015 - Texto predeterminado para nuestra historia 2015'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -299,10 +260,9 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-03">
-                            <h2>2014</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2014" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2014']) ? $secciones['nuestra_historia_2014'] : 'Texto predeterminado para nuestra historia 2014'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2014']) ? $secciones['nuestra_historia_2014'] : '2014 - Texto predeterminado para nuestra historia 2014'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -313,10 +273,9 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-04">
-                            <h2>2012</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2012" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2012']) ? $secciones['nuestra_historia_2012'] : 'Texto predeterminado para nuestra historia 2012'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2012']) ? $secciones['nuestra_historia_2012'] : '2012 - Texto predeterminado para nuestra historia 2012'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -327,10 +286,9 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-01">
-                            <h2>2010</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2010" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2010']) ? $secciones['nuestra_historia_2010'] : 'Texto predeterminado para nuestra historia 2010'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2010']) ? $secciones['nuestra_historia_2010'] : '2010 - Texto predeterminado para nuestra historia 2010'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -341,10 +299,9 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-02">
-                            <h2>2007</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2007" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2007']) ? $secciones['nuestra_historia_2007'] : 'Texto predeterminado para nuestra historia 2007'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2007']) ? $secciones['nuestra_historia_2007'] : '2007 - Texto predeterminado para nuestra historia 2007'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -355,10 +312,9 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-03">
-                            <h2>2004</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2004" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2004']) ? $secciones['nuestra_historia_2004'] : 'Texto predeterminado para nuestra historia 2004'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2004']) ? $secciones['nuestra_historia_2004'] : '2004 - Texto predeterminado para nuestra historia 2004'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -369,10 +325,9 @@ if (isset($_SESSION['mensaje'])) {
                     </div>
                     <div class="timeline__item">
                         <div class="timeline__content img-bg-04">
-                            <h2>2002</h2>
                             <div class="editable-container">
                                 <p class="editable-content" data-key="nuestra_historia_2002" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2002']) ? $secciones['nuestra_historia_2002'] : 'Texto predeterminado para nuestra historia 2002'; ?>
+                                    <?php echo isset($secciones['nuestra_historia_2002']) ? $secciones['nuestra_historia_2002'] : '2002 - Texto predeterminado para nuestra historia 2002'; ?>
                                 </p>
                                 <div class="edit-actions" style="display: none;">
                                     <button class="save-btn">Guardar</button>
@@ -428,33 +383,5 @@ if (isset($_SESSION['mensaje'])) {
         </div><!-- end row -->
     </div><!-- end container -->
 </div><!-- end section -->
-
-<!-- Modal para subir imágenes -->
-<div id="uploadImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="uploadImageModalLabel">Subir Imagen</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="uploadImageForm" action="uploads/upload_image_home.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="section" id="modalSection" value="">
-                    <div class="form-group">
-                        <label for="imageFile">Seleccionar imagen</label>
-                        <input type="file" class="form-control-file" id="imageFile" name="imageFile" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Subir</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <?php include 'footer.php'; ?>

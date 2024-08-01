@@ -112,29 +112,25 @@
                 saveContent(element);
             });
         });
-    
-        // Manejo de clic en botón de editar imagen
-        document.querySelectorAll('.edit-image-icon').forEach(function(element) {
-            element.addEventListener('click', function() {
-                var section = element.getAttribute('data-section');
-                var modal = document.getElementById('uploadImageModal');
-                var modalSectionInput = modal.querySelector('#modalSection');
-                modalSectionInput.value = section;
-                $(modal).modal('show');
-            });
-        });
     });
     
     // Guardar contenido editado
     function saveContent(element) {
         var key = element.getAttribute('data-key');
         var content = element.innerText.trim();
-    
+        var url = '';
+
+        if (window.location.pathname.includes('home.php')) {
+            url = 'uploads/save_content.php';
+        } else if (window.location.pathname.includes('about.php')) {
+            url = 'uploads/save_text_about.php';
+        }
+
         console.log("Datos antes de enviar:");
         console.log("key:", key);
         console.log("content:", content);
-    
-        fetch('uploads/save_text_about.php', {
+
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -157,41 +153,5 @@
             console.error("Error al realizar la solicitud:", error);
         });
     }
-    
-    // Función para manejar la carga de imágenes
-    function handleImageUpload() {
-        var form = document.getElementById('uploadImageForm');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            var formData = new FormData(form);
-            var section = document.getElementById('modalSection').value;
-    
-            fetch('uploads/upload_image_about.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    console.log("Imagen cargada exitosamente");
-                    // Actualizar la imagen en la página
-                    var imgElement = document.querySelector(`img[data-section='${section}']`);
-                    if (imgElement) {
-                        imgElement.src = `uploads/${data.fileName}`;
-                    }
-                    $('#uploadImageModal').modal('hide');
-                } else {
-                    console.error("Error al cargar la imagen:", data.message);
-                    alert("Error al cargar la imagen: " + data.message);
-                }
-            })
-            .catch(error => {
-                console.error("Error al realizar la solicitud:", error);
-            });
-        });
-    }
-    
-    // Inicializar funciones
-    handleImageUpload();
     
 })(jQuery);

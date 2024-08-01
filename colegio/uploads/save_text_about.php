@@ -1,45 +1,40 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['usuario'])) {
-    header("Location: ../about.php");
-    exit();
-}
-
 require_once 'config.php';
 
+header('Content-Type: application/json');
+
+// Verificar que el usuario esté autenticado
+if (!isset($_SESSION['usuario'])) {
+    echo json_encode(['status' => 'error', 'message' => 'No autorizado']);
+    exit;
+}
+
+// Conexión a la base de datos
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if ($conn->connect_error) {
+    echo json_encode(['status' => 'error', 'message' => 'Conexión fallida: ' . $conn->connect_error]);
+    exit;
+}
+
+// Procesar la solicitud
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $identifier = $_POST['identifier'];
-    $texto = $_POST['texto'];
+    $identifier = $_POST['key']; // Cambiar de 'identifier' a 'key' para mantener la coherencia
+    $texto = $_POST['content']; // Cambiar de 'texto' a 'content' para mantener la coherencia
 
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if ($conn->connect_error) {
-        $_SESSION['mensaje'] = "Conexión fallida: " . $conn->connect_error;
-        header("Location: ../about.php?edit=true");
-        exit();
-    }
-
-    // Establecer el charset a UTF-8
-    if (!$conn->set_charset("utf8")) {
-        $_SESSION['mensaje'] = "Error al cargar el conjunto de caracteres utf8: " . $conn->error;
-        header("Location: ../about.php?edit=true");
-        exit();
-    }
-
+    // Preparar y ejecutar la consulta SQL
     $stmt = $conn->prepare("UPDATE about SET texto = ? WHERE identifier = ?");
     $stmt->bind_param('ss', $texto, $identifier);
     
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = "El texto ha sido actualizado.";
+        echo json_encode(['status' => 'success']);
     } else {
-        $_SESSION['mensaje'] = "Error al actualizar el texto.";
+        echo json_encode(['status' => 'error', 'message' => 'Error al actualizar el texto']);
     }
     
     $stmt->close();
     $conn->close();
 } else {
-    $_SESSION['mensaje'] = "Solicitud no válida.";
+    echo json_encode(['status' => 'error', 'message' => 'Solicitud no válida']);
 }
-
-header("Location: ../about.php?edit=true");
-exit();
+?>
