@@ -100,70 +100,98 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.edit-image-icon').forEach(function (icon) {
-            icon.addEventListener('click', function (e) {
-                e.preventDefault();
-                var section = icon.getAttribute('data-section');
-                // Establecer el valor de la sección en el formulario del modal
-                document.getElementById('modalSection').value = section;
-                // Mostrar el modal
-                $('#uploadImageModal').modal('show');
+    document.addEventListener("DOMContentLoaded", function() {
+        // Manejo de edición de contenido
+        document.querySelectorAll('.editable-content').forEach(function(element) {
+            element.addEventListener('focus', function() {
+                element.classList.add('editing');
+            });
+    
+            element.addEventListener('blur', function() {
+                element.classList.remove('editing');
+                saveContent(element);
             });
         });
-
-        document.querySelectorAll('.cancel-btn').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var parent = button.closest('.editable-container');
-                parent.querySelector('.edit-actions').style.display = 'none';
-            });
-        });
-
-        document.querySelectorAll('.save-btn').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var parent = button.closest('.editable-container');
-                var content = parent.querySelector('.editable-content').textContent;
-                var key = parent.querySelector('.editable-content').getAttribute('data-key');
-
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'uploads/save_content.php', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == 4) {
-                        if (xhr.status == 200) {
-                            try {
-                                var response = JSON.parse(xhr.responseText);
-                                if (response.status === 'success') {
-                                    console.log('Contenido guardado correctamente:', response.data);
-                                } else {
-                                    console.error('Error al guardar:', response.message);
-                                }
-                            } catch (e) {
-                                console.error('Error al analizar la respuesta como JSON:', e);
-                                console.log('Respuesta recibida (texto plano):', xhr.responseText);
-                            }
-                        } else {
-                            console.error('Error en la solicitud: ' + xhr.status);
-                        }
-                        parent.querySelector('.edit-actions').style.display = 'none';
-                    }
-                };
-                console.log('Datos antes de enviar:');
-                console.log('key:', key);
-                console.log('content:', content);
-                xhr.send('seccion=' + encodeURIComponent(key) + '&content=' + encodeURIComponent(content));
-            });
-        });
-
-        document.querySelectorAll('.editable-image-container').forEach(function (container) {
-            var editIcon = container.querySelector('.edit-image-icon');
-            editIcon.addEventListener('click', function (e) {
-                e.preventDefault();
-                var section = editIcon.getAttribute('data-section');
-                document.getElementById('modalSection').value = section;
-                $('#uploadImageModal').modal('show');
+    
+        // Manejo de clic en botón de editar imagen
+        document.querySelectorAll('.edit-image-icon').forEach(function(element) {
+            element.addEventListener('click', function() {
+                var section = element.getAttribute('data-section');
+                var modal = document.getElementById('uploadImageModal');
+                var modalSectionInput = modal.querySelector('#modalSection');
+                modalSectionInput.value = section;
+                $(modal).modal('show');
             });
         });
     });
-
+    
+    // Guardar contenido editado
+    function saveContent(element) {
+        var key = element.getAttribute('data-key');
+        var content = element.innerText.trim();
+    
+        console.log("Datos antes de enviar:");
+        console.log("key:", key);
+        console.log("content:", content);
+    
+        fetch('uploads/save_text_about.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                key: key,
+                content: content
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                console.log("Guardado exitosamente");
+            } else {
+                console.error("Error al guardar:", data.message);
+                alert("Error al guardar: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error al realizar la solicitud:", error);
+        });
+    }
+    
+    // Función para manejar la carga de imágenes
+    function handleImageUpload() {
+        var form = document.getElementById('uploadImageForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(form);
+            var section = document.getElementById('modalSection').value;
+    
+            fetch('uploads/upload_image_about.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    console.log("Imagen cargada exitosamente");
+                    // Actualizar la imagen en la página
+                    var imgElement = document.querySelector(`img[data-section='${section}']`);
+                    if (imgElement) {
+                        imgElement.src = `uploads/${data.fileName}`;
+                    }
+                    $('#uploadImageModal').modal('hide');
+                } else {
+                    console.error("Error al cargar la imagen:", data.message);
+                    alert("Error al cargar la imagen: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error al realizar la solicitud:", error);
+            });
+        });
+    }
+    
+    // Inicializar funciones
+    handleImageUpload();
+    
 })(jQuery);
