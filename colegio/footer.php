@@ -1,27 +1,3 @@
-<!-- Modal para subir imágenes -->
-<div id="uploadImageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="uploadImageModalLabel">Subir Imagen</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="uploadImageForm" action="" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="section" id="modalSection" value="">
-                    <div class="form-group">
-                        <label for="imageFile">Seleccionar imagen</label>
-                        <input type="file" class="form-control-file" id="imageFile" name="imageFile" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Subir</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <footer class="footer">
     <div class="container">

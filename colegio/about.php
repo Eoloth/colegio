@@ -10,8 +10,11 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Establecer la conexión en utf8mb4
+// Establecer el charset a utf8mb4
 $conn->set_charset("utf8mb4");
+
+// Enviar cabeceras para indicar que el contenido es UTF-8
+header('Content-Type: text/html; charset=utf-8');
 
 // Obtener todo el contenido de la tabla 'about'
 $sql = "SELECT * FROM about";
@@ -137,7 +140,6 @@ if (isset($_SESSION['mensaje'])) {
         </div>
     </div>
 </div>
-
 
 <?php include 'footer.php'; ?>
 
