@@ -100,31 +100,26 @@
         });
     });
 
+  
     document.addEventListener("DOMContentLoaded", function() {
         // Manejo de edición de contenido
         document.querySelectorAll('.editable-content').forEach(function(element) {
             element.addEventListener('focus', function() {
                 element.classList.add('editing');
             });
-    
+
             element.addEventListener('blur', function() {
                 element.classList.remove('editing');
                 saveContent(element);
             });
         });
     });
-    
+
     // Guardar contenido editado
     function saveContent(element) {
         var key = element.getAttribute('data-key');
         var content = element.innerText.trim();
-        var url = '';
-
-        if (window.location.pathname.includes('home.php')) {
-            url = 'uploads/save_content.php';
-        } else if (window.location.pathname.includes('about.php')) {
-            url = 'uploads/save_text_about.php';
-        }
+        var url = 'update_content.php'; // Asegúrate de que esta es la URL correcta
 
         console.log("Datos antes de enviar:");
         console.log("key:", key);
@@ -142,7 +137,7 @@
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === "success") {
+            if (data.success) {
                 console.log("Guardado exitosamente");
             } else {
                 console.error("Error al guardar:", data.message);
@@ -153,5 +148,5 @@
             console.error("Error al realizar la solicitud:", error);
         });
     }
-    
+
 })(jQuery);
