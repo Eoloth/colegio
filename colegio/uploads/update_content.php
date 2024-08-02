@@ -1,32 +1,47 @@
 <?php
+// Código de update_content.php
 session_start();
-require 'config.php';
+require_once 'config.php';
 
-if (isset($_POST['key']) && isset($_POST['content'])) {
+header('Content-Type: application/json');
+
+// Verificar que el usuario esté autenticado
+if (!isset($_SESSION['usuario'])) {
+    echo json_encode(['success' => false, 'message' => 'No autorizado']);
+    exit;
+}
+
+// Conexión a la base de datos
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if ($conn->connect_error) {
+    echo json_encode(['success' => false, 'message' => 'Conexión fallida: ' . $conn->connect_error]);
+    exit;
+}
+
+// Procesar la solicitud
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $key = $_POST['key'];
     $content = $_POST['content'];
 
-    try {
-        $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Actualizar la columna noticias en la fila correspondiente
-        if ($key === 'noticias') {
-            $stmt = $conn->prepare("UPDATE home SET noticias = :content WHERE identifier = 'noticias'");
-        } else {
-            // Para otros campos que no sean noticias, manejar según corresponda
-            $stmt = $conn->prepare("UPDATE home SET texto = :content WHERE identifier = :key");
-            $stmt->bindParam(':key', $key);
-        }
-
-        $stmt->bindParam(':content', $content);
-        $stmt->execute();
-
-        echo json_encode(['success' => true, 'message' => 'Datos actualizados']);
-    } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    if ($key === 'noticias') {
+        $sql = "UPDATE home SET texto = ? WHERE identifier = 'noticias'";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $content);
+    } else {
+        // Manejar otros campos
+        $sql = "UPDATE home SET texto = ? WHERE identifier = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('ss', $content, $key);
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Datos actualizados']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error al guardar el contenido']);
+    }
+    $stmt->close();
 }
+
+
+$conn->close();
 ?>

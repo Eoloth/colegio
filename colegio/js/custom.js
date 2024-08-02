@@ -100,7 +100,6 @@
         });
     });
 
-  
     document.addEventListener("DOMContentLoaded", function() {
         // Manejo de edición de contenido
         document.querySelectorAll('.editable-content').forEach(function(element) {
@@ -115,11 +114,16 @@
         });
     });
 
-    // Guardar contenido editado
     function saveContent(element) {
         var key = element.getAttribute('data-key');
         var content = element.innerText.trim();
-        var url = 'update_content.php'; // Asegúrate de que esta es la URL correcta
+        var url = '';
+
+        if (window.location.pathname.includes('home.php')) {
+            url = 'uploads/update_content.php'; // Asegúrate de que la ruta sea correcta
+        } else if (window.location.pathname.includes('about.php')) {
+            url = 'uploads/save_text_about.php';
+        }
 
         console.log("Datos antes de enviar:");
         console.log("key:", key);
@@ -148,5 +152,7 @@
             console.error("Error al realizar la solicitud:", error);
         });
     }
+
+    // Otras funcionalidades continuas...
 
 })(jQuery);
