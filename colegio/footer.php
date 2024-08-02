@@ -9,7 +9,7 @@
                     </div>
                     <div class="footer-right">
                         <ul class="footer-links-soi">
-                            <li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://www.facebook.com/p/Escuela-de-lenguaje-Ni%C3%B1o-Jesus-100063466527084/?locale=es_LA" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
                         </ul>
                     </div>                      
                 </div>

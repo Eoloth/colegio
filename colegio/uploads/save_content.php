@@ -22,15 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $key = $_POST['key'];
     $content = $_POST['content'];
 
-    // Verificar si el campo es un año
-    if (strpos($key, '_year') !== false) {
-        $year = intval($content);
-        $identifier = str_replace('_year', '', $key);
-        $sql = "UPDATE home SET year = ? WHERE identifier = ?";
+    // Verificar si el campo es para noticias
+    if ($key === 'noticias') {
+        $sql = "UPDATE home SET noticias = ? WHERE identifier = 'noticias'";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('is', $year, $identifier);
+        $stmt->bind_param('s', $content);
     } else {
-        // Actualizar el contenido del texto
+        // Para otros campos que no sean noticias, manejar según corresponda
         $sql = "UPDATE home SET texto = ? WHERE identifier = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ss', $content, $key);
@@ -45,4 +43,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
+
 ?>
