@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 
 // Verificar que el usuario esté autenticado
 if (!isset($_SESSION['usuario'])) {
+    http_response_code(401);
     echo json_encode(['status' => 'error', 'message' => 'No autorizado']);
     exit;
 }
@@ -13,33 +14,53 @@ if (!isset($_SESSION['usuario'])) {
 // Conexión a la base de datos
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($conn->connect_error) {
+    http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Conexión fallida: ' . $conn->connect_error]);
     exit;
 }
 
 // Procesar la solicitud
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $key = $_POST['key'];
-    $content = $_POST['content'];
+    $key = isset($_POST['key']) ? trim($_POST['key']) : '';
+    $content = isset($_POST['content']) ? trim($_POST['content']) : '';
 
-    // Verificar si el campo es para noticias
+    // Validar entradas
+    if (empty($key) || empty($content)) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Campos vacíos o inválidos']);
+        exit;
+    }
+
     if ($key === 'noticias') {
         $sql = "UPDATE home SET noticias = ? WHERE identifier = 'noticias'";
-        $stmt = $conn->prepare($sql);
+    } else {
+        $sql = "UPDATE home SET texto = ? WHERE identifier = ?";
+    }
+
+    $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Error en la preparación de la consulta: ' . $conn->error]);
+        exit;
+    }
+
+    if ($key === 'noticias') {
         $stmt->bind_param('s', $content);
     } else {
-        // Para otros campos que no sean noticias, manejar según corresponda
-        $sql = "UPDATE home SET texto = ? WHERE identifier = ?";
-        $stmt = $conn->prepare($sql);
         $stmt->bind_param('ss', $content, $key);
     }
 
     if ($stmt->execute()) {
         echo json_encode(['status' => 'success']);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Error al guardar el contenido']);
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Error al guardar el contenido: ' . $stmt->error]);
     }
+
     $stmt->close();
+} else {
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'message' => 'Método no permitido']);
 }
 
 $conn->close();

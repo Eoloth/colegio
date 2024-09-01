@@ -100,6 +100,7 @@
         });
     });
 
+     // Nuevo código añadido para manejar la edición de contenido
     document.addEventListener("DOMContentLoaded", function() {
         // Manejo de edición de contenido
         document.querySelectorAll('.editable-content').forEach(function(element) {
@@ -113,6 +114,45 @@
             });
         });
     });
+
+    function saveContent(element) {
+        var key = element.getAttribute('data-key');
+        var content = element.innerText.trim();
+        var url = '';
+
+        if (window.location.pathname.includes('home.php')) {
+            url = 'uploads/update_content.php'; // Asegúrate de que la ruta sea correcta
+        } else if (window.location.pathname.includes('about.php')) {
+            url = 'uploads/save_text_about.php';
+        }
+
+        console.log("Datos antes de enviar:");
+        console.log("key:", key);
+        console.log("content:", content);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                key: key,
+                content: content
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Guardado exitosamente");
+            } else {
+                console.error("Error al guardar:", data.message);
+                alert("Error al guardar: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error al realizar la solicitud:", error);
+        });
+    }
 
     function saveContent(element) {
         var key = element.getAttribute('data-key');
