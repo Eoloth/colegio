@@ -45,6 +45,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt->close();
+    } elseif (!empty($_FILES['imagen_principal']['name'])) {
+        // Procesar la carga de la imagen principal
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["imagen_principal"]["name"]);
+
+        if (move_uploaded_file($_FILES["imagen_principal"]["tmp_name"], $target_file)) {
+            // Actualizar la base de datos con la nueva imagen
+            $sql = "UPDATE home SET imagen_principal = ? WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            if ($stmt === false) {
+                echo json_encode(['success' => false, 'message' => 'Error en la preparación de la consulta']);
+                exit();
+            }
+            $stmt->bind_param('s', basename($_FILES["imagen_principal"]["name"]));
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Imagen principal actualizada']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error al guardar la imagen: ' . $stmt->error]);
+            }
+
+            $stmt->close();
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al subir la imagen']);
+        }
     } else {
         echo json_encode(['success' => false, 'message' => 'Datos incompletos o vacíos']);
     }

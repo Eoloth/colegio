@@ -16,6 +16,7 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $secciones[$row['identifier']] = urldecode($row['texto']);  // Decodificar texto
         $secciones[$row['identifier'] . '_imagen'] = $row['imagen'];
+        $imagen_principal = $row['imagen_principal'];  // Nueva columna para la imagen principal
     }
 }
 
@@ -134,6 +135,12 @@ if (isset($_SESSION['mensaje'])) {
     </div>
 </div>
 
+<!-- Mostrar la imagen principal debajo de las noticias -->
+<?php if (!empty($imagen_principal)): ?>
+    <div class="text-center mt-4">
+        <img src="uploads/<?php echo htmlspecialchars($imagen_principal); ?>" style="width: 80%; height: auto;" alt="Imagen Principal">
+    </div>
+<?php endif; ?>
 
 <div id="overviews" class="section wb">
     <div class="container">
