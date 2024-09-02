@@ -134,35 +134,6 @@ if (isset($_SESSION['mensaje'])) {
     </div>
 </div>
 
-<!-- Selección de imagen desde la galería (solo para admin) -->
-<?php if (isset($_SESSION['usuario'])): ?>
-<div class="noticias-galeria">
-    <form action="uploads/select_image_noticias.php" method="POST">
-        <label for="galeria-image">Seleccionar imagen para noticias:</label>
-        <select name="galeria-image" id="galeria-image" class="form-control" required>
-            <?php foreach ($imagenesGaleria as $imagen): ?>
-                <option value="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" <?php echo (isset($secciones['noticias_imagen']) && $secciones['noticias_imagen'] == $imagen['nombre_archivo']) ? 'selected' : ''; ?>>
-                    <?php echo htmlspecialchars($imagen['descripcion']); ?> (<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>)
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <button type="submit" class="btn btn-primary mt-2">Seleccionar Imagen</button>
-    </form>
-</div>
-<?php endif; ?>
-
-<!-- Mostrar imagen seleccionada al 80% del ancho -->
-<div class="noticia-imagen">
-    <?php
-    if (!empty($secciones['noticias_imagen'])) {
-        echo '<img src="uploads/' . htmlspecialchars($secciones['noticias_imagen']) . '" class="img-fluid" style="width: 80%; height: auto; margin: 20px auto; display: block;">';
-    } else {
-        echo '<p>No se ha seleccionado ninguna imagen para mostrar en esta sección.</p>';
-    }
-    ?>
-</div>
-
-
 
 <div id="overviews" class="section wb">
     <div class="container">

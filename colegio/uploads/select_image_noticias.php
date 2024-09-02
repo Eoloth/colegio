@@ -18,7 +18,6 @@ if (isset($_POST['galeria-image']) && isset($_SESSION['usuario'])) {
     
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = "Imagen de noticias actualizada exitosamente.";
-        error_log("Imagen seleccionada: " . $imagenSeleccionada);
     } else {
         $_SESSION['mensaje'] = "Error al actualizar la imagen: " . $stmt->error;
     }
