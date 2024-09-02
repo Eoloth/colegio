@@ -1,19 +1,20 @@
 (function($) {
     "use strict";
 
+    // Scroll y Preloader
     $(window).on('scroll', function () {
         if ($(window).scrollTop() > 50) {
-            // $('.top-navbar').addClass('fixed-menu');
+            // Código para manejar el menú fijo (comentado)
         } else {
-            // $('.top-navbar').removeClass('fixed-menu');
+            // Código para manejar el menú fijo (comentado)
         }
     });
 
-    jQuery(window).scroll(function() {
-        if (jQuery(this).scrollTop() > 1) {
-            jQuery('.dmtop').css({ bottom: "10px" });
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 1) {
+            $('.dmtop').css({ bottom: "10px" });
         } else {
-            jQuery('.dmtop').css({ bottom: "-100px" });
+            $('.dmtop').css({ bottom: "-100px" });
         }
     });
 
@@ -21,9 +22,9 @@
         $("#preloader").fadeOut(500);
         $(".preloader").fadeOut("slow", 600);
         $('.loader-container').addClass('done');
-        $('.progress-br').addClass('done');     
+        $('.progress-br').addClass('done');
     });
-    
+
     if ($('#scroll-to-top').length) {
         var scrollTrigger = 100, // px
             backToTop = function () {
@@ -44,9 +45,10 @@
         });
     }
 
+    // Conteo de estadísticas
     function count($this) {
         var current = parseInt($this.html(), 10);
-        current = current + 50; /* Donde 50 es el incremento */
+        current = current + 50; /* Incremento */
         $this.html(++current);
         if (current > $this.data('count')) {
             $this.html($this.data('count'));
@@ -68,102 +70,99 @@
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
 
-    jQuery(document).ready(function() {
-        $('#contactform').submit(function() {
-            var action = $(this).attr('action');
-            $("#message").slideUp(750, function() {
-                $('#message').hide();
-                $('#submit')
-                    .after('<img src="images/ajax-loader.gif" class="loader" />')
-                    .attr('disabled', 'disabled');
-                $.post(action, {
-                    first_name: $('#first_name').val(),
-                    last_name: $('#last_name').val(),
-                    email: $('#email').val(),
-                    phone: $('#phone').val(),
-                    select_service: $('#select_service').val(),
-                    select_price: $('#select_price').val(),
-                    comments: $('#comments').val(),
-                    verify: $('#verify').val()
-                },
-                function(data) {
-                    document.getElementById('message').innerHTML = data;
-                    $('#message').slideDown('slow');
-                    $('#contactform img.loader').fadeOut('slow', function() {
-                        $(this).remove();
-                    });
-                    $('#submit').removeAttr('disabled');
-                    if (data.match('success') != null) $('#contactform').slideUp('slow');
+    // Manejo de formularios
+    $('#contactform').submit(function() {
+        var action = $(this).attr('action');
+        $("#message").slideUp(750, function() {
+            $('#message').hide();
+            $('#submit')
+                .after('<img src="images/ajax-loader.gif" class="loader" />')
+                .attr('disabled', 'disabled');
+            $.post(action, {
+                first_name: $('#first_name').val(),
+                last_name: $('#last_name').val(),
+                email: $('#email').val(),
+                phone: $('#phone').val(),
+                select_service: $('#select_service').val(),
+                select_price: $('#select_price').val(),
+                comments: $('#comments').val(),
+                verify: $('#verify').val()
+            },
+            function(data) {
+                document.getElementById('message').innerHTML = data;
+                $('#message').slideDown('slow');
+                $('#contactform img.loader').fadeOut('slow', function() {
+                    $(this).remove();
                 });
+                $('#submit').removeAttr('disabled');
+                if (data.match('success') != null) $('#contactform').slideUp('slow');
             });
-            return false;
         });
+        return false;
     });
 
-// Código para manejar la edición de contenido
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.editable-content').forEach(function(element) {
-        element.addEventListener('focus', function() {
-            element.classList.add('editing');
-            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
-            if (editActions) {
-                editActions.style.display = 'flex';
-            }
+    // Función para manejar la edición de contenido general (home.php y about.php)
+    function handleContentEditing(selector, saveFunction) {
+        document.querySelectorAll(selector).forEach(function(element) {
+            element.addEventListener('focus', function() {
+                element.classList.add('editing');
+                const editActions = element.closest('.editable-container').querySelector('.edit-actions');
+                if (editActions) {
+                    editActions.style.display = 'flex';
+                }
+            });
+
+            element.addEventListener('blur', function() {
+                element.classList.remove('editing');
+                const editActions = element.closest('.editable-container').querySelector('.edit-actions');
+                if (editActions) {
+                    setTimeout(function() {
+                        editActions.style.display = 'none';
+                    }, 200);
+                }
+                saveFunction(element);
+            });
         });
+    }
 
-        element.addEventListener('blur', function() {
-            element.classList.remove('editing');
-            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
-            if (editActions) {
-                setTimeout(function() {
-                    editActions.style.display = 'none';
-                }, 200);
-            }
-            saveContent(element);
+    // Función para manejar la edición de contenido en la línea de tiempo
+    function handleTimelineEditing() {
+        document.querySelectorAll('.timeline .editable-content').forEach(function(element) {
+            element.addEventListener('focus', function() {
+                element.classList.add('editing');
+                const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
+                if (editActions) {
+                    editActions.style.display = 'flex';
+                }
+            });
+
+            element.addEventListener('blur', function() {
+                element.classList.remove('editing');
+                const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
+                if (editActions) {
+                    setTimeout(function() {
+                        editActions.style.display = 'none';
+                    }, 200);
+                }
+                saveTimelineContent(element);
+            });
         });
-    });
-});
+    }
 
-// Código para manejar la edición de contenido en la línea de tiempo
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.timeline .editable-content').forEach(function(element) {
-        element.addEventListener('focus', function() {
-            element.classList.add('editing');
-            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
-            if (editActions) {
-                editActions.style.display = 'flex';
-            }
-        });
-
-        element.addEventListener('blur', function() {
-            element.classList.remove('editing');
-            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
-            if (editActions) {
-                setTimeout(function() {
-                    editActions.style.display = 'none';
-                }, 200);
-            }
-            saveContent(element);
-        });
-    });
-});
-
-
+    // Función para guardar el contenido de home.php o about.php
     function saveContent(element) {
         var key = element.getAttribute('data-key');
         var content = element.innerText.trim();
-        var url = '';
-    
-        if (window.location.pathname.includes('home.php')) {
-            url = 'uploads/update_content.php';
-        } else if (window.location.pathname.includes('about.php')) {
-            url = 'uploads/update_content_about.php';
+        if (!key || !content) {
+            console.error("Datos incompletos: Key o Content están vacíos.");
+            return;
         }
-    
+        var url = window.location.pathname.includes('home.php') ? 'uploads/update_content.php' : 'uploads/update_content_about.php';
+
         console.log("Datos antes de enviar:");
         console.log("key:", key);
         console.log("content:", content);
-    
+
         fetch(url, {
             method: 'POST',
             headers: {
@@ -171,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: new URLSearchParams({
                 key: key,
-                content: encodeURIComponent(content)  // Usar encodeURIComponent para manejar caracteres especiales
+                content: content
             })
         })
         .then(response => response.json())
@@ -188,6 +187,53 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("Error al realizar la solicitud: " + error.message);
         });
     }
-    
-    
+
+    // Función para guardar el contenido de la línea de tiempo
+    function saveTimelineContent(element) {
+        var key = element.getAttribute('data-key');
+        var content = element.innerText.trim();
+        if (!key || !content) {
+            console.error("Datos incompletos: Key o Content están vacíos.");
+            return;
+        }
+        var url = 'uploads/update_timeline_content.php'; // Asumiendo que tienes un archivo separado para la línea de tiempo
+
+        console.log("Datos antes de enviar:");
+        console.log("key:", key);
+        console.log("content:", content);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: new URLSearchParams({
+                key: key,
+                content: content
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Guardado exitosamente");
+            } else {
+                console.error("Error al guardar:", data.message);
+                alert("Error al guardar: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error al realizar la solicitud:", error);
+            alert("Error al realizar la solicitud: " + error.message);
+        });
+    }
+
+    // Inicializar manejo de edición según la página
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.location.pathname.includes('home.php') || window.location.pathname.includes('about.php')) {
+            handleContentEditing('.editable-content', saveContent);
+        } else if (window.location.pathname.includes('timeline.php')) {
+            handleTimelineEditing();
+        }
+    });
+
 })(jQuery);

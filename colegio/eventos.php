@@ -26,6 +26,29 @@ if (isset($_SESSION['mensaje'])) {
 ?>
 
 <div class="container">
+    <!-- Sección de Noticias -->
+    <div class="section-title row text-center">
+        <div class="col-md-8 offset-md-2">
+            <div class="editable-container">
+                <h2 class="editable-content" data-key="noticias" contenteditable="true">
+                    <?php echo isset($secciones['noticias']) ? htmlspecialchars($secciones['noticias']) : 'Título predeterminado para noticias'; ?>
+                </h2>
+                <div class="edit-actions" style="display: none;">
+                    <button class="save-btn">Guardar</button>
+                    <button class="cancel-btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="noticias-upload">
+        <form action="uploads/upload_image_noticias.php" method="POST" enctype="multipart/form-data">
+            <label for="noticias-image">Cargar imagen para noticias:</label>
+            <input type="file" name="noticias-image" id="noticias-image" required>
+            <button type="submit" class="btn btn-primary mt-2">Subir Imagen</button>
+        </form>
+    </div>
+
     <h1>Eventos</h1>
     <?php if (isset($_SESSION['usuario'])): ?>
         <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>
@@ -43,7 +66,7 @@ if (isset($_SESSION['mensaje'])) {
                                 $imagenes = json_decode($evento['imagen'], true);
                                 if (is_array($imagenes) && !empty($imagenes)): 
                             ?>
-                                <img src="uploads/<?php echo htmlspecialchars($imagenes[0]); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
+                                <img src="uploads/<?php echo htmlspecialchars($imagenes[0]); ?>" class="card-img-top img-fluid" alt="<?php echo htmlspecialchars($evento['titulo']); ?>">
                             <?php endif; ?>
                         <?php endif; ?>
                         <div class="card-body">
@@ -57,7 +80,9 @@ if (isset($_SESSION['mensaje'])) {
         <?php endif; ?>
     </div>
     <div id="event-details-container" style="display:none;">
-        <div id="event-details" class="card"></div>
+        <div id="event-details" class="card">
+            <span class="close">&times;</span>
+        </div>
     </div>
 </div>
 
@@ -74,6 +99,12 @@ if (isset($_SESSION['mensaje'])) {
                 success: function(data) {
                     $('#event-details').html(data);
                     $('#event-details-container').show();
+
+                    // Asegurar que la imagen dentro del evento cargado ocupe el 100% del ancho
+                    $('#event-details img').css({
+                        'width': '100%',
+                        'height': 'auto'
+                    });
                 }
             });
         });

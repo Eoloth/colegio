@@ -429,13 +429,44 @@
     margin-top: 10px; /* Espacio entre el texto y el botón */
 }
 
+/* Asegurarse de que los botones de guardar sean visibles en pantallas pequeñas */
 .timeline-save-btn {
-    min-width: 70px;
-    padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
+    display: block; /* Asegurar que el botón se muestre como un bloque */
+    width: 100%; /* Botón ocupa todo el ancho disponible */
+    padding: 10px; /* Espacio adecuado dentro del botón */
+    font-size: 14px; /* Tamaño de fuente adecuado para pantallas pequeñas */
     background-color: #28a745;
     color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Contenedor de los botones */
+.timeline-edit-actions {
+    display: flex;
+    flex-direction: column; /* Asegurar que los botones estén uno debajo del otro en pantallas pequeñas */
+    align-items: center;
+    width: 100%;
+    margin-top: 10px; /* Espacio entre el contenido y los botones */
+}
+
+/* Ajustes adicionales para pantallas pequeñas */
+@media (max-width: 768px) {
+    .timeline__content {
+        width: 90%; /* Hacer el contenido más ancho en pantallas pequeñas */
+        padding: 15px;
+    }
+
+    .timeline__item {
+        width: 100%; /* Asegurar que el elemento ocupe todo el ancho */
+        margin-bottom: 20px; /* Espacio adecuado entre elementos */
+    }
+
+    .timeline-save-btn {
+        width: auto; /* Deja que el botón se ajuste al tamaño de su contenido */
+        padding: 8px 15px; /* Ajusta el padding para hacer el botón más grande */
+        font-size: 16px; /* Incrementa el tamaño de fuente para mejor legibilidad */
+    }
 }

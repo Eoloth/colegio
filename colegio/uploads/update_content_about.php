@@ -22,12 +22,10 @@ $conn->set_charset("utf8mb4");
 
 // Procesar la solicitud
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Decodificar el JSON recibido
-    $data = json_decode(file_get_contents("php://input"), true);
-
-    if (isset($data['key']) && isset($data['content'])) {
-        $key = $data['key'];
-        $content = $data['content'];
+    // Usar $_POST directamente en lugar de json_decode
+    if (isset($_POST['key']) && isset($_POST['content'])) {
+        $key = $_POST['key'];
+        $content = $_POST['content'];
 
         // Asegúrate de que los datos no estén vacíos
         if (empty($key) || empty($content)) {
