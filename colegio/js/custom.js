@@ -100,44 +100,78 @@
         });
     });
 
-     // Nuevo código añadido para manejar la edición de contenido
-    document.addEventListener("DOMContentLoaded", function() {
-        // Manejo de edición de contenido
-        document.querySelectorAll('.editable-content').forEach(function(element) {
-            element.addEventListener('focus', function() {
-                element.classList.add('editing');
-            });
+// Código para manejar la edición de contenido
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.editable-content').forEach(function(element) {
+        element.addEventListener('focus', function() {
+            element.classList.add('editing');
+            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
+            if (editActions) {
+                editActions.style.display = 'flex';
+            }
+        });
 
-            element.addEventListener('blur', function() {
-                element.classList.remove('editing');
-                saveContent(element);
-            });
+        element.addEventListener('blur', function() {
+            element.classList.remove('editing');
+            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
+            if (editActions) {
+                setTimeout(function() {
+                    editActions.style.display = 'none';
+                }, 200);
+            }
+            saveContent(element);
         });
     });
+});
+
+// Código para manejar la edición de contenido en la línea de tiempo
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.timeline .editable-content').forEach(function(element) {
+        element.addEventListener('focus', function() {
+            element.classList.add('editing');
+            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
+            if (editActions) {
+                editActions.style.display = 'flex';
+            }
+        });
+
+        element.addEventListener('blur', function() {
+            element.classList.remove('editing');
+            const editActions = element.closest('.editable-container').querySelector('.timeline-edit-actions');
+            if (editActions) {
+                setTimeout(function() {
+                    editActions.style.display = 'none';
+                }, 200);
+            }
+            saveContent(element);
+        });
+    });
+});
+
 
     function saveContent(element) {
         var key = element.getAttribute('data-key');
         var content = element.innerText.trim();
         var url = '';
-
+    
         if (window.location.pathname.includes('home.php')) {
-            url = 'uploads/update_content.php'; // Asegúrate de que la ruta sea correcta
+            url = 'uploads/update_content.php';
         } else if (window.location.pathname.includes('about.php')) {
-            url = 'uploads/save_text_about.php';
+            url = 'uploads/update_content_about.php';
         }
-
+    
         console.log("Datos antes de enviar:");
         console.log("key:", key);
         console.log("content:", content);
-
+    
         fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body: new URLSearchParams({
                 key: key,
-                content: content
+                content: encodeURIComponent(content)  // Usar encodeURIComponent para manejar caracteres especiales
             })
         })
         .then(response => response.json())
@@ -151,48 +185,9 @@
         })
         .catch(error => {
             console.error("Error al realizar la solicitud:", error);
+            alert("Error al realizar la solicitud: " + error.message);
         });
     }
-
-    function saveContent(element) {
-        var key = element.getAttribute('data-key');
-        var content = element.innerText.trim();
-        var url = '';
-
-        if (window.location.pathname.includes('home.php')) {
-            url = 'uploads/update_content.php'; // Asegúrate de que la ruta sea correcta
-        } else if (window.location.pathname.includes('about.php')) {
-            url = 'uploads/save_text_about.php';
-        }
-
-        console.log("Datos antes de enviar:");
-        console.log("key:", key);
-        console.log("content:", content);
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                key: key,
-                content: content
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log("Guardado exitosamente");
-            } else {
-                console.error("Error al guardar:", data.message);
-                alert("Error al guardar: " + data.message);
-            }
-        })
-        .catch(error => {
-            console.error("Error al realizar la solicitud:", error);
-        });
-    }
-
-    // Otras funcionalidades continuas...
-
+    
+    
 })(jQuery);

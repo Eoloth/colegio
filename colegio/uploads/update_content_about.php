@@ -2,7 +2,7 @@
 session_start();
 require_once 'config.php';
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=UTF-8');
 
 // Verificar que el usuario esté autenticado
 if (!isset($_SESSION['usuario'])) {
@@ -20,17 +20,26 @@ if ($conn->connect_error) {
 // Establecer el charset a utf8mb4
 $conn->set_charset("utf8mb4");
 
-// Procesar la solicitud para home.php
+// Procesar la solicitud
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['key']) && isset($_POST['content'])) {
-        $key = $_POST['key'];
-        $content = $_POST['content'];
+    // Decodificar el JSON recibido
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (isset($data['key']) && isset($data['content'])) {
+        $key = $data['key'];
+        $content = $data['content'];
+
+        // Asegúrate de que los datos no estén vacíos
+        if (empty($key) || empty($content)) {
+            echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
+            exit();
+        }
 
         // Asegurarse de que el contenido esté en UTF-8
         $content = mb_convert_encoding($content, 'UTF-8', 'auto');
 
-        // Manejar campos para home.php
-        $sql = "UPDATE home SET texto = ? WHERE identifier = ?";
+        // Manejar los campos específicos para 'about'
+        $sql = "UPDATE about SET texto = ? WHERE identifier = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ss', $content, $key);
 

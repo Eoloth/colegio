@@ -32,7 +32,7 @@ $conn->close();
 <!-- Mostrar mensaje de sesión -->
 <?php
 if (isset($_SESSION['mensaje'])) {
-    echo '<div class="alert alert-info" role="alert">' . $_SESSION['mensaje'] . '</div>';
+    echo '<div class="alert alert-info" role="alert">' . htmlspecialchars($_SESSION['mensaje'], ENT_QUOTES, 'UTF-8') . '</div>';
     unset($_SESSION['mensaje']);
 }
 ?>
@@ -57,7 +57,7 @@ if (isset($_SESSION['mensaje'])) {
                 <h3 class="editable-container"><strong>Acerca de la escuela</strong></h3>
                 <div class="editable-container">
                     <p class="lead editable-content" data-key="about_awards" contenteditable="true">
-                        <?php echo isset($secciones['about_awards']) ? $secciones['about_awards'] : 'Texto predeterminado para la descripción'; ?>
+                        <?php echo isset($secciones['about_awards']) ? htmlspecialchars($secciones['about_awards'], ENT_QUOTES, 'UTF-8') : 'Texto predeterminado para la descripción'; ?>
                     </p>
                     <div class="edit-actions" style="display: none;">
                         <button class="save-btn">Guardar</button>
@@ -74,7 +74,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h2 class="editable-container"><strong>Niño Jesús</strong></h2>
                     <div class="editable-container">
                         <p class="editable-content" data-key="about_awards" contenteditable="true">
-                            <?php echo isset($secciones['about_awards']) ? $secciones['about_awards'] : 'Texto predeterminado para la descripción'; ?>
+                            <?php echo isset($secciones['about_awards']) ? htmlspecialchars($secciones['about_awards'], ENT_QUOTES, 'UTF-8') : 'Texto predeterminado para la descripción'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -96,7 +96,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h3 class="editable-container"><strong>Misión</strong></h3>
                     <div class="editable-container">
                         <p class="editable-content" data-key="about_mission" contenteditable="true">
-                            <?php echo isset($secciones['about_mission']) ? $secciones['about_mission'] : 'Texto predeterminado para la misión'; ?>
+                            <?php echo isset($secciones['about_mission']) ? htmlspecialchars($secciones['about_mission'], ENT_QUOTES, 'UTF-8') : 'Texto predeterminado para la misión'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -112,7 +112,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h3 class="editable-container"><strong>Visión</strong></h3>
                     <div class="editable-container">
                         <p class="editable-content" data-key="about_vision" contenteditable="true">
-                            <?php echo isset($secciones['about_vision']) ? $secciones['about_vision'] : 'Texto predeterminado para la visión'; ?>
+                            <?php echo isset($secciones['about_vision']) ? htmlspecialchars($secciones['about_vision'], ENT_QUOTES, 'UTF-8') : 'Texto predeterminado para la visión'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>
@@ -128,7 +128,7 @@ if (isset($_SESSION['mensaje'])) {
                     <h3 class="editable-container"><strong>Historia</strong></h3>
                     <div class="editable-container">
                         <p class="editable-content" data-key="about_history" contenteditable="true">
-                            <?php echo isset($secciones['about_history']) ? $secciones['about_history'] : 'Texto predeterminado para la historia'; ?>
+                            <?php echo isset($secciones['about_history']) ? htmlspecialchars($secciones['about_history'], ENT_QUOTES, 'UTF-8') : 'Texto predeterminado para la historia'; ?>
                         </p>
                         <div class="edit-actions" style="display: none;">
                             <button class="save-btn">Guardar</button>

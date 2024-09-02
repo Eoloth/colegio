@@ -198,6 +198,7 @@ if (isset($_SESSION['mensaje'])) {
     </div><!-- end container -->
 </div><!-- end section -->
 
+<!-- linea de timepo -->
 <section class="section lb page-section">
     <div class="container">
         <div class="section-title row text-center">
@@ -207,9 +208,8 @@ if (isset($_SESSION['mensaje'])) {
                     <p class="lead editable-content" data-key="nuestra_historia" contenteditable="true">
                         <?php echo isset($secciones['nuestra_historia']) ? $secciones['nuestra_historia'] : 'Texto predeterminado para nuestra historia'; ?>
                     </p>
-                    <div class="edit-actions" style="display: none;">
-                        <button class="save-btn">Guardar</button>
-                        <button class="cancel-btn">Cancelar</button>
+                    <div class="timeline-edit-actions" style="display: none;">
+                        <button class="timeline-save-btn">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -223,9 +223,8 @@ if (isset($_SESSION['mensaje'])) {
                                 <p class="editable-content" data-key="nuestra_historia_2018" contenteditable="true">
                                     <?php echo isset($secciones['nuestra_historia_2018']) ? $secciones['nuestra_historia_2018'] : 'Texto predeterminado para nuestra historia 2018'; ?>
                                 </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
+                                <div class="timeline-edit-actions" style="display: none;">
+                                    <button class="timeline-save-btn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -236,9 +235,8 @@ if (isset($_SESSION['mensaje'])) {
                                 <p class="editable-content" data-key="nuestra_historia_2015" contenteditable="true">
                                     <?php echo isset($secciones['nuestra_historia_2015']) ? $secciones['nuestra_historia_2015'] : 'Texto predeterminado para nuestra historia 2015'; ?>
                                 </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
+                                <div class="timeline-edit-actions" style="display: none;">
+                                    <button class="timeline-save-btn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -249,9 +247,8 @@ if (isset($_SESSION['mensaje'])) {
                                 <p class="editable-content" data-key="nuestra_historia_2014" contenteditable="true">
                                     <?php echo isset($secciones['nuestra_historia_2014']) ? $secciones['nuestra_historia_2014'] : 'Texto predeterminado para nuestra historia 2014'; ?>
                                 </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
+                                <div class="timeline-edit-actions" style="display: none;">
+                                    <button class="timeline-save-btn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -262,61 +259,8 @@ if (isset($_SESSION['mensaje'])) {
                                 <p class="editable-content" data-key="nuestra_historia_2012" contenteditable="true">
                                     <?php echo isset($secciones['nuestra_historia_2012']) ? $secciones['nuestra_historia_2012'] : 'Texto predeterminado para nuestra historia 2012'; ?>
                                 </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-01">
-                            <div class="editable-container">
-                                <p class="editable-content" data-key="nuestra_historia_2010" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2010']) ? $secciones['nuestra_historia_2010'] : 'Texto predeterminado para nuestra historia 2010'; ?>
-                                </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-02">
-                            <div class="editable-container">
-                                <p class="editable-content" data-key="nuestra_historia_2007" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2007']) ? $secciones['nuestra_historia_2007'] : 'Texto predeterminado para nuestra historia 2007'; ?>
-                                </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-03">
-                            <div class="editable-container">
-                                <p class="editable-content" data-key="nuestra_historia_2004" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2004']) ? $secciones['nuestra_historia_2004'] : 'Texto predeterminado para nuestra historia 2004'; ?>
-                                </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline__item">
-                        <div class="timeline__content img-bg-04">
-                            <div class="editable-container">
-                                <p class="editable-content" data-key="nuestra_historia_2002" contenteditable="true">
-                                    <?php echo isset($secciones['nuestra_historia_2002']) ? $secciones['nuestra_historia_2002'] : 'Texto predeterminado para nuestra historia 2002'; ?>
-                                </p>
-                                <div class="edit-actions" style="display: none;">
-                                    <button class="save-btn">Guardar</button>
-                                    <button class="cancel-btn">Cancelar</button>
+                                <div class="timeline-edit-actions" style="display: none;">
+                                    <button class="timeline-save-btn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -326,6 +270,8 @@ if (isset($_SESSION['mensaje'])) {
         </div>
     </div>
 </section>
+
+
 
 <div class="section cl">
     <div class="container">

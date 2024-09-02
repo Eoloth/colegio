@@ -400,6 +400,42 @@
 	}
 }
 
+.timeline__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: auto; /* Permitir que la altura se ajuste según el contenido */
+    background-color: #fff;
+    border: 2px solid #eea412;
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    word-wrap: break-word;
+}
 
-/*# sourceMappingURL=timeline.min.css.map */
+.timeline__item {
+    position: relative;
+    width: 200px;
+    margin-bottom: 50px;
+}
 
+.timeline-edit-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Espacio entre el texto y el botón */
+}
+
+.timeline-save-btn {
+    min-width: 70px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+}
