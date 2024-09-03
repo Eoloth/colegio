@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (move_uploaded_file($_FILES["imagen_principal"]["tmp_name"], $target_file)) {
             // Actualizar la base de datos con la nueva imagen
-            $sql = "UPDATE home SET imagen_principal = ? WHERE id = 1";
+            $sql = "UPDATE home SET imagen_principal = ? WHERE identifier = 'noticias'";
             $stmt = $conn->prepare($sql);
             if ($stmt === false) {
                 echo json_encode(['success' => false, 'message' => 'Error en la preparación de la consulta']);
@@ -80,4 +80,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
-?>
