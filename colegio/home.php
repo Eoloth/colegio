@@ -16,17 +16,6 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $secciones[$row['identifier']] = urldecode($row['texto']);  // Decodificar texto
         $secciones[$row['identifier'] . '_imagen'] = $row['imagen'];
-        $imagen_principal = $row['imagen_principal'];  // Nueva columna para la imagen principal
-    }
-}
-
-// Obtener imágenes de la galería
-$sqlGaleria = "SELECT * FROM galeria ORDER BY id DESC";
-$resultGaleria = $conn->query($sqlGaleria);
-$imagenesGaleria = [];
-if ($resultGaleria->num_rows > 0) {
-    while ($row = $resultGaleria->fetch_assoc()) {
-        $imagenesGaleria[] = $row;
     }
 }
 
@@ -136,11 +125,9 @@ if (isset($_SESSION['mensaje'])) {
 </div>
 
 <!-- Mostrar la imagen principal debajo de las noticias -->
-<?php if (!empty($imagen_principal)): ?>
-    <div class="text-center mt-4">
-        <img src="uploads/<?php echo htmlspecialchars($imagen_principal); ?>" style="width: 80%; height: auto;" alt="Imagen Principal">
-    </div>
-<?php endif; ?>
+<div class="text-center mt-4">
+    <img src="images/1000253916.jpg" style="width: 80%; height: auto;" alt="Imagen Principal">
+</div>
 
 <div id="overviews" class="section wb">
     <div class="container">
