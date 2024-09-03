@@ -49,15 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif (!empty($_FILES['imagen_principal']['name'])) {
         // Procesar la carga de la imagen principal
-        $target_dir = __DIR__ . "/uploads/";  // Ruta absoluta
+        $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["imagen_principal"]["name"]);
 
-        // Verifica que el directorio de destino existe
-        if (!file_exists($target_dir)) {
-            mkdir($target_dir, 0777, true);
-        }
+        // Verificar si se recibió el archivo y su ruta temporal
+        error_log("Archivo recibido: " . $_FILES["imagen_principal"]["name"]);
+        error_log("Ruta temporal: " . $_FILES["imagen_principal"]["tmp_name"]);
 
         if (move_uploaded_file($_FILES["imagen_principal"]["tmp_name"], $target_file)) {
+            error_log("Archivo movido a: " . $target_file);
             // Actualizar la base de datos con la nueva imagen
             $sql = "UPDATE home SET imagen_principal = ? WHERE identifier = 'noticias'";
             $stmt = $conn->prepare($sql);
@@ -75,10 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->close();
             }
         } else {
-            $response['message'] = 'Error al subir la imagen';
+            $response['message'] = 'Error al mover el archivo subido.';
+            error_log("Error al mover el archivo: " . $_FILES["imagen_principal"]["name"]);
         }
     } else {
-        $response['message'] = 'Datos incompletos o vacíos';
+        $response['message'] = 'No se recibió ningún archivo o hubo un error en la subida.';
+        error_log("Error en la subida: " . $_FILES['imagen_principal']['error']);
     }
 }
 
@@ -86,4 +88,3 @@ $conn->close();
 
 // Devolver la respuesta en JSON
 echo json_encode($response);
-

@@ -11,3 +11,8 @@ RewriteRule ^(.*)$ https://www.escuela-niniojesus.cl/$1 [R,L]
 # Asegurar que las solicitudes a la raíz redirijan a home.php
 RewriteCond %{REQUEST_URI} ^/$
 RewriteRule ^$ home.php [L]
+
+php_value upload_max_filesize 10M
+php_value post_max_size 12M
+php_value max_execution_time 300
+php_value max_input_time 300

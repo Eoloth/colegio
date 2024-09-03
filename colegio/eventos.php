@@ -41,14 +41,6 @@ if (isset($_SESSION['mensaje'])) {
         </div>
     </div>
 
-    <div class="noticias-upload">
-        <form action="uploads/upload_image_noticias.php" method="POST" enctype="multipart/form-data">
-            <label for="noticias-image">Cargar imagen para noticias:</label>
-            <input type="file" name="noticias-image" id="noticias-image" required>
-            <button type="submit" class="btn btn-primary mt-2">Subir Imagen</button>
-        </form>
-    </div>
-
     <h1>Eventos</h1>
     <?php if (isset($_SESSION['usuario'])): ?>
         <a href="uploads/list_events.php" class="btn btn-info">Administrar Eventos</a>

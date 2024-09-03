@@ -39,7 +39,7 @@
                 let div = document.createElement('div');
                 div.innerHTML = `<img src="${event.target.result}" style="width: 100px; height: 100px;">
                                  <input type="text" class="form-control" name="nombres[]" placeholder="Nombre de la imagen" value="${file.name}" required>
-                                 <input type="text" class="form-control" name="descripciones[]" placeholder="Descripción" required>`;
+                                 <input type="text" class="form-control" name="descripciones[]" placeholder="Descripción">`;
                 preview.appendChild(div);
             }
             reader.readAsDataURL(file);
