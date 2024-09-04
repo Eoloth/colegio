@@ -141,29 +141,23 @@ try {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     const filename = button.getAttribute('data-filename');
-                    fetch(`delete_image.php?filename=${filename}&id=<?php echo htmlspecialchars($evento['id']); ?>`)
+                    const eventId = <?php echo json_encode($evento['id']); ?>;
+                    const context = 'evento';  // Contexto especificado
+
+                    fetch(`delete_imagen_event.php?filename=${filename}&id=${eventId}&context=${context}`)
                         .then(response => response.text())
                         .then(result => {
-                            if (result === 'success') {
+                            if (result.trim() === 'success') {
                                 button.parentElement.remove();
-                                updateImageDatabase(filename);
                             } else {
                                 alert('Error al eliminar la imagen: ' + result);
                             }
-                        });
+                        })
+                        .catch(error => console.error('Error:', error));
                 });
             });
         });
 
-        function updateImageDatabase(filename) {
-            fetch(`upload_image.php?filename=${filename}&id=<?php echo htmlspecialchars($evento['id']); ?>`)
-                .then(response => response.text())
-                .then(result => {
-                    if (result !== 'success') {
-                        alert('Error al actualizar la base de datos: ' + result);
-                    }
-                });
-        }
     </script>
 </body>
 </html>

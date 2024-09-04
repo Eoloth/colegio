@@ -107,8 +107,17 @@ if (isset($_SESSION['mensaje'])) {
         <span class="sr-only">Próxima</span>
     </a>
 </div>
-<br>
-<br>
+
+<!-- Controles de audio y reproducción -->
+<audio id="backgroundAudio" autoplay loop>
+    <source src="audio/La ronda de los amigos - Mazapan.mp3" type="audio/mpeg">
+</audio>
+<div class="audio-controls">
+    <button id="playPauseBtn" class="btn btn-primary">Reproducir</button>
+    <input id="volumeControl" type="range" min="0" max="1" step="0.1" value="1">
+</div>
+
+
 <!-- Nueva sección de Noticias -->
 <div class="section-title row text-center">
     <div class="col-md-8 offset-md-2">
@@ -129,6 +138,7 @@ if (isset($_SESSION['mensaje'])) {
     <img src="images/1000253916.jpg" style="width: 80%; height: auto;" alt="Imagen Principal">
 </div>
 
+<!-- Información sobre quienes somos -->
 <div id="overviews" class="section wb">
     <div class="container">
         <div class="section-title row text-center">
@@ -316,3 +326,30 @@ if (isset($_SESSION['mensaje'])) {
 </div><!-- end section -->
 
 <?php include 'footer.php'; ?>
+
+<!-- Script para controlar el audio -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const audio = document.getElementById('backgroundAudio');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const volumeControl = document.getElementById('volumeControl');
+
+    // Inicializar el botón según el estado del audio
+    playPauseBtn.textContent = audio.paused ? 'Reproducir' : 'Pausa';
+
+    playPauseBtn.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            playPauseBtn.textContent = 'Pausa';
+        } else {
+            audio.pause();
+            playPauseBtn.textContent = 'Reproducir';
+        }
+    });
+
+    volumeControl.addEventListener('input', function () {
+        audio.volume = volumeControl.value;
+    });
+});
+
+</script>

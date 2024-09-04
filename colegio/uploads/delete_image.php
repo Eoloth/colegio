@@ -24,27 +24,28 @@ if (isset($_GET['id'])) {
         if ($imagen) {
             $filepath = '../uploads/' . $imagen['nombre_archivo'];
             if (file_exists($filepath)) {
-                unlink($filepath);
+                if (unlink($filepath)) {
+                    // Eliminar la imagen de la base de datos solo si el archivo fue eliminado exitosamente
+                    $stmt = $conn->prepare("DELETE FROM galeria WHERE id = :id");
+                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                    $stmt->execute();
+
+                    $_SESSION['mensaje'] = "Imagen eliminada con éxito.";
+                } else {
+                    $_SESSION['mensaje'] = "Error al eliminar la imagen del servidor.";
+                }
+            } else {
+                $_SESSION['mensaje'] = "Error: archivo no encontrado en el servidor.";
             }
-
-            // Eliminar la imagen de la base de datos
-            $stmt = $conn->prepare("DELETE FROM galeria WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-
-            $_SESSION['mensaje'] = "Imagen eliminada con éxito.";
-            header("Location: list_images.php");
-            exit();
         } else {
-            $_SESSION['mensaje'] = "Error: imagen no encontrada.";
-            header("Location: list_images.php");
-            exit();
+            $_SESSION['mensaje'] = "Error: imagen no encontrada en la base de datos.";
         }
     } catch (PDOException $e) {
         $_SESSION['mensaje'] = "Error al conectar a la base de datos: " . $e->getMessage();
-        header("Location: list_images.php");
-        exit();
     }
+
+    header("Location: list_images.php");
+    exit();
 } else {
     $_SESSION['mensaje'] = "Error: ID no establecido.";
     header("Location: list_images.php");
