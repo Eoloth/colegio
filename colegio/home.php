@@ -113,9 +113,9 @@ if (isset($_SESSION['mensaje'])) {
     <source src="audio/La ronda de los amigos - Mazapan.mp3" type="audio/mpeg">
 </audio>
 <div class="audio-controls">
-    <button id="playPauseBtn" class="btn btn-primary">Reproducir</button>
-    <input id="volumeControl" type="range" min="0" max="1" step="0.1" value="1">
+    <button id="playPauseBtn" class="btn btn-primary">Pausa</button>
 </div>
+
 
 
 <!-- Nueva sección de Noticias -->
@@ -332,11 +332,8 @@ if (isset($_SESSION['mensaje'])) {
 document.addEventListener('DOMContentLoaded', function () {
     const audio = document.getElementById('backgroundAudio');
     const playPauseBtn = document.getElementById('playPauseBtn');
-    const volumeControl = document.getElementById('volumeControl');
 
-    // Inicializar el botón según el estado del audio
-    playPauseBtn.textContent = audio.paused ? 'Reproducir' : 'Pausa';
-
+    // Configurar el botón para reproducir o pausar
     playPauseBtn.addEventListener('click', function () {
         if (audio.paused) {
             audio.play();
@@ -347,9 +344,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    volumeControl.addEventListener('input', function () {
-        audio.volume = volumeControl.value;
-    });
+    // Iniciar con el botón en estado de pausa si el audio está reproduciéndose
+    if (!audio.paused) {
+        playPauseBtn.textContent = 'Pausa';
+    } else {
+        playPauseBtn.textContent = 'Reproducir';
+    }
 });
+
 
 </script>
