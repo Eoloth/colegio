@@ -135,7 +135,7 @@ if (isset($_SESSION['mensaje'])) {
 
 <!-- Mostrar la imagen principal debajo de las noticias -->
 <div class="text-center mt-4">
-    <img src="images/1000253916.jpg" style="width: 80%; height: auto;" alt="Imagen Principal">
+    <img src="images/matricula.jpg" style="width: 80%; height: auto;" alt="Imagen Principal">
 </div>
 
 <!-- Información sobre quienes somos -->

@@ -38,17 +38,33 @@ session_start();
     <?php if (isset($_SESSION['usuario'])): ?>
         <a href="uploads/list_images.php" class="btn btn-info">Administrar Galería de Imágenes</a>
     <?php endif; ?>
-    
+
     <div class="row">
         <?php
-        // Conectar a la base de datos y obtener las imágenes
+        // Conectar a la base de datos y obtener las imágenes en tandas de 20
         require_once 'uploads/config.php';
         try {
             $conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC");
+
+            // Número de imágenes por página
+            $imagenes_por_pagina = 20;
+            $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+            $inicio = ($pagina_actual - 1) * $imagenes_por_pagina;
+
+            // Consulta total de imágenes para calcular el número total de páginas
+            $stmt_total = $conn->prepare("SELECT COUNT(*) AS total FROM galeria");
+            $stmt_total->execute();
+            $total_imagenes = $stmt_total->fetch(PDO::FETCH_ASSOC)['total'];
+            $total_paginas = ceil($total_imagenes / $imagenes_por_pagina);
+
+            // Consulta para obtener las imágenes de la página actual
+            $stmt = $conn->prepare("SELECT * FROM galeria ORDER BY id DESC LIMIT :inicio, :cantidad");
+            $stmt->bindValue(':inicio', $inicio, PDO::PARAM_INT);
+            $stmt->bindValue(':cantidad', $imagenes_por_pagina, PDO::PARAM_INT);
             $stmt->execute();
             $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         } catch (PDOException $e) {
             die("Error al conectar a la base de datos: " . $e->getMessage());
         }
@@ -69,6 +85,24 @@ session_start();
         <?php
         endif;
         ?>
+    </div>
+
+    <!-- Paginación -->
+    <div class="paginacion">
+        <?php if ($pagina_actual > 1): ?>
+            <a href="galeria.php?pagina=<?php echo $pagina_actual - 1; ?>">Anterior</a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+            <a href="galeria.php?pagina=<?php echo $i; ?>" 
+               class="<?php echo $i == $pagina_actual ? 'activo' : ''; ?>">
+               <?php echo $i; ?>
+            </a>
+        <?php endfor; ?>
+
+        <?php if ($pagina_actual < $total_paginas): ?>
+            <a href="galeria.php?pagina=<?php echo $pagina_actual + 1; ?>">Siguiente</a>
+        <?php endif; ?>
     </div>
 </div>
 

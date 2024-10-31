@@ -135,3 +135,24 @@ img {
     padding: 3px 8px; /* Ajusta el espacio interior del botón */
     font-size: 12px; /* Tamaño de la fuente del botón */
 }
+
+
+.paginacion {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.paginacion a {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.paginacion a.activo {
+    background-color: #007bff;
+    color: white;
+}
