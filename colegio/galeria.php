@@ -72,11 +72,14 @@ session_start();
         if ($imagenes):
             foreach ($imagenes as $imagen):
         ?>
-                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <a href="uploads/<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" data-lightbox="galeria" data-title="<?php echo htmlspecialchars($imagen['descripcion']); ?>">
-                        <img class="img-thumbnail" src="uploads/<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" style="width: 100%; height: auto;">
-                    </a>
-                </div>
+<div class="col-lg-3 col-md-4 col-xs-6 thumb">
+    <a href="uploads/<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" data-lightbox="galeria" data-title="<?php echo htmlspecialchars($imagen['descripcion']); ?>">
+        <img class="img-thumbnail" src="uploads/thumbnails/<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" alt="<?php echo htmlspecialchars($imagen['nombre_archivo']); ?>" style="width: 100%; height: auto;">
+    </a>
+</div>
+
+
+
         <?php
             endforeach;
         else:
