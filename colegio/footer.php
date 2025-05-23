@@ -25,7 +25,6 @@
                         <li><a href="about.php">Acerca de nosotros</a></li>
                         <li><a href="eventos.php">Eventos</a></li>
                         <li><a href="galeria.php">Galería de Imágenes</a></li>
-                        <li><a href="contact.html">Contacto</a></li>
                     </ul>
                 </div>
             </div>
