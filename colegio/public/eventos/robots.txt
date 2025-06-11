@@ -1,4 +1,4 @@
 User-agent: *
-Disallow:
+Allow: /
 
 Sitemap: https://eventos.escuela-niñojesus.cl/sitemap.xml
